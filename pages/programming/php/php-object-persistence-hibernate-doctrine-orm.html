@@ -1,0 +1,2406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>PHP Object Persistence</h1>
+
+<p><a href="lib-docs/index.html">Documentation</a> (together with my other
+libs)</p>
+
+<pre
+class="brush: php"><code>&lt;?php
+
+
+
+// --- INCLUDES --- //
+        require_once dirname(__FILE__).'/'.'inc.php4';
+        require_once dirname(__FILE__).'/'.'lib.cDBAccess_MySQL.php4';
+        // Event Logging
+        require_once dirname(__FILE__).'/'.'lib.cApp.php';
+        require_once dirname(__FILE__).'/'.'lib.cLog.php';
+        require_once dirname(__FILE__).'/'.'lib.cObjectPersistence_ColumnTypes.php';
+
+
+
+// --- CONSTANTS --- //
+
+        // Column types
+        define('DWOP_TYPE_STR',  1);
+        define('DWOP_TYPE_NUM',  2);
+        define('DWOP_TYPE_REAL', 3);
+        define('DWOP_TYPE_BOOL', 4);
+        define('DWOP_TYPE_ENUM', 5);
+        define('DWOP_TYPE_SET',  6);
+
+        // Column flags
+        define('DWOP_NOT_NULL', 1);
+        define('DWOP_BINARY',   2);
+        //define('DWOP_BINARY',   2);
+
+        // For cDwOpClass::GetObjectMultiIdString()
+        define('DWOP_VALUE_DUMP_MODE__SQL', 0);
+        define('DWOP_VALUE_DUMP_MODE__SQL_SHORT', 2);
+        define('DWOP_VALUE_DUMP_MODE__SQL_VALUES', 3);
+        define('DWOP_VALUE_DUMP_MODE__ESCAPED_VALUES', 4);
+        define('DWOP_VALUE_DUMP_MODE__COMA', 5);
+
+
+/** *********************************************************************************
+ &lt;h1&gt;  RDBMS Object Loader for PHP  &lt;/h1&gt;
+
+        @version 2.4.6
+        @author Ondra Zizka, Dynawest;  ondra@dynawest.cz
+
+        &lt;h2&gt;Plan:&lt;/h2&gt;
+        3.0.0:
+                - Add:      Complete cross-class references handling
+        2.x.x:
+                - Class::RemProperty() - handle removal of ID and KEY properties.
+                        Class::aoIdProperties - rewrite so that GetIdProperties etc will compute from properties themselves. ??? Good idea???
+
+        &lt;h2&gt;History:&lt;/h2&gt;
+        2.4.7:
+                - Fixed:  cDwOpProperty::FormatForSql() returns correctly for DWOP_TYPE_REAL column types.
+        2.4.7:
+                - Added:  DeleteObject() supports multi-property PRIMARY KEYS in it's second parameter
+        2.4.6:
+                - Added:  Object Pool supports multi-property PRIMARY KEYS
+        2.4.5:
+                - Fixed:  Fix in SaveObject() - now saves all properties that are set. Null values for NOT NULL columns converted to default.
+                - Added:  function GetNonKeyProperties()
+                - Added:  DeleteObject() now can take Class name and single ID as parameters.
+                - Added:  cDwOpProperty now remembers it's PRIMARY KEY properties added through AddIdProperty() etc.
+                - Added:  cDwOpProperty::IsKey()
+                - Changed:  cDwOpColumnType::GetDefaultDefault() is not abstract returns a value according to basic column type.
+                - Fixed:  DwFwIdAndProperties::HasProperty() now uses array_key_exists() instead of fucking isset().
+        2.4.4:
+                - Fixed:  Massive fix in SaveObject() and one in DeleteObject()
+                - Added:  param $sGlue to  GetIdPropertiesSql($oObject, $sGlue=', ')
+        2.4.3:
+                - Added:  Support for multi-property PRIMARY KEYs  in SaveObject(), DeleteObject()
+        2.4.2:
+                - Added:  DeleteObject($oObject);
+                - Added:  GetIdPropertiesSql()
+        2.4.1:
+                - Added:  param $bOverwrite to function AddObjectIntoPool( $oObject, $bOverwrite=true )
+        2.4.0:
+                - Added:    M : N cross-class references
+                  - Added:   function SetMnRelation($oClass1, $oClassGlue, $oClass2)
+                  - Added:   function LoadObjectsByMnRelation($oObject, $oClassGlue, $oClass2, $xId=null)
+
+                - Added:   Support for multi-property PRIMARY key - but only for keeping it, not for loading or saving
+
+                - Added:   Real column types
+                              (abstract class cDwOpColumnType_Real extends cDwOpColumnType) and derived classes)
+                - Added:   Ordinal column types can take possible values definiton as they go from the DB:
+                              "'value', 'value', ..."
+                - Added:   Column types BIGINT and MEDIUMINT
+
+                Objects loading:
+                - Added:   function LoadObjects($oClass)
+                - Added:   function LoadObjectsBySql($xClass, $sSQL)
+                - Added:   function LoadObjectsFromResult($xClass, $oRes)
+
+                Class related:
+          - Added:   function ConvertAndCheckClass( $oClass )
+                - Added:   function CreateClassCopy( $sName, $xClass )
+                - Added:   function CreateClassByTable( $sName, $sTable )
+                - Added:   function CreateColumnTypeObject($sTypeString, $bNull, $sDefault)
+
+
+        2.3.0:
+                - Added:    CreateClassByTable()
+                            Creates class definition according to a table in a database.
+        2.2.1:
+                - Added:    LoadObjectsFromResult().
+                - Changed:  LoadObjectsByValue() now uses LoadObjectsFromResult().
+        2.2.0:
+                - Added:    Ordering by properties support.
+                            GetOrderProperties(), SetOrderProperties()
+        2.1.0:
+                - Added:    Default values, better checking.
+                            GetDefault(), SetDefault(), GetDefaultDefault()
+        2.0.2:
+                - Added:    Load* functions' first parameter can be also a class name string.
+        2.0.1:
+                - Added:    GetPoolCount()
+                - Changed:  SaveObject() adds UPDATEd (overwrite) and INSERTed objects into pool
+        2.0.0:
+                - Add central object registry - object is loaded only once,
+                  then return the formerly loaded
+        1.1.0:
+                - Added support for AUTO_INCREMENT when creating objects.
+                - Added possibility to load objects by values.
+ ***********************************************************************************/
+class cDwObjectPersistence_DB {
+
+        var $oDB = null;
+        function &amp;GetDB()    { return $this-&gt;oDB; }
+
+        var $sError = null;
+        function GetError()       { return $this-&gt;sError; }
+        function SetError($sError){ $this-&gt;sError = $sError; }
+
+
+        function cDwObjectPersistence_DB($oDB){
+                $this-&gt;oDB = $oDB;
+        }
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Class objects dictionary                                                *
+        ***************************************************************************/
+        var $aoClassesDictionary = Array();
+        function GetClassNames(){ return array_keys($this-&gt;aoClassesDictionary); }
+        function AddClassIntoDictionary( $oClass ){
+                $this-&gt;aoClassesDictionary[$oClass-&gt;GetName()] = $oClass;
+        }
+        function GetClassFromDictionary( $sClassName ){
+                return isset($this-&gt;aoClassesDictionary[$sClassName]) ? $this-&gt;aoClassesDictionary[$sClassName] : null;
+        }
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Objects pool                                                            *
+        ***************************************************************************/
+        var $aaoObjectPool = Array();
+
+        function AddObjectIntoPool( $oObject, $bOverwrite=true ){
+                if( !is_object($oObject) ) return false;
+                $sClassName = get_class($oObject);
+                //App::Log("\$sClassName: ".$sClassName);///
+                if( !$oClass = $this-&gt;GetClassFromDictionary($sClassName) ){ return false; }
+
+                // Get the object unique PRIMARY KEYs string
+                //App::Log("GetIdPropertiesCount(): ".$oClass-&gt;GetIdPropertiesCount());///
+                switch( $oClass-&gt;GetIdPropertiesCount() ){
+                        case 0: $bUsePool = false; return false; break;
+                        case 1:  $xId = $oObject-&gt;GetId(); break;
+                        default: $xId = $oClass-&gt;GetObjectMultiIdString( $oObject, DWOP_VALUE_DUMP_MODE__SQL_VALUES ); break;
+                }
+                //if( 0 == $oClass-&gt;GetIdPropertiesCount() ) return false;
+                //$xId = $oClass-&gt;GetObjectMultiIdString( $oObject, DWOP_VALUE_DUMP_MODE__SQL_VALUES );
+
+                // If we should not overwrite...
+                if( !$bOverwrite ){
+                        // and the object exists, don't write and return true.
+                        if( isset( $this-&gt;aaoObjectPool[get_class($oObject)][$xId] ) )
+                                return true;
+                }
+
+                // Save the object handle.
+                $this-&gt;aaoObjectPool[get_class($oObject)][$xId] = $oObject;
+                return true;
+        }
+
+        function AddObjectIntoPool_SingleId( $oObject, $bOverwrite=true ){
+                if( !is_object($oObject) ) return false;
+
+                // If we should not overwrite...
+                if( !$bOverwrite ){
+                        // and the object exists, don't write and return true.
+                        if( isset( $this-&gt;aaoObjectPool[get_class($oObject)][$oObject-&gt;GetId()] ) )
+                                return true;
+                }
+
+                // Save the object handle.
+                $this-&gt;aaoObjectPool[get_class($oObject)][$oObject-&gt;GetId()] = $oObject;
+                return true;
+        }
+
+        function GetObjectFromPool( $sClassName, $xId ){
+                $oObject = null;
+                if( isset($this-&gt;aaoObjectPool[$sClassName][$xId]) ){
+                        $oObject = $this-&gt;aaoObjectPool[$sClassName][$xId];
+                        //echo "&lt;pre&gt;&lt;strong&gt;Pool hit!&lt;/strong&gt;&lt;/pre&gt;";///
+                }
+                return $oObject;
+        }
+
+
+        function RemObjectFromPool( $oObject ){
+                if( !is_object($oObject) ) return false;
+                // Get the Class object
+                $sClassName = get_class($oObject);
+                if( !($oClass = $this-&gt;GetClassFromDictionary($sClassName)) ){ return false; }
+
+                // Get the object unique PRIMARY KEYs string
+                //App::Log("GetIdPropertiesCount(): ".$oClass-&gt;GetIdPropertiesCount());///
+                switch( $oClass-&gt;GetIdPropertiesCount() ){
+                        case 0: $bUsePool = false; return false; break;
+                        case 1:  $xId = $oObject-&gt;GetId(); break;
+                        default: $xId = $oClass-&gt;GetObjectMultiIdString( $oObject, DWOP_VALUE_DUMP_MODE__SQL_VALUES ); break;
+                }
+                // Remove the object with the acquired ID
+                if( isset( $this-&gt;aaoObjectPool[$sClassName][$xId] ) )
+                        unset($this-&gt;aaoObjectPool[$sClassName][$xId]);
+                return true;
+        }
+
+        function RemObjectFromPool_SingleId( $oObject ){
+                if( !is_object($oObject) ) return false;
+                $sClassName = get_class($oObject);
+                $xId = $oObject-&gt;GetId();
+                if( isset( $this-&gt;aaoObjectPool[$sClassName][$xId] ) )
+                        unset($this-&gt;aaoObjectPool[$sClassName][$xId]);
+                return true;
+        }
+
+
+        function HasObjectInPool( $oObject ){
+                if( !is_object($oObject) ) return false;
+                // Get the Class object
+                $sClassName = get_class($oObject);
+                if( !($oClass = $this-&gt;GetClassFromDictionary($sClassName)) ){ return false; }
+
+                // Get the object unique PRIMARY KEYs string
+                switch( $oClass-&gt;GetIdPropertiesCount() ){
+                        case 0: $bUsePool = false; break;
+                        case 1:  $xId = $oObject-&gt;GetId(); break;
+                        default: $xId = $oClass-&gt;GetObjectMultiIdString( $oObject, DWOP_VALUE_DUMP_MODE__SQL_VALUES ); break;
+                }
+                // $xId = $oObject-&gt;GetId();
+
+                $xId = $oClass-&gt;GetObjectMultiIdString( $oObject, DWOP_VALUE_DUMP_MODE__SQL_VALUES );
+
+                if( isset( $this-&gt;aaoObjectPool[get_class($oObject)][$xId] ) )
+                        return true;
+                return false;
+        }
+
+        function HasObjectInPool_SingleId( $oObject ){
+                if( !is_object($oObject) ) return false;
+                $xId = $oObject-&gt;GetId();
+                if( isset( $this-&gt;aaoObjectPool[get_class($oObject)][$xId] ) )
+                        return true;
+                return false;
+        }
+
+
+        function GetPoolCount(){
+                return array_sum(array_map('Count', $this-&gt;aaoObjectPool));
+        }
+
+
+
+
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Converts the class name to the DwOpClass object and checks the class.   *
+        ***************************************************************************/
+        function ConvertAndCheckClass( $oClass ){
+
+                // $oClass can be either cDwOpClass object or a class name
+                if( !$oClass ){ $this-&gt;SetError("Bad param (null) \$oClass for ".__METHOD__." in ".CallInfo(-2)); return false; }
+
+                // A string - try to find the Class in the Dictionary
+                if( is_string($oClass) ){
+                        $sClassName = $oClass;
+                        $oClass = $this-&gt;GetClassFromDictionary($sClassName);
+                        if( !is_object($oClass) ){ $this-&gt;SetError("Class [$sClassName] not found in dictionary."); return false; }
+                }
+                // Not a string - either the Class object or an object of some Class.
+                else{
+                        if( !is_object($oClass) ){ $this-&gt;SetError("Bad param (not string or object) \$oClass for ".__METHOD__." in ".CallInfo(-2)); return false; }
+
+                        if( $oClass instanceof cDwOpClass ){
+                                $sClassName = $oClass-&gt;GetName();
+                        }else{
+                                // object of some Class - try to find the Class object.
+                                $sClassName = get_class($oClass);
+                                $oClass = $this-&gt;GetClassFromDictionary( $sClassName );
+                                if( !is_object($oClass) ){ $this-&gt;SetError("Object's Class [$sClassName] not found in dictionary."); return false; }
+                        }
+                }
+
+                // Check class existence
+                if( !class_exists($sClassName) ){ $this-&gt;SetError("Non-existent PHP class [$sClassName]. in ".__METHOD__." in ".CallInfo(-2)); return false; }
+
+                return $oClass;
+        }
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Deletes an object with ID $iID  of the given class $oClass              *
+           Deletes the given object from the DB.
+        ***************************************************************************/
+        function DeleteObject($oObject, $xId=null){
+                //echo "&lt;pre&gt;\n class object: ".AdjustedPrintR($oClass)."&lt;/pre&gt;";///
+                //if( !is_object( $oObject ) ) return false;
+                $bSucc = false;
+                do{
+
+                        /*// Find the Class object in the Dictionary
+                        $sClassName = get_class($oObject);
+                        do{
+                                $oClass = $this-&gt;GetClassFromDictionary($sClassName);
+                                $sClassName = get_parent_class($sClassName);
+                        }while( $sClassName &amp;&amp; !$oClass );
+
+                        // Check class object //
+                        //if( !$oClass ){ $this-&gt;SetError("Class [$sClassName] not found in the dictionary in ".__METHOD__." @ ".__LINE__); break; }
+                        /*/
+                        if( !($oClass = $this-&gt;ConvertAndCheckClass($oObject)) ){ $this-&gt;SetError("!\$oClass in ".__METHOD__." @ ".__LINE__); break; }
+                        $sClassName = $oClass-&gt;GetName();
+                        /**/
+
+                        // If $oObject is an instance of Class, get it's ID.
+
+                        // If $oObject was just identification of a Class, create a temporary object with just IDs.
+                        if( !($oObject instanceof $sClassName) ){
+                                // Check the ID - false, null, or empty array? -&gt; fail.
+                                if( !$xId ){ $this-&gt;SetError("Unknown object ID to delete in ".__METHOD__." @ ".__LINE__); break; }
+
+                                // If $xId is multiple ID - associative array of ids
+                                if( is_array($xId) ){
+                                        $oObject = new $sClassName();
+                                        foreach( $xId as $k =&gt; $v )
+                                                $oObject-&gt;SetProperty($k, $v);
+                                }
+                                // Single ID
+                                else{
+                                        //$oObject = $this-&gt;LoadObjectById($oClass, $xId);
+                                        //if(!$oObject) { $this-&gt;SetError("!LoadObjectById(".$oClass-&gt;GetName().", $xId) in ".__METHOD__." @ ".__LINE__); break; }
+                                        $oObject = new $sClassName();
+                                        $oObject-&gt;SetId($xId);
+                                }
+                        }
+
+                        // -- From here further, we have DwOpClass $oClass  and  it's (pseudo)instance $oObject. -- //
+
+
+                        // Remove from the Object Pool
+                        if( !$this-&gt;RemObjectFromPool($oObject) ){ $this-&gt;SetError("!RemObjectFromPool() in ".__METHOD__." @ ".__LINE__); }
+
+
+                        $sTable  = $oClass-&gt;GetTable();
+
+                        /*/ For one ID (PRIMARY KEY) property only...
+                        $oIdProp = $oClass-&gt;GetIdProperty();
+                        $sColId  = $oIdProp-&gt;GetColName();
+                        $xId = $oIdProp-&gt;FormatForSql( $oObject-&gt;GetProperty($oIdProp-&gt;GetColName()) );
+                        $sSQL = "DELETE FROM $sTable WHERE $sColId = $xId";
+                        /*/
+                        // For all PRIMARY KEYs:
+                        $saxIdsCond = $oClass-&gt;GetIdPropertiesSql($oObject, ' AND ');
+                        $sSQL = "DELETE FROM $sTable WHERE $saxIdsCond";
+                        /**/
+
+                        // Perform SQL query
+                        $oRes = $this-&gt;GetDB()-&gt;Execute($sSQL);
+                        if( !$oRes || !$oRes-&gt;IsOK() ){ $this-&gt;SetError("SQL error [".$oRes-&gt;GetError()."] SQL: [$sSQL]"); break; }
+
+                        $bSucc = true;
+                }while(false);
+                return $bSucc;
+        }// cDwObjectPersistence_DB::DeleteObject()
+
+
+        /**&lt;*********************************************************************************&gt;
+        *  Deletes objects of the given class $oClass
+        *  with some property equal to the given value.
+
+          @param oClass:         cDwOpClass object or a class name to find in dictionary.
+          @param sPropertyName:  Name of the property to compare with $xVal.
+          @param xVal:           Value to compare property with.
+                @returns array of objects with value $sPropertyName equal to $xVal.
+        *************************************************************************************/
+        function DeleteObjectsByValueBad($oClass, $sPropertyName, $xVal){
+                //echo "&lt;pre&gt;\n class object: ".AdjustedPrintR($oClass)."&lt;/pre&gt;";///
+
+                if( !( $oClass = $this-&gt;ConvertAndCheckClass($oClass) ) ) return false;
+                $sClassName = $oClass-&gt;GetName();
+
+
+                // Get the property by which to recognize the object to load
+                $oProp = $oClass-&gt;GetProperty($sPropertyName);
+                if( null == $oProp ){ $this-&gt;SetError("No such property in class [$sClassName]: [$sPropertyName]"); return false; }
+
+                // Create SQL query
+                $sTable  = $oClass-&gt;GetTable();
+                $sCol    = $oProp-&gt;GetColName();
+                $oIdProp = $oClass-&gt;GetIdProperty();
+                $sColId  = $oIdProp-&gt;GetColName();
+
+                $sOrderSql = $oClass-&gt;GetOrderPropertiesSql();   // ORDER BY part
+                $sSQL = "DELETE FROM $sTable WHERE $sCol = ".$oProp-&gt;FormatForSql($xVal)." ".$sOrderSql;
+
+                // Perform SQL query
+                $oRes = $this-&gt;GetDB()-&gt;Execute($sSQL);
+                if( !$oRes || !$oRes-&gt;IsOK() ){ $this-&gt;SetError("SQL error [".$oRes-&gt;GetError()."] SQL: [$sSQL] in ".__METHOD__.' @ '.__LINE__); return false; }
+
+                // TODO: Remove objects from Object Pool!
+                $this-&gt;RemObjectFromPool($oObject);
+
+                return true;
+        }// LoadObjectsByValue($oClass, $sPropertyName, $xVal)
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Second version                                                          *
+        ***************************************************************************/
+        function DeleteObjectsByValue($oClass, $sPropertyName, $xVal){
+
+                $aoObjects = $this-&gt;LoadObjectsByValue($oClass, $sPropertyName, $xVal);
+                if(!is_array($aoObjects)) return false;
+
+                foreach( $aoObjects as $oObject){
+                        $this-&gt;DeleteObject($oObject);
+                }
+
+                return true;
+        }// LoadObjectsByValue($oClass, $sPropertyName, $xVal)
+
+
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Loads an object with ID $iID  of the given class $oClass                *
+        ***************************************************************************/
+        function LoadObjectById($oClass, $iID){
+                //echo "&lt;pre&gt;\n class object: ".AdjustedPrintR($oClass)."&lt;/pre&gt;";///
+
+
+                /*/ First parameter can be either cDwOpClass object or a class name
+                if( is_string($oClass) ){
+                        $sClassName = $oClass;
+                        $oClass = $this-&gt;GetClassFromDictionary($sClassName);
+                        if( !$oClass ) return false;
+                }else{
+                        $sClassName = $oClass-&gt;GetName();
+                }
+                // Check class existence
+                if( !class_exists($sClassName) )
+                        return false;
+                /*/
+                if( !( $oClass = $this-&gt;ConvertAndCheckClass( $oClass ) ) ) return false;
+                $sClassName = $oClass-&gt;GetName();/**/
+
+
+                // Look for the object in the pool
+                if( $oObject = $this-&gt;GetObjectFromPool($sClassName, $iID) )
+                        return $oObject;
+
+
+
+                $sTable  = $oClass-&gt;GetTable();
+                $oIdProp = $oClass-&gt;GetIdProperty();
+                $sColId  = $oIdProp-&gt;GetColName();
+
+                // Create and perform SQL query
+                $sSQL = "SELECT * FROM $sTable WHERE $sColId = ".$oIdProp-&gt;FormatForSql($iID);
+                $oRet = $this-&gt;GetDB()-&gt;Select($sSQL);
+                if( !$oRet-&gt;IsOK() ) return false;
+                if( 0 == $oRet-&gt;NumRows() ) return null;
+
+                $aData = $oRet-&gt;FetchRow(MYSQL_ASSOC);
+
+                // Create the object
+                $oObject = new $sClassName();
+
+                // Load all declared properties
+                foreach( $oClass-&gt;GetProperties() as $oProperty ){
+                        //echo "&lt;div&gt;\$oObject-&gt;SetProperty( ".$oProperty-&gt;GetColName().", \$aData[".$oProperty-&gt;GetColName()."] );&lt;/div&gt;";///
+                        $oObject-&gt;SetProperty( $oProperty-&gt;GetColName(), $oProperty-&gt;GetColType()-&gt;ConvertFromResult( $aData[$oProperty-&gt;GetColName()] ) );
+                }
+
+                $this-&gt;AddObjectIntoPool($oObject);
+                return $oObject;
+        }// LoadObjectById($oClass, $iID)
+
+
+
+
+
+        /**&lt;***********************************************************************************&gt;
+        *  Loads all objects of the given class $oClass.
+
+          @param oClass:         cDwOpClass object or a class name to find in dictionary.
+                @returns array of objects of the specified class.
+        ***************************************************************************************/
+        function LoadObjects($oClass){
+
+                /*/ First parameter can be either cDwOpClass object or a class name
+                if( is_string($oClass) ){
+                        $sClassName = $oClass;
+                        $oClass = $this-&gt;GetClassFromDictionary($sClassName);
+                        if( !is_object($oClass) ){ $this-&gt;SetError("Class [$sClassName] not found in dictionary."); return false; }
+                }else{
+                        $sClassName = $oClass-&gt;GetName();
+                }
+
+                // Check class existence
+                if( !class_exists($sClassName) ){ $this-&gt;SetError("Non-existent class [$sClassName]."); return false; }
+                /*/
+                if( !( $oClass = $this-&gt;ConvertAndCheckClass( $oClass ) ) ) return false;
+                $sClassName = $oClass-&gt;GetName();/**/
+
+
+                // Create SQL query
+                $sTable    = $oClass-&gt;GetTable();
+                $sOrderSql = $oClass-&gt;GetOrderPropertiesSql();   // ORDER BY part
+                $sSQL = "SELECT * FROM $sTable ".$sOrderSql;
+
+                // Perform SQL query
+                $oRes = $this-&gt;GetDB()-&gt;Select($sSQL);
+                if( !$oRes || !$oRes-&gt;IsOK() ){
+                        $this-&gt;SetError("SQL error [".$oRes-&gt;GetError()."] SQL: [$sSQL]");
+                        return false;
+                }
+
+                // Load Objects
+                $aoObjects = $this-&gt;LoadObjectsFromResult($oClass, $oRes);
+                $oRes-&gt;FreeResult();
+
+                return $aoObjects;
+
+        }// cDwObjectPersistence_DB::LoadObjects()
+
+
+
+        /**&lt;*********************************************************************************&gt;
+        *  Loads an objects of the given class $oClass
+        *  with some property equal to the given value.
+
+          @param oClass:         cDwOpClass object or a class name to find in dictionary.
+          @param sPropertyName:  Name of the property to compare with $xVal.
+          @param xVal:           Value to compare property with.
+                @returns array of objects with value $sPropertyName equal to $xVal.
+        *************************************************************************************/
+        function LoadObjectsByValue($oClass, $sPropertyName, $xVal){
+                //echo "&lt;pre&gt;\n class object: ".AdjustedPrintR($oClass)."&lt;/pre&gt;";///
+
+
+                /*/ First parameter can be either cDwOpClass object or a class name
+                if( is_string($oClass) ){
+                        $sClassName = $oClass;
+                        $oClass = $this-&gt;GetClassFromDictionary($sClassName);
+                        if( !is_object($oClass) ){
+                                $this-&gt;SetError("Class [$sClassName] not found in dictionary.");
+                                return false;
+                        }
+                }else{
+                        $sClassName = $oClass-&gt;GetName();
+                }
+
+                // Check class existence
+                if( !class_exists($sClassName) ){ $this-&gt;SetError("Non-existent class [$sClassName]."); return false; }
+                /*/
+                if( !( $oClass = $this-&gt;ConvertAndCheckClass( $oClass ) ) ) return false;
+                $sClassName = $oClass-&gt;GetName();/**/
+
+
+                // Get the property by which to recognize the object to load
+                $oProp = $oClass-&gt;GetProperty($sPropertyName);
+                if( null == $oProp ){
+                        $this-&gt;SetError("No such property in class [$sClassName]: [$sPropertyName]");
+                        return false;
+                }
+
+                // Create SQL query
+                $sTable  = $oClass-&gt;GetTable();
+                $sCol    = $oProp-&gt;GetColName();
+                $oIdProp = $oClass-&gt;GetIdProperty();
+                $sColId  = $oIdProp-&gt;GetColName();
+
+                $sOrderSql = $oClass-&gt;GetOrderPropertiesSql();   // ORDER BY part
+                $sSQL = "SELECT * FROM $sTable WHERE $sCol = ".$oProp-&gt;FormatForSql($xVal)." ".$sOrderSql;
+
+                /*// Perform SQL query
+                $oRes = $this-&gt;GetDB()-&gt;Select($sSQL);
+                if( !$oRes || !$oRes-&gt;IsOK() ){
+                        $this-&gt;SetError("SQL error [".$oRes-&gt;GetError()."] SQL: [$sSQL]");
+                        return false;
+                }
+
+                // Load Objects
+                $aoObjects = $this-&gt;LoadObjectsFromResult($oClass, $oRes);
+                $oRes-&gt;FreeResult();/*/
+
+                $aoObjects = $this-&gt;LoadObjectsBySql($oClass, $sSQL);/**/
+
+                return $aoObjects;
+        }// LoadObjectsByValue($oClass, $sPropertyName, $xVal)
+
+
+
+
+
+        /**&lt;*********************************************************************************&gt;
+        *  Performs SQL query and converts the result to an array of objects.                *
+        *************************************************************************************/
+        function LoadObjectsBySql($xClass, $sSQL){
+
+                // Perform SQL query
+                $oRes = $this-&gt;GetDB()-&gt;Select($sSQL);
+                if( !$oRes || !$oRes-&gt;IsOK() ){
+                        $this-&gt;SetError("SQL error [".$oRes-&gt;GetError()."] SQL: [$sSQL]");
+                        return false;
+                }
+
+                // Load Objects
+                $aoObjects = $this-&gt;LoadObjectsFromResult($xClass, $oRes);
+                $oRes-&gt;FreeResult();
+
+                return $aoObjects;
+        }
+
+
+
+        /**&lt;*********************************************************************************&gt;
+        *  Converts the result to an array of objects.                                       *
+        *************************************************************************************/
+        function LoadObjectsFromResult($xClass, $oRes){
+
+                // Convert and check the class
+                if( !( $oClass = $this-&gt;ConvertAndCheckClass( $xClass ) ) ){
+                        $this-&gt;SetError("!ConvertAndCheckClass(".gettype($xClass)."): ".$this-&gt;GetError()); return false;
+                }
+                $sClassName = $oClass-&gt;GetName();
+
+
+                $aoObjects = Array();
+                //if( 0 == $oRes-&gt;NumRows() ) return $aoObjects;
+
+                // Class Name
+                //if( !is_object($oClass) ) echo CallInfo(-2);
+
+
+
+                $aoPropertiesToTraverse = Array();
+                // Get the list of the properties that will be set from the result.
+                // Check column existence for all declared properties
+                $aoFields = $oRes-&gt;GetColumns();
+                $absFieldsContained = Array();
+                foreach( $aoFields as $oField ){ $absFieldsContained[$oField-&gt;name] = 1; }
+                //App::Log("\$absFieldsContained: ".AdjustedPrintR($absFieldsContained));///
+                foreach( $oClass-&gt;GetProperties() as $oProperty ){
+                        $sColName = $oProperty-&gt;GetColName();
+                        if( !array_key_exists($sColName, $absFieldsContained) ){
+                                $this-&gt;SetError("Warn: Column [$sColName] for property [".$oProperty-&gt;GetName()."] is not set; in ".__METHOD__." in ".CallInfo(-2));
+                                App::Log("Warn: Column [$sColName] for property [".$oProperty-&gt;GetName()."] is not set; in ".__METHOD__); continue;
+                        }
+                        $aoPropertiesToTraverse[] = $oProperty;
+                }/**/
+
+                // Create the objects. For each row:
+                while( $aData = $oRes-&gt;FetchRow(MYSQL_ASSOC) ){
+                        $oObject = new $sClassName();
+                        /*// Load all declared properties
+                        foreach( $oClass-&gt;GetProperties() as $oProperty ){
+                                //echo "&lt;div&gt;\$oObject-&gt;SetProperty( ".$oProperty-&gt;GetColName().", \$aData[".$oProperty-&gt;GetColName()."] );&lt;/div&gt;";///
+                                $sColName = $oProperty-&gt;GetColName();
+                                //if( !isset( $aData[$sColName] ) &amp;&amp; !is_null($aData[$sColName]) ){
+                                if( !array_key_exists($sColName, $aData) ){
+                                        App::Log("Warn: Column [$sColName] for property [".$oProperty-&gt;GetName()."] is not set."); continue;
+                                } // DONE: Move before the while - fetch_fields()
+                                $oObject-&gt;SetProperty( $oProperty-&gt;GetColName(), $aData[$sColName] );
+                        }/**/
+                        // Load properties that are present in the result
+                        foreach( $aoPropertiesToTraverse as $oProperty ){
+                                //echo "&lt;div&gt;\$oObject-&gt;SetProperty( ".$oProperty-&gt;GetColName().", \$aData[".$oProperty-&gt;GetColName()."] );&lt;/div&gt;";///
+                                $sColName = $oProperty-&gt;GetColName();
+                                $oObject-&gt;SetProperty( $sColName, $oProperty-&gt;GetColType()-&gt;ConvertFromResult($aData[$sColName]) );
+                        }
+
+                        // Get object's unique ID, if possible
+                        $bUsePool = true;
+                        //App::Log("GetIdPropertiesCount(): ".$oClass-&gt;GetIdPropertiesCount());///
+                        switch( $oClass-&gt;GetIdPropertiesCount() ){
+                                case 0: $bUsePool = false; break;
+                                case 1:  $xId = $oObject-&gt;GetId(); break;
+                                default: $xId = $oClass-&gt;GetObjectMultiIdString( $oObject, DWOP_VALUE_DUMP_MODE__SQL_VALUES ); break;
+                        }
+
+                        // Look for the object in the pool
+                        if(!$bUsePool)
+                                $aoObjects[] = $oObject;
+                        else
+                        if( $oObjectFromPool = $this-&gt;GetObjectFromPool($sClassName, $xId) ){
+                                //App::Log("Pool hit [$sClassName, ".$xId."]");///
+                                $aoObjects[] = $oObjectFromPool;
+                        }else{
+                                //App::Log("Pool miss [$sClassName, ".$xId."]");///
+                                $aoObjects[] = $oObject;
+                                $this-&gt;AddObjectIntoPool($oObject);
+                        }
+
+                }// while( for each row in result )
+
+                return $aoObjects;
+
+        }// cDwObjectPersistence::LoadObjectsFromResult($oClass, $oRes)
+
+
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Saves an object with ID $iID  of the given class $oClass                *
+        ***************************************************************************/
+        function SaveObject($oObject){
+                //echo "&lt;pre&gt;\n class object: ".AdjustedPrintR($oClass)."&lt;/pre&gt;";///
+                //App::Log("Object: ".AdjustedPrintR($oObject));///
+                if( !is_object( $oObject ) ) return false;
+
+
+                // Whether to try UPDATE first before INSERT
+                $bDoUpdate = true;
+                $bZeroUpdatedRows = false;
+
+
+                // Add this Class object into the dictionary
+
+                // Get the Class object - for this PHP class or some ancestor class
+                $sClassName = get_class($oObject);
+                do{
+                        $oClass = $this-&gt;GetClassFromDictionary($sClassName);
+                        $sClassName = get_parent_class($sClassName);
+                }while( $sClassName &amp;&amp; !$oClass );
+
+                // Check class object //
+                if( !$oClass )
+                        return false;
+
+                $sTable  = $oClass-&gt;GetTable();
+
+
+
+                /// --- PRIMARY KEYS --- ///
+
+
+                /*/ For one ID (PRIMARY KEY) property only...
+                $oIdProp = $oClass-&gt;GetIdProperty();         //x  Single-ID way
+                $sColId  = $oIdProp-&gt;GetColName();           //x  Single-ID way
+                $iID = $oObject-&gt;GetProperty( $oIdProp-&gt;GetColName() );
+                $sIdForSql = $oIdProp-&gt;FormatForSql($iID); //x  Single-ID way
+                /*/
+                // For all PRIMARY KEYs:
+                $saxIds = $oClass-&gt;GetIdPropertiesSql( $oObject );
+                $saxIdsCond = $oClass-&gt;GetIdPropertiesSql( $oObject, ' AND ' );
+                /**/
+
+
+
+
+
+                /// --- VALUES --- ///
+
+
+                // Store all declared properties - create the SQL part
+                $asSqlParts = Array();
+                $aoIdProps = $oClass-&gt;GetIdProperties();
+                foreach( $oClass-&gt;GetProperties() as $oProperty ){
+                        //echo "&lt;div&gt;\$oObject-&gt;GetProperty( ".$oProperty-&gt;GetColName()." );&lt;/div&gt;";///
+                        $bPropertySet = $oObject-&gt;HasProperty( $oProperty-&gt;GetName() );
+                        //App::Log("HasProperty(".$oProperty-&gt;GetName().") ? : ".(int)$oObject-&gt;HasProperty($oProperty-&gt;GetName()) );///
+
+
+                        // Check whether PRIMARY KEY properties are set and skip them.
+                        //if( $oProperty == $oIdProp ) continue;
+                        //if( $oProperty-&gt;IsIdProperty() ) continue;
+                        if( in_array($oProperty, $aoIdProps) ){
+                                // Multi-property PRIMARY key and some is not set -&gt; error
+                                if( !$bPropertySet  &amp;&amp;  1 &lt; Count($aoIdProps) ){
+                                        $this-&gt;SetError("Multi-property PRIMARY - property [".$oProperty-&gt;GetName()."] not set! in ".__METHOD__." @ ".__LINE__);
+                                        //App::Log("Error!");///
+                                        return false;
+                                }
+                                // Skip ID column(s) - we don't want to set them as other properties
+                                //App::Log("Skipping ID col [".$oProperty-&gt;GetName()."]");///
+                                continue;
+                        }
+
+                        // Skip undefined properties - or set them to DEFAULT ???  -&gt;  TODO
+                        if( !$bPropertySet ){
+                                //$xVal = $oProperty-&gt;GetDefault();
+                                continue;
+                        }
+
+                        //App::Log("Adding col [".$oProperty-&gt;GetName()."]");///
+                        $sPropColName = $oProperty-&gt;GetColName();
+                        $xVal = $oObject-&gt;GetProperty( $sPropColName );
+                        //if( $sPropColName == 'targeting_fee' ) App::Log("FDG: (".gettype($xVal).") $xVal, ".AdjustedPrintR($oProperty));///
+                        if( null === $xVal &amp;&amp; !$oProperty-&gt;GetColType()-&gt;IsNull() )
+                                $xVal = $oProperty-&gt;GetColType()-&gt;GetDefault();
+                        $asSqlParts[] = $sPropColName.'='.$oProperty-&gt;FormatForSql($xVal);
+                }
+                $saParts = implode(', ', $asSqlParts);
+                //App::Log("\$saParts: ".$saParts);///
+
+                // Multiple KEY and nothing set - error (we do not INSERT unset multi-column rows )
+                // So other way:  Don't try UPDATE if no other property set.
+                if( 0 == Count($asSqlParts) &amp;&amp;  1 &lt; Count($aoIdProps) ){
+                        //$this-&gt;SetError("Multiple KEY and no normal properties set. in ".__METHOD__." @ ".__LINE__);); return false;
+                        $bDoUpdate = false;
+                        $bZeroUpdatedRows = true;
+                }
+
+
+
+
+                // Whether to add the object into the Object Pool.
+                // Generally, add if the object was created; don't overwrite we are only saving existing object.
+                $bAddObjectIntoPool = true;
+                $bOverwriteObjectInPool = false;
+
+                // If we are saving single-prop PRIMARY KEYed object and it is set to null, we should inser new.
+                //App::Log("ID: (".gettype($oObject-&gt;GetId()).") ".$oObject-&gt;GetId());///
+                if( 1 == $oClass-&gt;GetIdPropertiesCount() &amp;&amp; (null === $oObject-&gt;GetId()) ){
+                        $bDoUpdate = false;
+                }
+
+                // Multi-property PRIMARY key and some is not set -&gt; error
+                //if( 1 &lt; $oClass-&gt;GetIdPropertiesCount() ){ } // Done above
+
+                // UPDATE
+                //if( null !== $oObject-&gt;GetId() )
+                if( $bDoUpdate ){
+                        // Create SQL query
+                        //$sSQL = "UPDATE $sTable SET %s WHERE $sColId = ".$sIdForSql;  //x  Single-ID way
+                        $sSQL = "UPDATE $sTable SET %s WHERE $saxIdsCond";
+                        $sSQL = sprintf($sSQL, $saParts );
+                        //echo "&lt;div&gt;$sSQL&lt;/div&gt;";///
+
+                        // Perform SQL query
+                        $oRet = $this-&gt;GetDB()-&gt;Execute($sSQL);
+                        //echo $oRet-&gt;GetError();///
+                        if( !($oRet-&gt;IsOK()) ){ $this-&gt;SetError($oRet-&gt;GetError()); return false; }
+                        if( 0 &lt; $oRet-&gt;NumRows() ){
+                                $this-&gt;AddObjectIntoPool( $oObject );
+                                return true;
+                        }
+                        $bZeroUpdatedRows = true;
+                        /*// If commented, tries to INSERT. If not, checks here for the row existence first.
+                        // No rows affected - did we UPDATE with no changes, or the row was not found?
+                        $sSQL = "SELECT COUNT(*) FROM $sTable WHERE $sColId = ".$sIdForSql;
+                        //$oRet = $this-&gt;GetDB()-&gt;Execute($sSQL);
+                        //if( !($oRet-&gt;IsOK()) ){ $this-&gt;SetError($oRet-&gt;GetError()); return false; }
+                        //if( 0 != $oRet-&gt;GetCell(0,0) ){
+                        $sVal = $oRet-&gt;SelectCell($sSQL, 0,0);
+                        if( null === $sVal ){ $this-&gt;SetError("Error in SelectCell: [$sSQL]"); return false; }
+                        if( 0 != $oRet-&gt;GetCell(0,0) ){
+                                $this-&gt;AddObjectIntoPool( $oObject );
+                                return true;
+                        }/**/
+                }
+
+                // Row with ID not found  or  object ID is NULL -&gt; INSERT
+                do{
+                        //$sSQL = "INSERT INTO $sTable SET $sColId = $sIdForSql, ".$saParts;
+                        $sSQL = "INSERT INTO $sTable SET $saxIds ";
+                        if( $saParts ) $sSQL .= ", ".$saParts;
+                        //echo "&lt;div&gt;$sSQL&lt;/div&gt;";///
+
+
+                        // Perform SQL query
+                        //echo "\nSelectMode: ".(int)$this-&gt;GetDB()-&gt;GetSelectMode();///
+                        $oRet = $this-&gt;GetDB()-&gt;Execute($sSQL);
+
+                        // If we did UPDATE with no changes,
+                        if($bZeroUpdatedRows){
+                                // And this insert caused error 1062, then it's OK - the row just existed before.
+                                if( !$oRet || (!$oRet-&gt;IsOK() &amp;&amp; $oRet-&gt;GetErrno() == 1062 ) ){
+                                        break;
+                                }
+                        }
+                        /*/ Other way:
+                        // If INSERT caused an error:
+                        if( !$oRet || !$oRet-&gt;IsOK() ){
+                                // If we did not UPDATE with no changes  OR   the error is DUPLICATE ENTRY
+                                if(!$bZeroUpdatedRows || ( !$oRet || $oRet-&gt;GetErrno() == 1062 ) )
+                                        $this-&gt;SetError("INSERT failed. ".($oRet ? '['.$oRet-&gt;GetError().']' : '')); return false;
+                        }/* Too complex */
+                        if( 0 == $oRet-&gt;NumRows() ){ $this-&gt;SetError("INSERT affected no rows. SQL: [".$sSQL."] Errno: ".$oRet-&gt;GetErrno()); return false; }
+                        $oObject-&gt;SetId( $this-&gt;GetDB()-&gt;GetLastInsertId() );
+
+                        // We created a new object, thus if any of the same ID is in the pool, overwrite.
+                        $bOverwriteObjectInPool = true;
+
+                }while(false);
+
+                // If asked, put object into the bool. If already there, it's overwritten.
+                if( $bAddObjectIntoPool )
+                        $this-&gt;AddObjectIntoPool( $oObject, $bOverwriteObjectInPool );
+                return true;
+
+        }// LoadObjectById($oClass, $iID)
+
+
+
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Creates a cDwOpClass object copy.                                       *
+        ***************************************************************************/
+        function CreateClassCopy( $sName, $xClass ){
+
+                // The second parameter can be either cDwOpClass object or a class name
+                if( is_string($xClass) ){
+                        $sClassName = $xClass;
+                        $xClass = $this-&gt;GetClassFromDictionary($sClassName);
+                        if( !is_object($xClass) ){
+                                $this-&gt;SetError("Class [$sClassName] not found in dictionary.");
+                                return false;
+                        }
+                }else{
+                        $sClassName = $xClass-&gt;GetName();
+                }
+
+                // Make a copy
+                $oClass = clone $xClass;
+                $oClass-&gt;SetName( $sName );
+                $this-&gt;AddClassIntoDictionary($oClass);
+                return $oClass;
+        }
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Creates a cDwOpClass using it's definition from database.               *
+        ***************************************************************************/
+        function CreateClassByTable( $sName, $sTable ){
+
+                do{
+                        $oClass = new cDwOpClass( $sName, $sTable );
+
+                        // Load columns info
+                        $sSQL = "SHOW COLUMNS FROM $sTable";
+                        $oRes = $this-&gt;GetDB()-&gt;Select($sSQL);
+                        if( !$oRes || !$oRes-&gt;IsOK() ){ $this-&gt;SetError("SQL error [".$oRes-&gt;GetError()."] SQL: [$sSQL]"); return null; }
+
+                        // For each row (which represent columns in the table)
+                        while( $a = $oRes-&gt;FetchRow(MYSQL_ASSOC) ){
+                                $oColObject = $this-&gt;CreateColumnTypeObject( $a['Type'], $a['Null']=='YES', $a['Default'] );
+                                if( null === $oColObject ){
+                                        $this-&gt;SetError("Table column [$sTable.".$a['Field']."]: ".$this-&gt;GetError()." in ".__METHOD__." @ ".__LINE__);
+                                        //App::Log($this-&gt;GetError());///
+                                        $oClass = null; break;
+                                }
+                                $oProp = $oClass-&gt;AddProperty($a['Field'], $oColObject );
+                                $oProp-&gt;SetNull($a['Null']=='YES');
+
+                                if( 'PRI' == $a['Key'] ){ $oClass-&gt;AddIdProperty($oProp); }
+
+                                $oProp-&gt;SetUnique( 'PRI' == $a['Key']  ||  'UNI' == $a['Key'] );
+                        }
+                        $oRes-&gt;FreeResult();
+
+                        if($oClass)
+                                $this-&gt;AddClassIntoDictionary($oClass);
+
+                }while(false);
+                return $oClass;
+        }
+
+
+        //$oClass = $oOP-&gt;ExtendClassByTable('cAdplazeAdPage_Coupon', 'cAdplazeAdPage', 'ap_adpages_coupons');/**/
+        /**&lt;***********************************************************************&gt;
+        *  Extends an existings cDwOpClass with columns from a table.              *
+        ***************************************************************************/
+        function ExtendClassByTable($sClassNameNew, $sClassNameOld, $sTable){
+
+                // Old Class object
+                $oClassOld = $this-&gt;ConvertAndCheckClass($sClassNameOld);
+                if(!$oClassOld){ $this-&gt;SetError("!ConvertAndCheckClass($sClassNameOld)"); return null; }
+                $sClassNameOld = $oClassOld-&gt;GetName();
+                $aoOldIdProps = $oClassOld-&gt;GetIdProperties();
+
+                //$oClass = $this-&gt;CreateClassCopy($sClassNameNew, $sClassNameOld);
+                //$oClass = $this-&gt;CreateClassByTable($sClassNameNew, $sTable);
+                $oClass = new cDwOpClass( $sClassNameNew, $sTable );
+                $oClass-&gt;_SetParentClass( $oClassOld );
+
+                // Load columns info
+                $sSQL = "SHOW COLUMNS FROM $sTable";
+                $oRes = $this-&gt;GetDB()-&gt;Select($sSQL);
+                if( !$oRes || !$oRes-&gt;IsOK() ){ $this-&gt;SetError("SQL error [".$oRes-&gt;GetError()."] SQL: [$sSQL]"); return null; }
+
+                // --- Add the Properties to the Class --- //
+
+                // Temp array to store matched id properties //
+                $aoMatchedIdProps = Array();
+
+                // For each row (which represent columns in the table)
+                while( $a = $oRes-&gt;FetchRow(MYSQL_ASSOC) ){
+                        $oColObject = $this-&gt;CreateColumnTypeObject( $a['Type'], $a['Null']=='YES', $a['Default'] );
+                        if( null === $oColObject ){
+                                $this-&gt;SetError("Table column [$sTable.".$a['Field']."]: ".$this-&gt;GetError()." in ".__METHOD__." @ ".__LINE__);
+                                $oClass = null; break;
+                        }
+                        $oProp = $oClass-&gt;AddProperty($a['Field'], $oColObject );
+                        $oProp-&gt;SetNull($a['Null']=='YES');
+
+                        // ID property
+                        if( 'PRI' == $a['Key'] ){
+                                // Check whether the old Class has the same ID Property
+                                if( !$oClassOld-&gt;HasIdProperty($oProp-&gt;GetName()) ){
+                                        $this-&gt;SetError("Table column [$sTable.".$a['Field']."]: Extended Class [$sClassNameOld] doesn't have the ID column [".$oProp-&gt;GetName()."] in ".__METHOD__." @ ".__LINE__);
+                                        $oClass = null; break;
+                                }
+                                $oClass-&gt;AddIdProperty($oProp); // To se tam dostane z CreateClassByTable()
+                                // Add this old Class' Property to the list of matched ID Properties
+                                $oOldClass_IdProp = $oClassOld-&gt;GetProperty($oProp-&gt;GetName());
+                                $aoMatchedIdProps[] = $oOldClass_IdProp;
+                        }
+
+                        $oProp-&gt;SetUnique( 'PRI' == $a['Key']  ||  'UNI' == $a['Key'] );
+                }
+                $oRes-&gt;FreeResult();
+
+                // Check whether all ID Properties of old Class were matched
+                foreach( $oClassOld-&gt;GetIdProperties() as $oOldClass_IdProp){
+                        if( !in_array($oOldClass_IdProp, $aoMatchedIdProps) ){
+                                $this-&gt;SetError("Extended Class [$sClassNameOld] doesn't have the ID column [".$oOldClass_IdProp-&gt;GetName()."] in ".__METHOD__." @ ".__LINE__);
+                                $oClass = null; break;
+                        }
+                }
+
+                if($oClass) $this-&gt;AddClassIntoDictionary($oClass);
+                return $oClass;
+
+        }// cDwObjectPersistence::ExtendClassByTable()
+
+
+
+        /**&lt;**********************************************************************************&gt;
+        *  Returns cDwOpColumnType object according to the definition in $sTypeString.        *
+        **************************************************************************************/
+        function CreateColumnTypeObject($sTypeString, $bNull, $sDefault){
+                $oRet = null;
+
+                //$sTypeName = substr( $sTypeString, 0, strpos($sTypeString, '(') );
+                //if( !ereg( '(.*)(\\((.*)\\))?(.*)?', $sTypeString, $asParts ) ) return $oRet;
+                //$asParts = array_map('strtoupper', array_map('trim', $asParts) );
+                //echo "&lt;pre&gt;\$asParts: ".AdjustedPrintR($asParts)."&lt;/pre&gt;";///
+                // list($sTypeName, $sData, $sUnsigned) = $asParts;
+                $sTypeName = strtoupper(trim(strtok($sTypeString, '(') ));
+                $sData     =           (trim(strtok(')') ));
+                $sUnsigned = strtoupper(trim(strtok('')  ));
+                //echo "&lt;pre&gt;$sTypeName, $sData, $sUnsigned&lt;/pre&gt;";///
+
+                $sClassName = 'cDwOpColumnType_';
+
+                /*switch($sTypeName){
+                        case 'VARCHAR':
+                        case '': $sClassName = '_'.$sTypeName;  break;
+                }/**/
+
+                $saImplementedColumnTypes = DWOP_IMPLEMENTED_COLUMN_TYPES;
+                $asImplementedTypes = array_map('trim', explode(',', $saImplementedColumnTypes));
+                if( !in_array( $sTypeName, $asImplementedTypes) ){ $this-&gt;SetError("Column type [$sTypeName] not implemented."); return null; }
+
+                $sClassName .= $sTypeName;
+
+                if( $sUnsigned == 'UNSIGNED' )
+                        $sClassName .= '_UNSIGNED';
+
+                if(!class_exists($sClassName)){ $this-&gt;SetError("Undefined column class [$sClassName]."); return null; }
+
+                switch($sTypeName){
+                        case 'ENUM': case 'SET':
+                                $oRet = new $sClassName($sData); break;
+                        case 'CHAR': case 'VARCHAR':
+                                $oRet = new $sClassName((int)$sData); break;
+                        default:
+                                $oRet = new $sClassName(); break;
+                }
+                if( $oRet ){
+                        $oRet-&gt;SetDefault($sDefault);
+                        $oRet-&gt;SetNull($bNull);
+                }
+
+
+                return $oRet;
+
+        }// cDwObjectPersistence::CreateColumnTypeObject()
+
+
+        /**&lt;***********************************************************************&gt;
+        *   Sets M : N relation between two classes using third class as a glue.   *
+        ***************************************************************************/
+        function SetMnRelation($oClass1, $oClassGlue, $oClass2){
+                $bSucc = false;
+                do{
+
+                        // Convert class names to Class objects and check the existence of the class.
+                        if( !($oClass1 = $this-&gt;ConvertAndCheckClass($oClass1)) ){ $this-&gt;SetError("!oClass1 in ".__METHOD__." @ ".__LINE__); break; }
+                        if( !($oClass2 = $this-&gt;ConvertAndCheckClass($oClass2)) ){ $this-&gt;SetError("!oClass2 in ".__METHOD__." @ ".__LINE__); break; }
+                        if( !($oClassGlue = $this-&gt;ConvertAndCheckClass($oClassGlue)) ){ $this-&gt;SetError("!oClassGlue in ".__METHOD__." @ ".__LINE__); break; }
+
+                        // Check all classes whether suitable (PRIMARY KEYs etc.)
+                        if( !$oClass1-&gt;IsSuitableForMnRelationSide() ){ $this-&gt;SetError("Class ".$oClass1-&gt;GetName()." not suitable for M:N side in ".__METHOD__." @ ".__LINE__); break; }
+                        if( !$oClass2-&gt;IsSuitableForMnRelationSide() ){ $this-&gt;SetError("Class ".$oClass2-&gt;GetName()." not suitable for M:N side in ".__METHOD__." @ ".__LINE__); break; }
+                        if( !$oClassGlue-&gt;IsSuitableForMnRelationGlue() ){ $this-&gt;SetError("Class ".$oClassGlue-&gt;GetName()." not suitable for M:N glue in ".__METHOD__." @ ".__LINE__); break; }
+
+                        // Check whether the types are the same
+                        $oIdProp1 = $oClass1-&gt;GetIdProperty();
+                        $oIdProp2 = $oClass1-&gt;GetIdProperty();
+                        $aoIdProps = $oClassGlue-&gt;GetIdProperties();
+
+                        if( $oIdProp1-&gt;GetColType()-&gt;GetType() != $aoIdProps[0]-&gt;GetColType()-&gt;GetType() ){
+                                $this-&gt;SetError('Property types mismatch: "'.$oIdProp1-&gt;GetName().'" and "'.$aoIdProps[0]-&gt;GetName().' in '.__METHOD__.' @ '.__LINE__); break; }
+                        if( $oIdProp2-&gt;GetColType()-&gt;GetType() != $aoIdProps[1]-&gt;GetColType()-&gt;GetType() ){
+                                $this-&gt;SetError('Property types mismatch: "'.$oIdProp2-&gt;GetName().'" and "'.$aoIdProps[1]-&gt;GetName().' in '.__METHOD__.' @ '.__LINE__); break; }
+
+                        //$oIdProp1-&gt;CompareTo($aoIdProps[0]); // TODO
+
+                        $b = $oClassGlue-&gt;SetMnRelationGlue($oClass1, $oClass2, $aoIdProps[0], $aoIdProps[1]);
+                        if( !$b ){ $this-&gt;SetError("!\$oClassGlue-&gt;SetMnRelationGlue @ ".__LINE__); break; }
+
+                        $bSucc = true;
+                }while(false);
+                return $bSucc;
+        }
+
+
+        /**&lt;*********************************************************************************************&gt;
+  *                                                                                                *
+                @param $oObject1 is an object of which related objects of $oClass2 should be returned.
+                @param $oClass2 - can be:
+                        (object)     - the Class will be found by it's class name.
+                        (cDwOpClass) Class object - that's what we need
+                        (string)     class name   - the Class will be found in the dictionary.
+  *************************************************************************************************/
+  function LoadObjectsByMnRelation($oObject, $oClassGlue, $oClass2, $xId=null){
+        $bSucc = false;
+        do{
+
+                        // Convert class names to Class objects and check the existence of the class.
+                        if( !($oClass1 = $this-&gt;ConvertAndCheckClass($oObject)) ){ $this-&gt;SetError("!oClass1 @ ".__LINE__); break; }
+                        if( !($oClass2 = $this-&gt;ConvertAndCheckClass($oClass2)) ){ $this-&gt;SetError("!oClass2 @ ".__LINE__); break; }
+                        if( !($oClassGlue = $this-&gt;ConvertAndCheckClass($oClassGlue)) ){ $this-&gt;SetError("!oClassGlue @ ".__LINE__); break; }
+
+                        if( !$oClassGlue-&gt;IsMnRelationGlue() ){ $this-&gt;SetError($oClassGlue-&gt;GetName()." is not a M : N relation glue in ".__METHOD__." @ ".__LINE__); break; }
+
+                        // Table names
+                        $sTable1 = $oClass1-&gt;GetTable();
+                        $sTable2 = $oClass2-&gt;GetTable();
+                        $sTableGlue = $oClassGlue-&gt;GetTable();
+
+                        // Column names
+                        $oClass1IdProp = $oClass1-&gt;GetIdProperty();
+                        $sIdCol1 = $oClass1IdProp-&gt;GetColName();
+
+                        $sIdCol2 = $oClass2-&gt;GetIdProperty()-&gt;GetColName();
+                        $sGluePropFrom = $oClassGlue-&gt;oMnRelationProp1-&gt;GetColName();
+                        $sGluePropTo   = $oClassGlue-&gt;oMnRelationProp2-&gt;GetColName();
+
+                        if( is_object($oObject) )
+                                $xId = $oClass1IdProp-&gt;FormatForSql( $oObject-&gt;GetId() );
+
+                        //if( !$xId ){ $this-&gt;SetError("Bad ID [$xId] in ".__METHOD__." @ ".__LINE__); break; }
+
+
+                        // Create SQL
+                        $sSQL = "
+                        -- Vypise reklamy a k nim kanaly, ktere jsou s reklamou spojeny.
+                        SELECT table_to.*
+                        FROM $sTable1 AS table_from
+                        INNER JOIN $sTableGlue AS glue ON table_from.$sIdCol1 = glue.$sGluePropFrom
+                        LEFT JOIN $sTable2 AS table_to ON glue.$sGluePropTo = table_to.$sIdCol2
+                        WHERE table_from.$sIdCol1 = $xId
+                        ;";
+
+                        $aoObjects = $this-&gt;LoadObjectsBySql($oClass2, $sSQL);
+
+                        $bSucc = true;
+        }while(false);
+
+        return $aoObjects;
+        }
+
+
+
+
+}// cDwObjectPersistence
+
+
+
+
+/**&lt;***********************************************************************&gt;
+*  cDwOpClass                                                              *
+***************************************************************************/
+class cDwOpClass {
+
+        var $sName;
+        function GetName()      { return $this-&gt;sName; }
+        function SetName($sName){ $this-&gt;sName = $sName; }
+
+        var $sTable;
+        function GetTable()       { return $this-&gt;sTable; }
+        function SetTable($sTable){ $this-&gt;sTable = $sTable; }
+
+        var $oParentClass = null;
+        function GetParentClass()             { return $this-&gt;oParentClass; }
+        function _SetParentClass($oParentClass){ $this-&gt;oParentClass = $oParentClass; }
+
+
+
+        // -- Constructor -- //
+        function cDwOpClass( $sName, $sTable ){ $this-&gt;sName = $sName; $this-&gt;SetTable($sTable); }
+
+        // Properties //
+        var $aoProperties;
+        /** @returns cDwOpProperty[] array of this class' properties. */
+        function GetProperties()             { return $this-&gt;aoProperties; }
+        /** @returns cDwOpProperty this class' property of given name or NULL if the class does not have such. */
+        function GetProperty($sColName){
+                if( isset($this-&gt;aoProperties[$sColName]) )
+                        $oRet = $this-&gt;aoProperties[$sColName];
+                else $oRet = null;
+                return $oRet;
+        }
+        function AddPropertyObject($oProperty){ return $this-&gt;aoProperties[$oProperty-&gt;GetColName()] = $oProperty; }
+        function AddProperty($sColName, $oColType){
+                $oProp = new cDwOpProperty($sColName, $oColType);
+                $this-&gt;aoProperties[$sColName] = $oProp;
+                return $oProp;
+        }
+        function RemProperty($sColName){
+                if( !isset($this-&gt;aoProperties[$sColName]) ) return false;
+                unset($this-&gt;aoProperties[$sColName]);
+                return true;
+        }
+        function GetNonKeyProperties(){
+                $aoProps = Array();
+                foreach( $this-&gt;aoProperties as $oProp ){
+                        //if( $oProp-&gt;IsKeyProp() ) continue;
+                        $aoProps[] = $oProp;
+                }
+                return $aoProps;
+        }
+
+
+
+        // --- M : N relation stuff --- //
+
+
+        // -- Is this class M : N relation "glue"? -- //
+        var $bMnRelationGlue = false;
+        function IsMnRelationGlue()            { return $this-&gt;bMnRelationGlue; }
+        function UnsetMnRelationGlue(){ $this-&gt;bMnRelationGlue = false; }
+
+        var $oMnRelationClass1 = null;
+        var $oMnRelationClass2 = null;
+        function GetMnRelationClass1()                  { return $this-&gt;oMnRelationClass1; }
+        function GetMnRelationClass2()                  { return $this-&gt;oMnRelationClass2; }
+        function GetMnRelationOtherClass($oClass){
+                if( $oClass === $this-&gt;oMnRelationClass1 ) return $this-&gt;oMnRelationClass2;
+                if( $oClass === $this-&gt;oMnRelationClass2 ) return $this-&gt;oMnRelationClass1;
+                return null;
+        }
+
+        var $oMnRelationProp1 = null;
+        var $oMnRelationProp2 = null;
+        function GetMnRelationProp1()                 { return $this-&gt;oMnRelationProp1; }
+        function GetMnRelationProp2()                 { return $this-&gt;oMnRelationProp2; }
+        function GetMnRelationOtherProp($oProp){
+                if( $oProp === $this-&gt;oMnRelationProp1 ) return $this-&gt;oMnRelationProp2;
+                if( $oProp === $this-&gt;oMnRelationProp2 ) return $this-&gt;oMnRelationProp1;
+                return null;
+        }
+        function GetMnRelationPropForClass($oClass){
+                //App::Log($oClass-&gt;GetName()." ==? ".$this-&gt;oMnRelationClass1-&gt;GetName());///
+                //App::Log($oClass-&gt;GetName()." ==? ".$this-&gt;oMnRelationClass2-&gt;GetName());///
+                //if( $oClass === $this-&gt;oMnRelationClass1 ) return $this-&gt;oMnRelationProp1;
+                //if( $oClass === $this-&gt;oMnRelationClass2 ) return $this-&gt;oMnRelationProp2;
+                $asParents = class_parents($oClass-&gt;GetName());
+                array_unshift($asParents, $oClass-&gt;GetName());
+                //App::Log(implode(',',$asParents)." &lt;==? ".$this-&gt;oMnRelationClass1-&gt;GetName());///
+                //App::Log(implode(',',$asParents)." &lt;==? ".$this-&gt;oMnRelationClass2-&gt;GetName());///
+                if( in_array($this-&gt;oMnRelationClass1-&gt;GetName(), $asParents)){ return $this-&gt;oMnRelationProp1; }
+                if( in_array($this-&gt;oMnRelationClass2-&gt;GetName(), $asParents)){ return $this-&gt;oMnRelationProp2; }
+                return null;
+        }
+
+
+
+
+        function IsSuitableForMnRelationGlue(){ return Count($this-&gt;aoIdProperties) == 2; }
+        function IsSuitableForMnRelationSide(){ return Count($this-&gt;aoIdProperties) == 1; }
+
+        function SetMnRelationGlue($oClass1, $oClass2, $oProp1, $oProp2){
+                $this-&gt;bMnRelationGlue = false;
+                do{
+                        // Check everything and return false on failure.
+                        if( !$this-&gt;IsSuitableForMnRelationGlue() ) return false;
+                        if( !$oClass1 || !($oClass1 instanceof cDwOpClass) ) return false;
+                        if( !$oClass2 || !($oClass2 instanceof cDwOpClass) ) return false;
+
+                        if( 1 != $oClass1-&gt;GetIdPropertiesCount() ) return false;
+                        if( 1 != $oClass2-&gt;GetIdPropertiesCount() ) return false;
+
+                        if( is_string($oProp1) ) $oProp1 = $this-&gt;GetProperty($oProp1);
+                        if( is_string($oProp2) ) $oProp2 = $this-&gt;GetProperty($oProp2);
+
+                        if( null == $oProp1  ||  !($oProp1 instanceof cDwOpProperty) ) return false;
+                        if( null == $oProp2  ||  !($oProp2 instanceof cDwOpProperty) ) return false;
+
+                        // Seems to be ok, set the relation for this Class... (we have to set the sides, too)
+                        $this-&gt;oMnRelationClass1 = $oClass1;
+                        $this-&gt;oMnRelationClass2 = $oClass2;
+                        $this-&gt;oMnRelationProp1 = $oProp1;
+                        $this-&gt;oMnRelationProp2 = $oProp2;
+
+                        $this-&gt;bMnRelationGlue = true;
+
+                }while(false);
+                return $this-&gt;bMnRelationGlue;
+        }
+
+
+
+        // --- ID properties --- //
+
+        // ID property //
+        //var $oIdProperty;
+        function GetIdProperty()            { reset($this-&gt;aoIdProperties); return current($this-&gt;aoIdProperties); }
+        function SetIdProperty($oIdProperty){
+                if(!$oIdProperty){ $this-&gt;aoIdProperties = Array(); return; }
+                $this-&gt;aoIdProperties = Array( $oIdProperty );
+                $oIdProperty-&gt;SetPrimaryKeyPart(true);
+        }
+
+        var $aoIdProperties = Array();
+        function GetIdProperties()            { return $this-&gt;aoIdProperties; }
+
+        function GetIdPropertiesCount()       { return Count($this-&gt;aoIdProperties); }
+
+
+        /**&lt;**********************************************************************************&gt;
+        *  @returns whether Class has given ID property  or ID property of given name         *
+        **************************************************************************************/
+        function HasIdProperty($xProp){
+                if( is_string($xProp) ) $xProp = $this-&gt;GetProperty($xProp);
+                if( !$xProp ) return false;
+                if( in_array($xProp, $this-&gt;aoIdProperties) ) return true;
+                return false;
+        }
+
+        function AddIdProperty($oProperty){ array_push($this-&gt;aoIdProperties, $oProperty); $oProperty-&gt;SetPrimaryKeyPart(true); }
+
+        /**  @returns string Coma separated list of ID (PRIMARY KEY) values of the given object. */
+        function GetIdPropertiesSql($oObject, $sGlue=', '){
+                $asPropSqls = Array();
+                foreach( $this-&gt;GetIdProperties() as $oProp ){
+                        $asPropSqls[] = $oProp-&gt;GetColName() . " = " . $oProp-&gt;FormatForSql( $oObject-&gt;GetProperty($oProp-&gt;GetName()) );
+                }
+                $saPropSqls = implode($sGlue, $asPropSqls);
+                //if( '' != $saPropSqls ) $saPropSqls = " WHERE $saPropSqls "; // We don't want this for ID - can be "ON ...", e.g.
+                return $saPropSqls;
+        }
+
+        /**  @returns string Formatted list of ID (PRIMARY KEY) values of the given object. */
+        function GetObjectMultiIdString($oObject, $iMode=DWOP_VALUE_DUMP_MODE__SQL){
+                switch($iMode){
+                        default: trigger_error("Bad param 2 - must be one of DWOP_VALUE_DUMP_MODE__* constants"); return null; break;
+                        case DWOP_VALUE_DUMP_MODE__SQL:            $sGlue=', '; $sEq=' = '; $fFunc='sql'; break;
+                        case DWOP_VALUE_DUMP_MODE__SQL_SHORT:      $sGlue=',';  $sEq='=';   $fFunc='sql'; break;
+                        case DWOP_VALUE_DUMP_MODE__SQL_VALUES:     $sGlue=',';  $sEq='';    $fFunc='sql'; break;
+                        case DWOP_VALUE_DUMP_MODE__ESCAPED_VALUES: $sGlue='\''; $sEq='';    $fFunc='addslashes'; break; // Shortest unique
+                        case DWOP_VALUE_DUMP_MODE__COMA:           $sGlue=', '; $sEq='';    $fFunc=''; break;
+                }
+                $asPropSqls = Array();
+                foreach( $this-&gt;GetIdProperties() as $oProp ){
+                        $s = '';
+                        if($sEq) $s .= $oProp-&gt;GetColName() . $sEq; // &lt;col name&gt; =
+
+                        $xVal = $oObject-&gt;GetProperty($oProp-&gt;GetName());
+                        if(!$fFunc) ;
+                        elseif( 'sql' == $fFunc )  $xVal = $oProp-&gt;FormatForSql( $xVal );
+                        else/*if( function_exists($fFunc) ) */$xVal = $fFunc($xVal);
+                        //else ;
+                        $s .= $xVal;
+
+                        $asPropSqls[] = $s;
+                }
+                $saPropSqls = implode($sGlue, $asPropSqls);
+                //if( '' != $saPropSqls ) $saPropSqls = " WHERE $saPropSqls "; // We don't want this for ID - can be "ON ...", e.g.
+                return $saPropSqls;
+        }
+
+
+        /**  Sets ID properties.
+             @param $xProperties can be:
+                                        - a Property name
+                            - coma separated list of Property names
+                                        - array of Property objects
+        */
+        function SetIdProperties($xProperties){
+
+                // If $xProperties param is string, convert to an array
+                if( is_string($xProperties) )
+                        $xProperties = array_map('trim', explode(',', $xProperties));
+
+                // Now the $xProperties must be an array.
+                if( !is_array($xProperties) ){
+                        $this-&gt;aoIdProperties = Array();
+                        return false;
+                }
+
+
+
+                // Go through all properties in the array and transform them to cDwOpIdingInfo objects.
+                $aoIdProperties = Array();
+                foreach( $xProperties as $xProperty ){
+                        $bDesc = false;
+                        // If the array item is a string, convert to a property object.
+                        if( is_string($xProperty) )
+                                $xProperty = $this-&gt;GetProperty($xProperty);
+
+                        // If the $xProperty is not a cDwOpProperty object, move on.
+                        if( null === $xProperty || !($xProperty instanceof cDwOpProperty) )
+                                continue;
+
+                        $xProperty-&gt;SetPrimaryKeyPart(true);
+                        $aoIdProperties[] = $xProperty;
+                }
+
+                $this-&gt;aoIdProperties = $aoIdProperties;
+                //echo "&lt;pre&gt;".AdjustedPrintR($aoOrderProperties)."&lt;/pre&gt;";///
+
+        }// SetIdProperties($xProperties)
+
+
+
+
+        // --- Order properties --- //
+        var $aoOrderProperties = Array();
+        function GetOrderProperties()                  { return $this-&gt;aoOrderProperties; }
+
+
+        /**  @returns string Coma separated list of Order Properties (column names). */
+        function GetOrderPropertiesSql(){
+                $asPropSqls = Array();
+                foreach( $this-&gt;aoOrderProperties as $oOrderingInfo ){
+                        $asPropSqls[] = $oOrderingInfo-&gt;oProperty-&gt;GetColName() . ($oOrderingInfo-&gt;bDesc ? ' DESC' : ' ASC');
+                }
+                $saPropSqls = implode(', ', $asPropSqls);
+                if( '' != $saPropSqls ) $saPropSqls = " ORDER BY $saPropSqls ";
+                return $saPropSqls;
+        }
+
+
+        /**&lt;*************************************************************************&gt;
+        *  Sets the ordering information for this class. Previous info is replaced.  *
+           @param $xProperties can be a coma separated list of Property names,
+                                            an array of Property names, or
+                                            an array of Property objects.
+        *****************************************************************************/
+        function SetOrderProperties($xProperties){
+                // If $xProperties param is string, convert to an array
+                if( is_string($xProperties) )
+                        $xProperties = array_map('trim', explode(',', $xProperties));
+
+                // Now the $xProperties must be an array.
+                if( !is_array($xProperties) )
+                        return false;
+
+                // Go through all properties in the array and transform them to cDwOpOrderingInfo objects.
+                $aoOrderProperties = Array();
+                foreach( $xProperties as $xProperty ){
+                        $bDesc = false;
+                        // If the array item is a string, convert to a property object.
+                        if( is_string($xProperty) ){
+                                if( '' == $xProperty ) continue;
+                                if( $xProperty[0] == '+' || $xProperty[0] == '-' ){
+                                        $bDesc = ( $xProperty[0] == '-' );
+                                        $xProperty = substr($xProperty, 1);
+                                }
+                                $xProperty = $this-&gt;GetProperty($xProperty);
+                        }
+
+                        // Instance of cDwOpProperty - convert to cDwOpOrderingInfo
+                        if( $xProperty instanceof cDwOpProperty ){
+                                $xProperty = new cDwOpOrderingInfo($xProperty, $bDesc);
+                        }
+
+                        // If the $xProperty is not a cDwOpProperty object, move on.
+                        if( null === $xProperty || !($xProperty instanceof cDwOpOrderingInfo) )
+                                continue;
+
+                        $aoOrderProperties[] = $xProperty;
+                }
+
+                $this-&gt;aoOrderProperties = $aoOrderProperties;
+                //echo "&lt;pre&gt;".AdjustedPrintR($aoOrderProperties)."&lt;/pre&gt;";///
+
+        }// SetOrderProperties($xProperties)
+
+
+}// class cDwOpClass
+
+
+
+
+
+
+/**&lt;***********************************************************************&gt;
+*  Holds information about ordering property - for cDwOpClass.             *
+***************************************************************************/
+class cDwOpOrderingInfo {
+        var $oProperty = null;
+        var $bDesc = false;
+        function cDwOpOrderingInfo($oProperty, $bDesc=false){
+                $this-&gt;oProperty = $oProperty;
+                $this-&gt;bDesc = $bDesc;
+        }
+}
+
+
+
+
+/**&lt;***********************************************************************&gt;
+*  cDwOpProperty                                                           *
+***************************************************************************/
+class cDwOpProperty {
+
+        /**  Name - currently we use the same as a Property name and database column name.  */
+        //var $sName = null;
+        function GetName()         { return $this-&gt;sColName; }
+        function SetName($sColName){ $this-&gt;sColName = $sColName; }
+
+        /**  Column name - currently used also as the name of the property  */
+        var $sColName = null;
+        function GetColName()         { return $this-&gt;sColName; }
+        function SetColName($sColName){ $this-&gt;sColName = $sColName; }
+
+        /**  Column type - an object derived from cDwOpColumnType class.  */
+        var $oColType = null;
+        /** @returns cDwOpColumnType column type representing this property. */
+        function GetColType()         { return $this-&gt;oColType; }
+        function SetColType($oColType){ $this-&gt;oColType = $oColType; }
+
+        /**  Whether the property is a part of a PRIMARY KEY for this Class.  */
+        var $bPrimaryKeyPart = false;
+        function IsPrimaryKeyPart()                { return $this-&gt;bPrimaryKeyPart; }
+        function SetPrimaryKeyPart($bPrimaryKeyPart){ $this-&gt;bPrimaryKeyPart = $bPrimaryKeyPart; }
+
+        /**  Whether the property is a FOREIGN KEY.  */
+        var $bForeignKey = false;
+        function IsForeignKey()            { return $this-&gt;bForeignKey; }
+        function SetForeignKey($bForeignKey){ $this-&gt;bForeignKey = $bForeignKey; }
+
+        /**  Whether the property is unique across all objects of this Class.  */
+        var $bUnique = false;
+        function IsUnique()         { return $this-&gt;bUnique; }
+        function SetUnique($bUnique){ $this-&gt;bUnique = $bUnique; }
+
+        /**  Whether this property can be NULL.  */
+        var $bCanBeNull = false;
+        function IsNull()            { return $this-&gt;bCanBeNull; }
+        function SetNull($bCanBeNull){ $this-&gt;bCanBeNull = $bCanBeNull; }
+
+        function IsKey(){
+                return $this-&gt;IsPrimaryKeyPart() || $this-&gt;IsForeignKey() || $this-&gt;IsUnique();
+        }
+
+
+        // -- Constructor -- //
+        function cDwOpProperty($sColName, $oColType, $bUnique=false){
+                $this-&gt;SetColName($sColName);
+                $this-&gt;SetColType($oColType);
+                $this-&gt;SetUnique($bUnique);
+        }
+
+        /**  @returns SQL literal representing a value $xVal if it was held by this property. */
+        function FormatForSql($xVal){
+                if( null === $xVal  &amp;&amp;  $this-&gt;GetColType()-&gt;IsNull() )
+                        return 'NULL';
+                //echo "\n".CallInfo()."; Val: ".$xVal." ColType:".$this-&gt;GetColType()-&gt;GetName();///
+                return $this-&gt;GetColType()-&gt;FormatForSql($xVal);
+        }
+
+}// class cDwOpProperty
+
+
+
+
+
+
+
+
+/**&lt;***********************************************************************&gt;
+*  cDwOpColumnType                                                         *
+***************************************************************************/
+abstract class cDwOpColumnType {
+
+        var $sName;
+        function GetName()      { return $this-&gt;sName; }
+        function SetName($sName){ $this-&gt;sName = $sName; }
+
+        var $iType;
+        /** @returns  one of type constants: DWOP_TYPE_STR,DWOP_TYPE_NUM,DWOP_TYPE_BOOL,DWOP_TYPE_ENUM,DWOP_TYPE_SET, DWOP_TYPE_REAL */
+        function GetType()      { return $this-&gt;iType; }
+        /** @param iType  one of type constants: DWOP_TYPE_STR,DWOP_TYPE_NUM,DWOP_TYPE_BOOL,DWOP_TYPE_ENUM,DWOP_TYPE_SET, DWOP_TYPE_REAL */
+        function SetType($iType){
+                if(!in_array($iType, Array(DWOP_TYPE_STR,DWOP_TYPE_NUM,DWOP_TYPE_BOOL,DWOP_TYPE_ENUM,DWOP_TYPE_SET, DWOP_TYPE_REAL))){
+                        user_error("cDwOpColumnType::SetType(): Param \$iType must be some of DWOP_TYPE_* constants.");
+                }
+                $this-&gt;iType = $iType;
+        }
+
+        // Can be NULL?
+        var $bCanBeNull = true;
+        function IsNull()            { return $this-&gt;bCanBeNull; }
+        function SetNull($bCanBeNull){ $this-&gt;bCanBeNull = $bCanBeNull; }
+
+        // Default value
+        var $xDefault;
+        function GetDefault()         { return $this-&gt;xDefault; }
+        function SetDefault($xDefault){
+                $bRet = true;
+                if( (null === $xDefault &amp;&amp; !$this-&gt;IsNull() )  // Default value being set is NULL and must not be null
+                 || ( !$this-&gt;CheckValue($xDefault) )          // or  the default value is not allowed for this type,
+                ){
+                        $xDefault = $this-&gt;GetDefaultDefault();      // then set the default to the default default,
+                        $bRet = false;                               // and indicate failure by returning false.
+                }
+                $this-&gt;xDefault = $xDefault;
+                return $bRet;
+        }
+        //function GetDefaultDefault(){ user_error(__METHOD__.' must be overriden.'); return null; }
+        function GetDefaultDefault(){
+                switch( $this-&gt;GetType() ){
+                        case DWOP_TYPE_STR:  return '';  break;
+                        case DWOP_TYPE_NUM:  return 0;   break;
+                        case DWOP_TYPE_BOOL: return false; break;
+                        case DWOP_TYPE_ENUM: return '';  break;
+                        case DWOP_TYPE_SET:  return '';  break;
+                        case DWOP_TYPE_REAL: return 0.0; break;
+                }
+        }
+
+
+        // Aditional data - possible values for ENUM and SET, etc
+        //var $aData;
+
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Constructor                                                             *
+        ***************************************************************************/
+        function cDwOpColumnType($iFlags=0, $xDefault=null){
+
+                // Flags
+                if( $iFlags &amp; DWOP_NOT_NULL )
+                        $this-&gt;SetNull(false);
+                //if( $iFlags &amp; DWOP_BINARY )
+                //      $this-&gt;SetBinary(true);
+
+                // Default value
+                $this-&gt;SetDefault( $xDefault );
+
+        }// cDwOpColumnType::cDwOpColumnType()
+
+
+        // Useless
+        /*function cDwOpColumnType($sName, $iType, $aData){
+                $this-&gt;SetName($sName);
+                $this-&gt;SetType($iType);
+                $this-&gt;aData = $aData;
+        }// cDwOpColumnType::cDwOpColumnType()
+        /**/
+
+
+        /**&lt;***********************************************************************&gt;
+        *  @returns the value in $xVal in the format suitable for SQL.             *
+        ***************************************************************************/
+        function FormatForSql($xVal){
+                //App::Log( CallInfo()."     \$xVal: (".gettype($xVal).") $xVal" );
+                $sRet = null;
+
+                if( null === $xVal ){
+                        if( $this-&gt;IsNull() )
+                                $sRet = 'NULL';
+                        else
+                                $sRet = 'nULl';
+                }
+                else switch($this-&gt;GetType()){
+                        case DWOP_TYPE_STR:  $sRet = asq((string)$xVal); break;
+                        case DWOP_TYPE_NUM:  $sRet = (double)$xVal; /*echo "&lt;br&gt;XXX".CallInfo(-2)."&lt;br&gt;".CallInfo(-3);*/ break;
+                        case DWOP_TYPE_BOOL: $sRet = (integer)(boolean)$xRet; break;
+                        case DWOP_TYPE_ENUM: $sRet = asq((string)$xVal); break;
+                        case DWOP_TYPE_SET:  $sRet = asq((string)$xVal); break;
+                        case DWOP_TYPE_REAL: $sRet = (double)$xVal; break;
+                        //case DWOP_TYPE_:  $sRet = ; break;
+                        default: trigger_error('Unknown value type! in '.__METHOD__.' @ '.__LINE__); $sRet = asq((string)$xVal); break;
+                }
+                //App::Log( CallInfo()."     \$sRet: $sRet" );
+                return $sRet;
+        }
+
+        function ConvertFromResult($xVal){ return $xVal; }
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Check whether the variable can fit in the column.                       *
+        ***************************************************************************/
+        function CheckValue($xVal /*, $oProperty*/){
+
+                if( null === $xVal &amp;&amp; !$this-&gt;IsNull() )
+                        return false;
+
+                $bFits = true;
+                switch($this-&gt;GetType()){
+                        case DWOP_TYPE_STR:  $bFits = is_string($xVal) || is_numeric($xVal); break;
+                        case DWOP_TYPE_NUM:  $bFits = is_bool($xVal) || is_int($xVal); break;
+                        case DWOP_TYPE_BOOL: $bFits = is_bool($xRet) || is_int($xVal); break;
+                        //case DWOP_TYPE_ENUM: $bFits = is_string($xVal) /*&amp;&amp; in_array($xVal, $this-&gt;asMembers)/**/; break;
+                        case DWOP_TYPE_SET:
+                                $asMembers = array_map('trim', explode(',', $xVal));
+                                foreach( $asMembers as $sMember ){
+                                        if( !in_array($xVal, $this-&gt;aData) ){ $bFits = false; break; }
+                                }
+                        break;
+                }
+                return $bFits;
+        }
+
+}// class cDwOpColumnType
+
+
+
+
+
+
+/**&lt;***********************************************************************&gt;
+*  cDwOpColumnTypesRepository                                              *
+   Skladiste casto pouzivanych typu sloupcu.
+         Nema cenu sem davat stringy - lisi se delkou.
+         Mozna je to uplne zbytecna trida...
+***************************************************************************/
+/*class cDwOpColumnTypesRepository {
+        var $aoColumnTypes;
+        function AddColumnType($sKey, &amp;$oType){ $this-&gt;aoColumnTypes[$sKey] =&amp; $oType; }
+
+
+        function cDwOpColumnTypesRepository(){
+                $this-&gt;aoColumnTypes = Array();
+
+                $oType =&amp; new cDwOpColumnType_INT();
+                $this-&gt;AddColumnType('INT', $oType);
+                $oType =&amp; new cDwOpColumnType_INT_UNSIGNED();
+                $this-&gt;AddColumnType('INT UNSIGNED', $oType);
+                $oType =&amp; new cDwOpColumnType_SMALLINT();
+                $this-&gt;AddColumnType('SMALLINT', $oType);
+                $oType =&amp; new cDwOpColumnType_SMALLINT_UNSIGNED();
+                $this-&gt;AddColumnType('SMALLINT UNSIGNED', $oType);
+
+
+        }// cDwOpColumnTypesRepository()
+
+        function &amp;GetColumnType($sName){
+                return isset( $this-&gt;aoColumnTypes[$sName] ) ? $this-&gt;aoColumnTypes[$sName] : null;
+        }
+
+}// class cDwOpColumnTypesRepository
+/**/
+
+
+
+
+
+
+/** ************************************************************************
+*  Simple class that holds item's ID and a hashmap of parameters.          *
+***************************************************************************/
+abstract class DwFwIdAndProperties {
+
+        function DwFwIdAndProperties($iId=null){
+                $this-&gt;SetId($iId);
+        }
+
+        var $sId;
+        function GetId()    { return $this-&gt;sId; }
+        function SetId($sId){ $this-&gt;sId = $sId; }
+
+        var $asParams = Array();
+        function SetProperty($sName, $sValue){ $this-&gt;asParams[(string)$sName] = $sValue; }
+        function GetProperty($sName){ return isset($this-&gt;asParams[(string)$sName]) ? $this-&gt;asParams[(string)$sName] : null; }
+        //function HasProperty($sName){ return isset($this-&gt;asParams[(string)$sName]); }
+        function HasProperty($sName){ return array_key_exists((string)$sName, $this-&gt;asParams); }
+        function IsPropertySet($sName){ return $this-&gt;HasProperty($sName); }
+
+        function GetProperties(){ return $this-&gt;asParams; }
+        function SetProperties($asParams, $bOverwrite=true){
+                foreach( $asParams as $sName =&gt; $sValue ){
+                        if($bOverwrite || !isset($this-&gt;asParams[(string)$sName]))
+                                $this-&gt;asParams[(string)$sName] = $sValue;
+                }
+        }
+
+        function DwFwIdAndParams($sId=null){ $this-&gt;sId = $sId; }
+
+}// class DwFwIdAndParams</code></pre>
+
+<h2>Usage – model</h2>
+
+<pre
+class="brush: php"><code>/** ************************************************************************
+*  Simple class that holds item's ID and a hashmap of parameters.          *
+***************************************************************************/
+abstract class DwFwIdAndProperties {
+
+        function DwFwIdAndProperties($iId=null){
+                $this-&gt;SetId($iId);
+        }
+
+        var $sId;
+        function GetId()    { return $this-&gt;sId; }
+        function SetId($sId){ $this-&gt;sId = $sId; }
+
+        var $asParams = Array();
+        function SetProperty($sName, $sValue){ $this-&gt;asParams[(string)$sName] = $sValue; }
+        function GetProperty($sName){ return isset($this-&gt;asParams[(string)$sName]) ? $this-&gt;asParams[(string)$sName] : null; }
+        //function HasProperty($sName){ return isset($this-&gt;asParams[(string)$sName]); }
+        function HasProperty($sName){ return array_key_exists((string)$sName, $this-&gt;asParams); }
+        function IsPropertySet($sName){ return $this-&gt;HasProperty($sName); }
+
+        function GetProperties(){ return $this-&gt;asParams; }
+        function SetProperties($asParams, $bOverwrite=true){
+                foreach( $asParams as $sName =&gt; $sValue ){
+                        if($bOverwrite || !isset($this-&gt;asParams[(string)$sName]))
+                                $this-&gt;asParams[(string)$sName] = $sValue;
+                }
+        }
+
+        function DwFwIdAndParams($sId=null){ $this-&gt;sId = $sId; }
+
+}// class DwFwIdAndParams
+
+
+
+
+
+/***************************************************************************
+*  User                                                                    *
+***************************************************************************/
+class cObjectPersistenceTestClass_User extends DwFwIdAndProperties {
+        function GetProperty($sName) {
+                if( 'id' == $sName ) return $this-&gt;GetId();
+                else                 return parent::GetProperty($sName);
+        }
+        function SetProperty($sName, $sValue){
+                if( 'id' == $sName ) return $this-&gt;SetId($sValue);
+                else                 return parent::SetProperty($sName, $sValue);
+        }
+}// class cObjectPersistenceTestClass_User
+
+/***************************************************************************
+*  Door                                                                    *
+***************************************************************************/
+class cObjectPersistence_TestClass_Door extends DwFwIdAndProperties {
+        function GetProperty($sName) {
+                if( 'id' == $sName ) return $this-&gt;GetId();
+                else                 return parent::GetProperty($sName);
+        }
+        function SetProperty($sName, $sValue){
+                if( 'id' == $sName ) return $this-&gt;SetId($sValue);
+                else                 return parent::SetProperty($sName, $sValue);
+        }
+}// class cObjectPersistenceTestClass_User
+
+/***************************************************************************
+*  Key                                                                     *
+***************************************************************************/
+class cObjectPersistence_TestClass_Key extends DwFwIdAndProperties {
+        function GetProperty($sName) {
+                if( 'id' == $sName ) return $this-&gt;GetId();
+                else                 return parent::GetProperty($sName);
+        }
+        function SetProperty($sName, $sValue){
+                if( 'id' == $sName ) return $this-&gt;SetId($sValue);
+                else                 return parent::SetProperty($sName, $sValue);
+        }
+}// class cObjectPersistenceTestClass_User</code></pre>
+
+<h2>Usage – data manipulation</h2>
+
+<pre
+class="brush: php"><code>// Create DB object
+$oDB = new cDBAccess_MySQL('localhost:3350', 'test', 'test', 'test', 'cp1250');
+$oDB-&gt;SetSelectMode(CDBA_SELECT_RETURNS_CRESULT_ON_ERROR);
+echo "Connect: ".///
+        $oDB-&gt;Connect();
+echo "&lt;br/&gt;\n";///
+
+//$xVal = $oDB-&gt;SelectCell("SELECT NULL"); // Test what NULL looks like in PHP
+//echo "\n".gettype($xVal)." ".ord($xVal); die();
+
+// Create Object Persistence object
+$oOP = new cDwObjectPersistence_DB($oDB);
+//$oColTypes =&amp; new cDwOpColumnTypesRepository();</code></pre>
+
+<h2>Example SQL schema &amp; data</h2>
+
+<pre
+class="brush: sql"><code>CREATE TABLE `ap_users` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `user` varchar(255) NOT NULL,
+  `pass` varchar(40) default NULL,
+  `fname` varchar(255) NOT NULL,
+  `lname` varchar(255) NOT NULL,
+  `addr` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `state` enum('good', 'bad') NOT NULL DEFAULT 'good',
+  `psc` varchar(255) NOT NULL,
+  `ctry` tinyint(3) unsigned NOT NULL,
+  `ppal` varchar(255) default NULL
+);
+INSERT INTO ap_users (id, user) VALUES
+  (10001, 'Ondra')
+, (10002, 'Zdenek')
+, (10003, 'Martin')
+, (10004, 'Zuzka')
+, (10005, 'David')
+, (10006, 'Satan')
+;
+
+CREATE TABLE ap_doors (
+        id INT UNSIGNED NOT NULL auto_increment PRIMARY KEY,
+        txt VARCHAR(15)
+);
+INSERT INTO ap_doors VALUES (330, 'Nebe'), (118, 'Bazina'), (116, 'Peklo'), (110, 'Curaprox'), (222, 'Neznamo');
+
+CREATE TABLE ap_keys (
+        id_user INT UNSIGNED NOT NULL,
+        id_door INT UNSIGNED NOT NULL,
+        PRIMARY KEY pk( id_user, id_door )
+);
+INSERT INTO ap_keys VALUES
+(10001, 330), (10001, 118), (10001, 110),    -- Ondra
+(10002, 118), (10002, 116),                  -- Zdenek
+(10003, 118), (10003, 330), (10003, 116),    -- Martin
+(10004, 110), (10004, 330),                  -- Zuzka
+(10006, 116), (10006, 118);                  -- Satan</code></pre>
+
+<pre
+class="brush: php"><code>$oClass = new cDwOpClass('cObjectPersistenceTestClass_User', 'ap_users');
+//$oProp = $oClass-&gt;AddProperty('id', $oColTypes-&gt;GetColumnType('INT UNSIGNED'));
+        $oProp = $oClass-&gt;AddProperty('id', new cDwOpColumnType_INT_UNSIGNED() );
+        $oClass-&gt;SetIdProperty($oProp);
+        $oProp = $oClass-&gt;AddProperty('user',  new cDwOpColumnType_VARCHAR(255, DWOP_NOT_NULL) );
+        $oProp = $oClass-&gt;AddProperty('pass',  new cDwOpColumnType_VARCHAR(40,  DWOP_NOT_NULL) );
+        $oProp = $oClass-&gt;AddProperty('fname', new cDwOpColumnType_VARCHAR(255, DWOP_NOT_NULL) );
+        $oProp = $oClass-&gt;AddProperty('lname', new cDwOpColumnType_VARCHAR(255, DWOP_NOT_NULL) );
+        $oProp = $oClass-&gt;AddProperty('addr',  new cDwOpColumnType_VARCHAR(255, DWOP_NOT_NULL) );
+        $oProp = $oClass-&gt;AddProperty('city',  new cDwOpColumnType_VARCHAR(255, DWOP_NOT_NULL) );
+        $oProp = $oClass-&gt;AddProperty('state', new cDwOpColumnType_VARCHAR(255, DWOP_NOT_NULL) );
+        $oProp = $oClass-&gt;AddProperty('psc',   new cDwOpColumnType_VARCHAR(255, DWOP_NOT_NULL) );
+        $oProp = $oClass-&gt;AddProperty('ctry',  new cDwOpColumnType_TINYINT_UNSIGNED() );
+        $oProp = $oClass-&gt;AddProperty('ppal',  new cDwOpColumnType_VARCHAR(255) );
+        $oClass-&gt;SetOrderProperties('lname, +fname, -id');
+$oOP-&gt;AddClassIntoDictionary($oClass);
+/*/
+$oClass = $oOP-&gt;CreateClassByTable('cObjectPersistenceTestClass_User', 'ap_users');
+$oClass-&gt;SetOrderProperties('lname, +fname, -id');
+//file_put_contents('x1.txt', AdjustedPrintR($oClass));///
+//echo "&lt;pre&gt;\$oClass: ".AdjustedPrintR($oClass)."&lt;/pre&gt;";///</code></pre>
+
+<h2>Usage – data manipulation</h2>
+
+<pre
+class="brush: php"><code>srand(time());
+
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+// Load by ID
+echo "&lt;h3&gt;Load by ID&lt;/h3&gt;";
+$iID = 1;
+echo "&lt;pre&gt;\$oObject = \$oOP-&gt;LoadObjectById(".$oClass-&gt;GetName().", $iID);&lt;/pre&gt;";
+$oUser = $oOP-&gt;LoadObjectById($oClass, $iID);
+echo "&lt;pre&gt;oUser: [".gettype($oUser)."]".AdjustedPrintR($oUser)."&lt;/pre&gt;";
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+
+// Load by ID, using class name string
+echo "&lt;h3&gt;Load by ID, using class name string&lt;/h3&gt;";
+$iID = 1;
+echo "&lt;pre&gt;\$oObject =&amp; \$oOP-&gt;LoadObjectById('".$oClass-&gt;GetName()."', $iID);&lt;/pre&gt;";
+$oUser =&amp; $oOP-&gt;LoadObjectById($oClass-&gt;GetName(), $iID);
+echo "&lt;pre&gt;oUser: [".gettype($oUser)."]".AdjustedPrintR($oUser)."&lt;/pre&gt;";
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+
+
+// Load by value
+echo "&lt;h3&gt;Load by value&lt;/h3&gt;";
+$xVal = 'as';
+echo "&lt;pre&gt;\$aoUsers = \$oOP-&gt;LoadObjectsByValue(".$oClass-&gt;GetName().", 'user', $xVal);&lt;/pre&gt;";
+$aoUsers = $oOP-&gt;LoadObjectsByValue($oClass, 'user', $xVal);
+echo "&lt;pre&gt;\$aoUsers: [".gettype($aoUsers)."]".AdjustedPrintR($aoUsers)."&lt;/pre&gt;";
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+
+
+// Save
+echo "&lt;h3&gt;Save&lt;/h3&gt;";
+$oUser = new cObjectPersistenceTestClass_User();
+$oUser-&gt;SetId(1);
+$oUser-&gt;SetProperty('user', 'as'.rand());
+$oUser-&gt;SetProperty('pass', 'as');
+$oUser-&gt;SetProperty('fname', 'Astar');
+$oUser-&gt;SetProperty('lname', 'Seran');
+echo "&lt;pre&gt;oUser: [".gettype($oUser)."]".AdjustedPrintR($oUser)."&lt;/pre&gt;";
+echo "&lt;pre&gt;\$oOP-&gt;SaveObject(\$oUser);&lt;/pre&gt;";
+$bSucc = $oOP-&gt;SaveObject($oUser);
+echo "&lt;div&gt;".($bSucc ? 'saved' : 'error')."&lt;/div&gt;";
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+
+// Create
+echo "&lt;h3&gt;Create&lt;/h3&gt;";
+$oUser = new cObjectPersistenceTestClass_User();
+$oUser-&gt;SetId(null);
+$oUser-&gt;SetProperty('user', 'as'.rand());
+$oUser-&gt;SetProperty('pass', 'as');
+$oUser-&gt;SetProperty('fname', 'Astar');
+$oUser-&gt;SetProperty('lname', 'Seran');
+echo "&lt;pre&gt;oUser: [".gettype($oUser)."]".AdjustedPrintR($oUser)."&lt;/pre&gt;";
+echo "&lt;pre&gt;\$oOP-&gt;SaveObject(\$oUser);&lt;/pre&gt;";
+$bSucc = $oOP-&gt;SaveObject($oUser);
+echo "&lt;div&gt;".($bSucc ? 'saved' : 'error')."&lt;/div&gt;";
+if(!$bSucc) echo "&lt;pre&gt;".$oOP-&gt;GetDB()-&gt;GetLastErrorString()."&lt;/pre&gt;";
+echo "&lt;pre&gt;\$oUser: [".gettype($oUser)."]".AdjustedPrintR($oUser)."&lt;/pre&gt;";
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+
+// Load by value - load object created above -&gt; Object Pool hit
+echo "&lt;h3&gt;Load by value 2&lt;/h3&gt;";
+
+$xVal = $oUser-&gt;GetProperty('user');
+echo "&lt;pre&gt;\$aoUsers = \$oOP-&gt;LoadObjectsByValue(".$oClass-&gt;GetName().", 'user', $xVal);&lt;/pre&gt;";
+$aoUsers = $oOP-&gt;LoadObjectsByValue($oClass, 'user', $xVal);
+echo "&lt;pre&gt;\$aoUsers: [".gettype($aoUsers)."]".AdjustedPrintR($aoUsers)."&lt;/pre&gt;";
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+
+
+// Remove from pool - still that one object
+echo "&lt;h3&gt;Remove from pool&lt;/h3&gt;";
+
+echo "&lt;pre&gt;\$bSucc = \$oOP-&gt;RemObjectFromPool(\$oUser);&lt;/pre&gt;";
+$bSucc = $oOP-&gt;RemObjectFromPool($oUser);
+echo "&lt;pre&gt;\$oUser: [".gettype($oUser)."]".AdjustedPrintR($oUser)."&lt;/pre&gt;";
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+
+// Load by value - that object again
+echo "&lt;h3&gt;Load by value 3&lt;/h3&gt;";
+
+$xVal = $oUser-&gt;GetProperty('user');
+echo "&lt;pre&gt;\$aoUsers = \$oOP-&gt;LoadObjectsByValue(".$oClass-&gt;GetName().", 'user', $xVal);&lt;/pre&gt;";
+$aoUsers = $oOP-&gt;LoadObjectsByValue($oClass, 'user', $xVal);
+echo "&lt;pre&gt;\$aoUsers: [".gettype($aoUsers)."]".AdjustedPrintR($aoUsers)."&lt;/pre&gt;";
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+// Delete that object from DB
+echo "&lt;h3&gt;Delete object by ID&lt;/h3&gt;";
+
+echo "&lt;pre&gt;\$oOP-&gt;DeleteObject(".$oClass-&gt;GetName().", ".$oUser-&gt;GetId().");&lt;/pre&gt;";
+$bSucc = $oOP-&gt;DeleteObject($oClass, $oUser-&gt;GetId());
+if(!$bSucc) echo '&lt;div style="font-color: red;"&gt;Delete failed. Error: '.$oOP-&gt;GetError()."&lt;/pre&gt;";
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+
+
+
+// Load all objects
+echo "&lt;h3&gt;Load all objects&lt;/h3&gt;";
+
+echo "&lt;pre&gt;\$aoUsers = \$oOP-&gt;LoadObjects(".$oClass-&gt;GetName().");&lt;/pre&gt;";
+$aoUsers = $oOP-&gt;LoadObjects($oClass);
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+//echo "&lt;pre&gt;\$aoUsers: [".gettype($aoUsers)."]".AdjustedPrintR($aoUsers)."&lt;/pre&gt;";
+
+
+
+
+// M : N relation
+$oClassUser = $oClass;
+echo "&lt;h2&gt;M : N Relation&lt;/h2&gt;";
+
+echo "&lt;div&gt;\$oClassDoor = \$oOP-&gt;CreateClassByTable('cObjectPersistence_TestClass_Door', 'ap_doors');&lt;/div&gt;";
+$oClassDoor = $oOP-&gt;CreateClassByTable('cObjectPersistence_TestClass_Door', 'ap_doors');
+file_put_contents('oClassDoor.txt', AdjustedPrintR($oClassDoor));///
+echo "&lt;div&gt;\$oClassDoor-&gt;IsSuitableForMnRelationSide(): ".(int)$oClassDoor-&gt;IsSuitableForMnRelationSide()."&lt;/div&gt;";
+echo "&lt;div&gt;\$oClassUser-&gt;IsSuitableForMnRelationSide(): ".(int)$oClassUser-&gt;IsSuitableForMnRelationSide()."&lt;/div&gt;";
+
+echo "&lt;div&gt;\$oClassKey  = \$oOP-&gt;CreateClassByTable('cObjectPersistence_TestClass_Key', 'ap_keys');&lt;/div&gt;";
+$oClassKey  = $oOP-&gt;CreateClassByTable('cObjectPersistence_TestClass_Key', 'ap_keys');
+file_put_contents('oClassKey.txt', AdjustedPrintR($oClassKey));///
+echo "\$oClassKey-&gt;IsSuitableForMnRelationGlue(): ".(int)$oClassKey-&gt;IsSuitableForMnRelationGlue();
+
+// Settin'up
+echo '&lt;pre&gt;$oOP-&gt;SetMnRelation($oClassUser, $oClassKey, $oClassDoor);&lt;/pre&gt;';
+$bSucc = $oOP-&gt;SetMnRelation($oClassUser, $oClassKey, $oClassDoor);
+file_put_contents('oClassKey2.txt', AdjustedPrintR($oClassKey));///
+if(!$bSucc) echo "&lt;div&gt;Error: ".$oOP-&gt;GetError()."&lt;/div&gt;";
+
+
+
+// Load objects by M : N relation
+
+/*/ Determines the Class and the ID from the $oUser object.
+echo "&lt;pre&gt;\$aoDoors = \$oOP-&gt;LoadObjectsByMnRelation(\$oUser, \$oClassKey, \$oClassDoor)&lt;/pre&gt;";
+$aoDoors = $oOP-&gt;LoadObjectsByMnRelation($oUser, $oClassKey, $oClassDoor);
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+echo "&lt;pre&gt;\$aoDoors: (".gettype($aoDoors).") ".AdjustedPrintR($aoDoors)."&lt;/pre&gt;";
+/*/ // The same with ID explicitly set to 10001
+echo "&lt;pre&gt;\$aoDoors = \$oOP-&gt;LoadObjectsByMnRelation('cObjectPersistenceTestClass_User', \$oClassKey, \$oClassDoor, 10001)&lt;/pre&gt;";
+$aoDoors = $oOP-&gt;LoadObjectsByMnRelation('cObjectPersistenceTestClass_User', $oClassKey, $oClassDoor, 10001);
+echo "&lt;div&gt;GetPoolCount(): ".$oOP-&gt;GetPoolCount()."&lt;/div&gt;";
+echo "&lt;pre&gt;\$aoDoors: (".gettype($aoDoors).") ".AdjustedPrintR($aoDoors)."&lt;/pre&gt;";
+
+// Multiple ID properties SQL for an object:
+echo "&lt;div&gt;\$oClassDoor-&gt;GetIdPropertiesSql(\$aoDoors[0]): ".$oClassDoor-&gt;GetIdPropertiesSql($aoDoors[0])."&lt;/pre&gt;";
+
+$aoKeys = $oOP-&gt;LoadObjectsByValue('cObjectPersistence_TestClass_Key', 'id_user', 10001);
+echo "&lt;div&gt;\$oClassKey-&gt;GetIdPropertiesSql(\$aoDoors[0]): ".$oClassKey-&gt;GetIdPropertiesSql($aoKeys[0])."&lt;/pre&gt;";
+
+
+
+if( $oOP-&gt;GetError() )
+echo '&lt;div style="color: red"&gt;Error from the past: '.$oOP-&gt;GetError()."&lt;/div&gt;";</code></pre>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/php/php-object-persistence-hibernate-doctrine-orm.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

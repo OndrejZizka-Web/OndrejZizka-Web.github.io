@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../../index.html">Blog</a></li>
+            <li><a href="../../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../../about.html">About Me</a></li>
+            <li><a href="../../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>JBoss Microcontainer with JBoss AOP – Howto with sample application</h1>
+
+<p><em>A very brief intro to JBoss AOP.</em></p>
+
+<h2>Prerequisites</h2>
+
+<p>This tutorial is a follow-up to the <a
+href="jboss-microcontainer-howto-example-standalone-app.html">JBoss
+Microcontainer intro</a> – read that first if you haven't yet.</p>
+
+<h2>What is AOP good for?</h2>
+
+<p>AOP (Aspect Oriented Programming) is a concept of moving a „programatic
+envelopes“ away from the methods. What I call a programatic envelope is that
+kind of annoying code you have to repeat at the end or/and the beginning of many
+methods.</p>
+
+<p>Usual textbook examples of AOP usage are:</p>
+
+<ul>
+	<li>Opening and closing of a transaction</li>
+
+	<li>Locking and unlocking of synchronization locks</li>
+
+	<li>Logging of debug messages</li>
+
+	<li>Measuring the time of method execution</li>
+</ul>
+
+<p>However, AOP is particulary useful for frameworks for their need of
+generalization. It can help it to put the envelope code around method which it
+still does not know.</p>
+
+<h2>How does AOP work?</h2>
+
+<p>First, you mark some Java constructs (methods, fields, constructors, …) to
+be AOP'ed (encapsulated with your envelope code).<br>
+Then you need so-called „aspect“ – that is the official name for envelope
+code.<br>
+Then you need some tool which will bind the aspect to those methods. This is
+done by advanced techniques like byte-code instrumentation and class
+reflection.</p>
+
+<h2>Why JBoss AOP (and not the others)?</h2>
+
+<p>JBoss AOP offers much more then the other AOP frameworks (like
+Spring AOP).</p>
+
+<ul>
+	<li>It can bind not only to methods, but also to constructors and fields.</li>
+
+	<li>As it's not proxy based, you don't need to treat objects only through
+	interfaces.</li>
+
+	<li>You can weave any existing class without any code changes.</li>
+
+	<li>Annotation-based weaving – intercept Java constructs which are annotated
+	by some anotation.</li>
+
+	<li>Weaving at compile time gives much better performance.</li>
+
+	<li>Configuration by annotations – if you don't like XML, you can set the
+	aspects and bindings using annotations like <code>@Aspect</code>,
+	<code>@Interceptor</code>, <code>@Bind</code> etc. See <a
+	href="http://www.jboss.org/jbossaop/docs/2.0.0.GA/docs/aspect-framework/reference/en/html_single/index.html#annotated">Chapter
+	6. Annotation Bindings</a>.</li>
+
+	<li>Runtime weaving, called „HotSwap“ – allows bytecode of your classes
+	to be weaved in runtime.</li>
+</ul>
+
+<h2>Terms</h2>
+
+<p>Copied from <a
+href="http://www.jboss.org/jbossaop/docs/2.0.0.GA/docs/aspect-framework/reference/en/html_single/index.html#base-terms">JBoss
+AOP reference docs</a>.</p>
+
+<dl>
+	<dt>Joinpoint</dt>
+
+	<dd>A joinpoint is any point in your java program. The call of a method. The
+	execution of a constructor the access of a field. All these are joinpoints. You
+	could also think of a joinpoint as a particular Java event. Where an event is a
+	method call, constructor call, field access etc…</dd>
+
+	<dt>Invocation</dt>
+
+	<dd>An Invocation is a JBoss AOP class that encapsulates what a joinpiont is at
+	runtime. It could contain information like which method is being called, the
+	arguments of the method, etc…</dd>
+
+	<dt>Advice</dt>
+
+	<dd>An advice is a method that is called when a particular joinpoint is
+	executed, i.e., the behavior that is triggered when a method is called. It could
+	also be thought of as the code that does the interception. Another analogy is
+	that an advice is an „event handler“.</dd>
+
+	<dt>Pointcut</dt>
+
+	<dd>Pointcuts are AOP's expression language. Just as a regular expression
+	matches strings, a pointcut expression matches a particular joinpoint.</dd>
+
+	<dt>Introductions</dt>
+
+	<dd>An introduction modifies the type and structure of a Java class. It can be
+	used to force an existing class to implement an interface or to add an
+	annotation to anything.</dd>
+
+	<dt>Aspect</dt>
+
+	<dd>An Aspect is a plain Java class that encapsulates any number of advices,
+	pointcut definitions, mixins, or any other JBoss AOP construct.</dd>
+
+	<dt>Interceptor</dt>
+
+	<dd>An interceptor is an Aspect with only one advice named „invoke“. It is a
+	specific interface that you can implement if you want your code to be checked by
+	forcing your class to implement an interface. It also will be portable and can
+	be reused in other JBoss environments like EJBs and JMX MBeans.</dd>
+</dl>
+
+<h2>What we're willing to achieve?</h2>
+
+<p>We want to catch all calls to methods that affect the fuel in the
+<code>Car</code>. To make this easily achievable with AOP, let's follow a
+convention that all changing methods are setters and all fuel-related properties
+names end with „Fuel“.</p>
+
+<p>For the purposes of this example, we've changed the <code>Car</code> class to
+have two fuel-related properties:</p>
+
+<pre
+class="brush: java"><code>public class Car {
+  public int litresOfFuel;
+  public int getLitresOfFuel() {    return litresOfFuel;  }
+  public void setLitresOfFuel( int litresOfFuel ) {    this.litresOfFuel = litresOfFuel;  }
+
+  public int reserveFuel;
+  public int getReserveFuel() {    return reserveFuel;  }
+  public void setReserveFuel( int reserveFuel ) {    this.reserveFuel = reserveFuel;  }
+
+  public String toString(){
+    return "Car \""+this.name+"\" with "+(this.litresOfFuel + this.reserveFuel)+" litres of fuel.";
+  }
+  ...
+}</code></pre>
+
+<h2>Creating an <code>Interceptor</code> („envelope“)</h2>
+
+<p>This is a simple interceptor that will just notify us when triggered.</p>
+
+<pre
+class="brush: java"><code>package cz.zizka.ondra.jbmctest;
+
+import java.util.logging.Logger;
+import org.jboss.aop.advice.Interceptor;
+import org.jboss.aop.instrument.Untransformable;
+import org.jboss.aop.joinpoint.Invocation;
+
+public class FuelInterceptor implements Interceptor, Untransformable {
+
+  private static final Logger log = Logger.getLogger( FuelInterceptor.class.getName() );
+
+  public Object invoke(Invocation invocation) throws Throwable
+  {
+    Object target = invocation.getTargetObject();
+    if( target instanceof Car ){
+      log.info("The fuel is being changed for the car '"+((Car)target).getName()+"'.");
+    }
+    return invocation.invokeNext();
+  }
+
+  public String getName() {
+    return FuelInterceptor.class.getName();
+  }
+}// class FuelInterceptor</code></pre>
+
+<h2>Binding the interceptor to the method calls</h2>
+
+<p>For the syntax of AOP pointcuts, see <a
+href="http://www.jboss.org/jbossaop/docs/2.0.0.GA/docs/aspect-framework/reference/en/html_single/index.html#pointcuts">JBoss
+AOP documentation</a>.</p>
+
+<p>The syntax for our purpose stated above would be:</p>
+
+<pre
+class="brush: text"><code>execution(* cz.zizka.ondra.jbmctest.Car-&gt;set*Fuel(..)</code></pre>
+
+<p>The AOP settings go to a special XML file having <code>&lt;aop&gt;</code> as
+it's root element, and conforming to the JBoss AOP XSD.<br>
+From what I've found, this file must be either in
+<code>META-INF/jboss-aop.xml</code> of your <code>.jar</code>, or anywhere on
+the filesystem, but you'll have to point to it by the
+<code>-Djboss.aop.path</code> JVM argument – see <a
+href="http://www.jboss.org/jbossaop/docs/2.0.0.GA/docs/aspect-framework/reference/en/html_single/index.html#standalone-compiletime">10.2.1. Precom­piled
+instrumentation</a> and <a
+href="http://www.jboss.org/jbossaop/docs/2.0.0.GA/docs/aspect-framework/reference/en/html_single/index.html#xml-resolving">5.2. Resolving
+XML</a>.</p>
+
+<p>To let maven put this file to your <code>.jar</code>, store it in
+<code>src/main/resources</code> (the default path for resources), giving the
+resulting path <code>src/main/resources/META-INF/jboss-aop.xml</code>.</p>
+
+<p>So let's bind this interceptor to some method calls. In this case, we're
+binding it to all methods of the <code>Car</code> class whose name has the
+pattern <code>set*Fuel</code>.</p>
+
+<pre
+class="brush: xml"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;aop&gt;
+   &lt;bind pointcut="execution(* cz.zizka.ondra.*-&gt;set*Fuel(..))"&gt;
+       &lt;interceptor class="cz.zizka.ondra.jbmctest.FuelInterceptor"/&gt;
+   &lt;/bind&gt;
+&lt;/aop&gt;</code></pre>
+
+<p>Alternatively, it should be possible to put the AOP settings to the JBoss
+Microcontainer XML (but I wasn't able to get it working):</p>
+
+<pre
+class="brush: xml"><code>&lt;deployment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="urn:jboss:bean-deployer:2.0 bean-deployer_2_0.xsd"
+            xmlns="urn:jboss:bean-deployer:2.0"
+            xmlns:aop="urn:jboss:aop-beans:1.0"&gt;
+
+  &lt;bean ... /&gt; &lt;!-- Car and garage beans --&gt;
+
+  &lt;aop:interceptor name="FuelInterceptor" class="cz.zizka.ondra.jbmctest.FuelInterceptor"/&gt;
+
+  &lt;aop:bind pointcut="execution(* cz.zizka.ondra.jbmctest.Car-&gt;set*Fuel(..)"&gt;
+    &lt;aop:interceptor-ref name="FuelInterceptor"/&gt;
+  &lt;/aop:bind&gt;
+
+&lt;/deployment&gt;</code></pre>
+
+<h2>Maven configuration</h2>
+
+<p>After setting Maven to use JBoss repositories (see the <a
+href="jboss-microcontainer-howto-example-standalone-app.html">JBoss
+Microcontainer how-to</a>), add these dependencies to your project:</p>
+
+<pre
+class="brush: xml"><code>&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.jboss.microcontainer&lt;/groupId&gt;
+    &lt;artifactId&gt;jboss-kernel&lt;/artifactId&gt;
+    &lt;version&gt;2.0.9.GA&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.jboss.aop&lt;/groupId&gt;
+    &lt;artifactId&gt;jboss-aop&lt;/artifactId&gt;
+    &lt;version&gt;2.1.6.GA&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.jboss.microcontainer&lt;/groupId&gt;
+    &lt;artifactId&gt;jboss-aop-mc-int&lt;/artifactId&gt;
+    &lt;version&gt;2.0.9.GA&lt;/version&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+
+<p>Also, add the JBoss AOP Maven plugin. It binds automatically to the
+<code>compile</code> phase. This will change the classes code to call your
+interceptors when a method is being called.</p>
+
+<pre
+class="brush: xml"><code>&lt;plugins&gt;
+  &lt;plugin&gt;
+    &lt;groupId&gt;org.jboss.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-jbossaop-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.1.3.GA&lt;/version&gt;
+    &lt;executions&gt;
+      &lt;execution&gt;
+        &lt;id&gt;compile&lt;/id&gt;  &lt;goals&gt; &lt;goal&gt;compile&lt;/goal&gt; &lt;/goals&gt;
+        &lt;configuration&gt;
+          &lt;includeProjectDependency&gt;true&lt;/includeProjectDependency&gt;
+          &lt;aoppaths&gt;
+            &lt;aoppath&gt;src/main/resources/META-INF/jboss-aop.xml&lt;/aoppath&gt;
+          &lt;/aoppaths&gt;
+        &lt;/configuration&gt;
+      &lt;/execution&gt;
+    &lt;/executions&gt;
+  &lt;/plugin&gt;
+&lt;/plugins&gt;</code></pre>
+
+<h2>Test code</h2>
+
+<pre
+class="brush: java"><code>public class JBossAopSampleApp {
+
+  public static void main( String[] args ) throws Throwable
+  {
+    Car myCar = new Car("Red Devil");
+    System.out.println( "I have a garage: "+car);
+
+    // Put some fuel in.
+    myCar.setLitresOfFuel( myCar.getLitresOfFuel() + 1 );
+    myCar.setReserveFuel( myCar.getReserveFuel() + 1 );
+
+    System.out.println( "I have a garage: "+car);
+  }
+
+}</code></pre>
+
+<h2>The result</h2>
+
+<p>Now run the application, and you'll see that the interceptor is really being
+invoked.</p>
+
+<pre
+class="brush: text"><code>I have a garage: Garage with a car: Car "Red Devil" with 0 litres of fuel.
+16.11.2009 11:42:47 FuelInterceptor invoke INFO: The fuel is being changed for the car 'Red Devil'.
+16.11.2009 11:42:47 FuelInterceptor invoke INFO: The fuel is being changed for the car 'Red Devil'.
+I have a garage: Garage with a car: Car "Red Devil" with 2 litres of fuel.</code></pre>
+
+<h2>Sample application</h2>
+
+<p>The application created in the examples above can be downloaded here: <a
+href="download/JBossAOPsample.zip">JBossAOPsample­.zip</a></p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/java/jboss/jboss-aop-howto-example-standalone-app.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../../js/bootstrap.min.js"></script>
+<script src="../../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

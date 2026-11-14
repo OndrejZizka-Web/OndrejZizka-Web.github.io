@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Blog</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+
+            <li><a href="../../../about.html">About Me</a></li>
+            <li><a href="../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Linux: Bash generic script to switch versions (like
+<code>alternatives</code> and Gentoo's <code>eselect</code>)</h1>
+
+<p>I've made a switch script.</p>
+
+<h2>Usage</h2>
+
+<pre
+class="xbrush: bash"><code>$ switch
+$ switch maven 2.2.1
+$ mvn -version
+$ switch maven 2.1.0
+$ mvn -version</code></pre>
+
+<h2>Installation</h2>
+
+<p>It uses your ~/sw/tools/.links, so update your PATH.</p>
+
+<pre class="xbrush: bash"><code>export PATH=~/sw/tools/.links:$PATH</code></pre>
+
+<p>Then (optionally):</p>
+
+<pre
+class="xbrush: bash"><code>$ /mnt/jqa/sw/tools/switch.sh install
+Creating ~/sw/tools/.links/switch -&gt; /mnt/jqa/sw/tools/switch.sh</code></pre>
+
+<h2>Download</h2>
+
+<p>Download <a href="switch.zip">here</a>.</p>
+
+<h2>Script's code</h2>
+
+<pre
+class="xbrush: bash"><code>#####################################################################################################
+#
+#  This script creates switches between the versions of various tools,
+#  found in /mnt/jqa/sw/tools/ (curently hard-coded).
+#
+#  Usage:
+#    $ switch maven 2.1.0
+#    $ mvn ...
+#
+#  Installation:
+#   * Set PATH to begin with ~/sw/tools/.links (in ~/.bashrc)
+#
+#  Tools directory structure:
+#   * .../&lt;tool_name&gt;/
+#     * &lt;tool_version&gt;/
+#     * &lt;tool_version2&gt;/
+#     * onSwitch.sh
+#     * onRun.sh
+#
+#  Callback scripts:
+#
+#   * onSwitch.sh - called when the version switch is performed.
+#     * Called using:   . onSwitch.sh &lt;tool_name&gt; &lt;tool_version&gt;
+#
+#   * onRun.sh - if present, all tool's runnables will be called through a script,
+#                which will be re-created each time the versions are switched:
+#
+#          TOOL_NAME=&lt;tool_name&gt;    # Few variables are set at the top of the script.
+#          TOOL_VERSION=&lt;...&gt;       # 1.2.3
+#          TOOL_HOME=&lt;...&gt;          # Tool home dir - i.e., the dir particular version.
+#          TOOL_RUNNABLE_PATH=&lt;...&gt; # Path to the runnable to be called.
+#
+#          &lt;content of onRun.sh&gt;    # The content is simply pasted here.
+#          &lt;tool_runnable&gt; $@       # Calls the current version of the tool runnable.
+#
+#  Todo:
+#   * Upon switch, remove links created with previous switch.
+#     * All that belong to the tools/&lt;tool_name&gt; dir (parse the variables at the top of the scripts)
+#
+#  History:
+#  2009-12-22:
+#   * Runnables are now searched automatically in TOOL_HOME/bin if there's no runnables.txt.
+#   * Softlinks to executable files also count as runnables.
+#   * Home dir of this script is detected automatically.
+#   * Meta-dirs now start with a dot (.links, .homes, .template).
+#
+#
+#####################################################################################################
+
+
+##
+##  @param  $1  Tool name
+##  @param  $2  Tool version
+##  @param  $3  Tool runnable path
+##  @param  $4  TOOL_HOME - path to the home dir of the selected version of the tool.
+##  @param  $5  ON_RUN - a script to execute before the runnable is run.
+##
+function createRunnableScript {
+
+        TOOL_RUNNABLE_PATH=$3
+        TOOL_HOME=$4
+        ON_RUN=$5
+
+        TOOL_RUNNABLE_NAME=`basename $TOOL_RUNNABLE_PATH`;
+        MY_LINK=~/sw/tools/.links/$TOOL_RUNNABLE_NAME
+        if [ -e "$MY_LINK" ] ; then rm $MY_LINK; fi
+        if [ -z "$ON_RUN" ] ; then
+                echo "Creating link $MY_LINK -&gt; $TOOL_RUNNABLE_PATH"
+                ln -s  $TOOL_RUNNABLE_PATH  $MY_LINK
+        else
+                echo "Creating bash script: $MY_LINK"
+                echo "TOOL_NAME=$1" &gt; $MY_LINK;
+                echo "TOOL_VERSION=$2" &gt;&gt; $MY_LINK;
+                echo "TOOL_HOME=$TOOL_HOME" &gt;&gt; $MY_LINK;
+                echo "TOOL_RUNNABLE_PATH=$TOOL_RUNNABLE_PATH" &gt;&gt; $MY_LINK;
+                cat $ON_RUN &gt;&gt; $MY_LINK;
+                echo "" &gt;&gt; $MY_LINK
+                echo "exec $TOOL_RUNNABLE_PATH \"\$@\"" &gt;&gt; $MY_LINK;
+        fi
+        chmod +x $MY_LINK
+}
+
+
+
+##  Return value.
+RET=0
+
+
+        ##  Determine this script's location ("Tools" home dir).
+
+        #TOOLS="/home/ondra/sw/tools"
+
+        #scriptPath=$(cd ${0%/*} &amp;&amp; echo $PWD/${0##*/})
+        scriptPath="$(cd "${0%/*}" 2&gt;/dev/null; echo "$PWD"/"${0##*/}")"
+        # For the case when called through a symlink (eg. sw/tools/.links/switch -&gt; ../switch.sh).
+        scriptPath=`readlink -f "$scriptPath"`
+
+        TOOLS=`dirname "$scriptPath"`
+
+
+
+##  Install - create the .links dir and a link to the switch.sh script.
+##  Assumes that user will put ~/sw/tools/.links at the beginning of his $PATH.
+if [ "$1" == "install" ] ; then
+        if [ ! -x ~/sw/tools/.links/switch ] ; then
+                echo "Creating ~/sw/tools/.links/switch -&gt; $scriptPath"
+                mkdir -p ~/sw/tools/.links
+                ln -s  $scriptPath ~/sw/tools/.links/switch
+        else
+                echo "~/sw/tools/.links/switch already exists."
+        fi
+        exit;
+fi
+
+
+
+while true; do
+
+
+        if [ "on" == "$1" ] ; then
+                ## No way to export a variable without sourcing this script :(
+                export PATH=~/sw/tools/.links:$PATH
+        fi
+
+        ##  No arguments: List available tools and versions.
+        if [ -z "$1" -o -z "$2" ] ; then
+                echo "    Usage:   switch &lt;tool&gt; &lt;ver&gt;";
+                echo "    Available tools and versions:"
+                for TOOL in `ls -1 --ignore=switch.* --ignore=.* --ignore=_* $TOOLS`; do
+                        if [ ! -d "$TOOLS/$TOOL" ] ; then continue; fi
+                        #echo "      $TOOL `ls --ignore=*.path $TOOLS/$TOOL`";
+                        echo "      "$(echo "$TOOL `find -L $TOOLS/$TOOL/ -mindepth 1 -maxdepth 1 -type d | sed 's#.*/##'`");
+                        #tree -diL 1
+                        #ls -l | grep ^d | awk '{print $9}'
+                done
+                break;
+        fi
+
+        ##  Has to be sourced for it sets variables into the environment (like M2_HOME).
+        if [ "$0" == "switch.sh" ] ; then
+                echo "This file (switch.sh) has to be source'd  ('. switch.sh').";
+                exit 666;
+        fi
+
+
+
+        ##  Tool's root dir (contains dirs with concrete versions).
+        TOOL_DIR="$TOOLS/$1"
+        if [ ! -d "$TOOL_DIR" ] ; then echo "Unknown tool: $1"; RET=1; break; fi
+
+        ##  Particular version's dir.
+        TOOL_HOME="$TOOL_DIR/$2"
+        if [ ! -d "$TOOL_HOME" ] ; then echo "$1 doesn't have a version: $2"; RET=2; break; fi
+
+
+        mkdir -p ~/sw/tools/.links
+        mkdir -p ~/sw/tools/.homes
+
+
+        ##  Commands to perform before running the tool (each time).
+        if [ -x "$TOOL_DIR/onRun.sh" ] ; then
+                ON_RUN=$TOOL_DIR/onRun.sh;
+        fi
+
+
+        ##  Create the HOME links.
+        echo "Creating link ~/sw/tools/.homes/$1 -&gt; $TOOL_HOME"
+        rm ~/sw/tools/.homes/$1
+        ln -s $TOOL_HOME ~/sw/tools/.homes/$1
+
+
+        ##  Commands to run upon version switching.
+        if [ -x "$TOOL_DIR/onSwitch.sh" ] ; then
+                echo "Running '$TOOL_DIR/onSwitch.sh $TOOL_HOME'...";
+                $TOOL_DIR/onSwitch.sh $TOOL_HOME;
+        fi
+
+
+
+
+        ##  Tool's runnable from the path.
+        ##  Check the symlink existence.
+        if [ ! -h $TOOL_DIR/runnable.path ] ; then
+                #echo "Every tool has to have an (invalid) symlink with the path from tool's HOME to the executable."; RET=3; break;
+                true;
+        else
+                TOOL_RUNNABLE_PATH=$TOOL_HOME/`readlink $TOOL_DIR/runnable.path`
+                if [ ! -e "$TOOL_RUNNABLE_PATH" ] ; then echo "Non-existent runnable: $TOOL_RUNNABLE_PATH"; RET=4; break; fi
+                if [ ! -x "$TOOL_RUNNABLE_PATH" ] ; then echo "Non-executable runnable: $TOOL_RUNNABLE_PATH"; RET=5; break; fi
+
+                ##  Create a link to the runnable in ~/sw/tools/.links/, named like the tool name.
+                createRunnableScript $1 $2 $TOOL_RUNNABLE_PATH $TOOL_HOME $ON_RUN
+        fi
+
+
+
+        if [ -x "$TOOL_DIR/runnables.txt" ] ; then
+                ##   Link runnables listed in a file /sw/tools/&lt;tool&gt;/runnables.txt .
+                ##   TODO: Find automatically all executables from the tool's dir.
+                ##         Upon creation of those, remove links pointing to the particular tool's dir.
+                for RUNNABLE_SUBPATH in `cat $TOOL_DIR/runnables.txt`; do
+                        TOOL_RUNNABLE_PATH=$TOOL_HOME/$RUNNABLE_SUBPATH;
+                        if [ ! -e "$TOOL_RUNNABLE_PATH" ] ; then echo "Non-existent runnable: $TOOL_RUNNABLE_PATH"; RET=4; break 2; fi
+                        if [ ! -x "$TOOL_RUNNABLE_PATH" ] ; then echo "Non-executable runnable: $TOOL_RUNNABLE_PATH"; RET=5; break 2; fi
+                done
+
+                for RUNNABLE_SUBPATH in `cat $TOOL_DIR/runnables.txt`; do
+                        TOOL_RUNNABLE_PATH=$TOOL_HOME/$RUNNABLE_SUBPATH;
+                        createRunnableScript $1 $2 $TOOL_RUNNABLE_PATH $TOOL_HOME $ON_RUN
+                done
+        else
+                ##   runnables.txt does not exist, scan the dir for executable files and links.
+                #for RUNNABLE_SUBPATH in `ls -l $TOOL_HOME/bin | grep -e ^[-l]..x | cut  -b47- | cut -d' ' -f1`; do
+                        #TOOL_RUNNABLE_PATH=$TOOL_HOME/bin/$RUNNABLE_SUBPATH;
+                for TOOL_RUNNABLE_PATH in $TOOL_HOME/bin/* ; do if [ -x "$TOOL_RUNNABLE_PATH" -a -f "$TOOL_RUNNABLE_PATH" ] ; then
+                        createRunnableScript $1 $2 $TOOL_RUNNABLE_PATH $TOOL_HOME $ON_RUN
+                fi ; done
+        fi
+
+break;
+done # while true
+
+##  Clear bash's cache.
+hash -r
+
+
+##  If called without `source`, return an exit code.
+if [ "$0" == "switch.sh" ] ; then exit $RET; fi</code></pre>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/linux-switch-script-alternatives-eselect.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

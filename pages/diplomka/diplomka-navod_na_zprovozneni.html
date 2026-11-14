@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../css/base.css">
+    <link rel="stylesheet" href="../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../index.html">Blog</a></li>
+            <li><a href="../../../archive.html">Archive</a></li>
+            <li><a href="../../../tags">Tags</a></li>
+
+            <li><a href="../../../about.html">About Me</a></li>
+            <li><a href="../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Ondřej Žižka – Diplomová práce – Návod na zprovoznění</h1>
+
+<h2>SQL skripty</h2>
+
+<p>Všechen SQL kód potřebný ke vytvoření databáze je v adresáři sql/
+v těchto souborech:</p>
+
+<ul>
+	<li><code>JR - Procedury a funkce pro DP.sql</code></li>
+
+	<li><code>JR - Tabulky s importovanými daty pro DP.sql</code></li>
+
+	<li><code>JR - Tabulky s převedenými daty pro DP.sql</code></li>
+
+	<li><code>NN - Procedury a funkce pro DP.sql</code></li>
+
+	<li><code>NN - Tabulky s daty.sql</code></li>
+</ul>
+
+<p>Soubory s předponou <code>NN</code> obsahují SQL pro rekonstrukci
+implementace neuronových sítí. Soubory s předponou <code>JR</code>
+obsahují SQL pro vytvoření databáze jízdních řádů a příslušných
+uložených procedur.</p>
+
+<p>Další dva soubory obsahují ukázkové naučené neuronové sítě:</p>
+
+<ul>
+	<li><code>JR NN - Naučená síť pro zastávku 5.sql</code></li>
+
+	<li><code>NN - Naučená síť XOR.sql</code></li>
+</ul>
+
+<h2>Instalace MySQL, vytvoření databází a nastavení práv</h2>
+
+<p>Nejprve je třeba nainstalovat standardní distribuci MySQL 5.0 nebo
+vyšší (<a
+href="http://dev.mysql.com/downloads/mysql/5.0.html#downloads">stahujte
+zde</a>).</p>
+
+<p>Poté je třeba vytvořit dvě databáze a nastavit uživatelská práva pro
+uživatele, který je bude používat. Následující kód vytvoří databáze
+<code>neural_network</code> a <code>jizdnirady_cb</code> a nastaví veškerá
+práva k nim uživateli <code>OndrejZizka</code>, který se může připojit
+odkudkoliv (‚%‘):</p>
+
+<pre
+class="brush: sql"><code>CREATE DATABASE neural_network;
+CREATE DATABASE jizdnirady_cb;
+GRANT ALL ON neural_network.* TO OndrejZizka@'%' IDENTIFIED BY 'BezpecneHeslo';
+GRANT ALL ON jizdnirady_cb.*  TO OndrejZizka@'%' IDENTIFIED BY 'BezpecneHeslo';</code></pre>
+
+<p>Tyto úkony lze pohodlně provést v GUI nástroji MySQL Administrator,
+případně vykonat SQL příkazy v nástroji MySQL Query Browser,
+viz níže.</p>
+
+<h2>Rekonstrukce databáze z SQL souborů</h2>
+
+<p>SQL skripty jsou vytvořené nástrojem MySQL Administator, oficiálním
+nástrojem pro administraci databázového systému MySQL (<a
+href="http://dev.mysql.com/downloads/gui-tools/5.0.html">stahujte zde</a>).</p>
+
+<p>Nejsnazší cesta, jak z nich vytvořit svoji kopii databáze, je použít
+právě tento nástroj. Nezkoušejte načíst procedury v nástroji
+<em>phpMyAdmin</em> – ten je plný chyb a nezvládne skripty správně
+přeparsovat.</p>
+
+<p><strong>Pozor!</strong> Pokud se vaše databáze pro neuronové sítě
+nejmenuje <code>neural_network</code>, <strong>je nutné ručně upravit SQL
+skript ukládaných procedur pro databázi jízdní řády!</strong> Toto se
+bohužel nedá v současné verzi MySQL nijak obejít.</p>
+
+<p>Úpravu proveďte takto:</p>
+
+<ol>
+	<li>Otevřete soubor <code>JR - Procedury a funkce pro DP.sql</code> v editoru,
+	který zvládá kódování UTF-8 bez signatury (pro Windows např. Visual
+	Studio nebo PSpad).</li>
+
+	<li>Nahraďte veškeré výskyty řetězce <code>neural_network.</code> názvem
+	vaší databáze a tečkou.</li>
+
+	<li>Uložte soubor v kódování UTF-8 bez signatury (na obrázku je ukázka
+	uložení ve Visual Studiu).</li>
+</ol>
+
+<div><img src="images/navod/MSVS-Uprava_SQL_Skriptu_JR-ramecky.png"
+alt=""></div>
+
+<p>Poté upravenou verzi skriptu načtěte do MySQL místo původní verze.</p>
+
+<div><img src="images/navod/MySQL_Administrator-01.png" alt=""> <img
+src="images/navod/MySQL_Administrator-02.png" alt=""></div>
+
+<h2>Prohlížení dat</h2>
+
+<p>Výše jmenovaný balík GUI nástrojů zahrnuje také MySQL Query Browser,
+šikovný nástroj pro práci s databázovým systémem MySQL.</p>
+
+<div><img src="images/navod/MySQL_Query_Browser-01-B.png" alt=""></div>
+
+<p>Výčet jeho vlastností a dovedností je dlouhý. My se pro účely
+demonstrace kódu této diplomové práce omezíme na podstatné.</p>
+
+<p>Po spuštění stiskněte <code>F11</code> – to zvětší konzoli pro SQL
+příkazy.</p>
+
+<p>Nejprve předznamenejme, že MySQL používá koncept „aktuálně vybrané
+databáze“. Pokud voláte nějakou proceduru nebo pracujete s tabulkou,
+ujistěte se, že buď používáte plně kvalifikované jméno, nebo se daný
+objekt nachází ve vybrané databázi.</p>
+
+<p>SQL příkazy vykonáváte tak, že na něj najedete kurzorem (nikoliv
+ukazatelem myši) a stisknete Ctrl + Enter. Výsledek (resultset) se zobrazí
+v dolní části</p>
+
+<p>Můžete prozkoumat obsah tabulek jízdních řádů těmito SQL
+příkazy:</p>
+
+<pre
+class="brush: sql"><code>SELECT * FROM mhd_jizdy LIMIT 100;
+SELECT * FROM mhd_jizdy_stani LIMIT 100;
+SELECT * FROM mhd_linky;
+SELECT * FROM mhd_kody;
+SELECT * FROM mhd_trasy LIMIT 100;
+SELECT * FROM mhd_trasy_uzly LIMIT 100;
+SELECT * FROM mhd_zast LIMIT 100;</code></pre>
+
+<p>Zde je například výpis zastávek a jejich geografických po­zic:</p>
+
+<div><img src="images/navod/QB-Zastavky.png" alt=""></div>
+
+<p>Po importu dat z výše uvedených souborů obsahují tabulky všechna data
+jízdních řádů, na kterých jsme kód testovali.</p>
+
+<p>Z tabulek je možné vhodnými SELECTy získat jakékoliv informace, které
+chceme znát – například:</p>
+
+<ul>
+	<li>trasy projíždějící danou zastávkou a počet zastávek do konce
+	příslušné trasy</li>
+
+	<li>zastávky dané trasy</li>
+
+	<li>zastávky a časy stání dané jíždy</li>
+
+	<li>odjezdy spojů dané linky z dané zastávky</li>
+
+	<li>první následující jízda přijízdějící do dané zastávky od daného
+	okamžiku</li>
+</ul>
+
+<p>Zde je ukázka výpisu všech linek projíždějících zastávkou
+Žižkova:</p>
+
+<div><img src="images/navod/QB-Linky_projizdejici_zastavkou_Zizkova.png"
+alt=""></div>
+
+<p>Tabulky neuronových sítí prozkoumáte takto:</p>
+
+<pre
+class="brush: sql"><code>SELECT * FROM neural_network.nn_networks;
+SELECT * FROM neural_network.nn_net_neurons;
+SELECT * FROM neural_network.nn_net_synapses;</code></pre>
+
+<p>Po importu obsahují tabulky několik testovacích neuronových sítí.</p>
+
+<p>Ladící zprávy pro algoritmy jízdních řádů, resp. neuronových sítí,
+najdete v tabulkách <code>neural_network.lib_logg</code>, resp.
+<code>jizdnirady_cb.lib_logg</code>:</p>
+
+<pre
+class="brush: sql"><code>SELECT * FROM neural_network.lib_logg;
+SELECT * FROM jizdnirady_cb.lib_logg;</code></pre>
+
+<h2>Volání API</h2>
+
+<p>Jak se konkrétní procedury používají je popsáno jednak v technické
+zprávě diplomové práce, jednak v komentářích v kódu jednotlivých
+procedur, a také na webu autora – <a
+href="http://ondra.zizka.cz/pages/programming/transport_schedule_search/index.html">jízdní
+řády</a>, <a
+href="http://ondra.zizka.cz/pages/programming/neural_networks_in_sql_stored_procedures/index.html">neuronové
+sítě</a>.</p>
+
+<p>Proto zde jen několik příkladů, jak SQL příkazy používat.</p>
+
+<p>Standardně Query Browser po každém dotazu uzavře spojení s DB. Proto
+nejprve spusťte transakci – dočasné tabulky tak zůstanou k dispozici po
+volání procedury. Transakci spustíte buď příkazem
+<code>START TRANSACTION;</code> (a stisknutím <code>Ctrl+Enter</code>) nebo
+tlačítkem <em>Transaction</em> v horním pruhu programu. Vedle něj se po
+spustění transakce objeví tlačítka pro potvrzení nebo zrušení transakce.
+Stejného efektu lze docílit provedením příkazů <code>COMMIT;</code> nebo
+<code>ROLLBACK;</code>.</p>
+
+<h3>Kód pro vyhledávání v jízdních řádech</h3>
+
+<pre
+class="brush: sql"><code>-- Vyhledání spoje ze zastávky 115 do zastávky 465, maximálně 2 přestupy.
+CALL mhd_VyhledejSpoje(115, 465, NOW(), 3);
+SELECT * FROM mhd_VyhledejSpoje ORDER BY pos;</code></pre>
+
+<p>Zde je ukázka vyhledání spojů mezi zastávkami <em>Žižkova –
+Budvar – U pily – Nemocnice – U chromých</em>:</p>
+
+<div><img src="images/navod/QB-Spoje-Zizkova-U_Chromych.png" alt=""></div>
+
+<h3>Kód pro neuronové sítě</h3>
+
+<p>Se sítěmi lze provádět v podstatě tři operace: Vytvářet je, provést
+jejich výpočet, a učit je.</p>
+
+<p>Na následujícím obrázku jsou zachycené první dva kroky.</p>
+
+<div><img src="images/navod/QB-Vypocet_site_XOR_s_logem.png" alt=""></div>
+
+<p>Nejprve vytváříme neuronovou síť s architekturou <code>2,2,1</code>
+(vhodná pro řešení XOR):</p>
+
+<pre
+class="brush: sql"><code>-- Vytvoření neuronové sítě
+CALL nn_CreatePerceptron('2,2,1','XOR', 0.10, 0.5, @out_NetID);</code></pre>
+
+<p>Pro vzniklou síť provádíme její výpočet a uchováváme hodnoty
+vnitřních neuronů:</p>
+
+<pre
+class="brush: sql"><code>-- Výpočet neuronové sítě
+CALL nn_ComputeNet(1, '-1, 1', TRUE);
+
+-- Zjistění výsledků výpočtu
+SELECT * FROM nn_ComputeNet;
+
+-- Výstupní hodnoty všech neuronů
+SELECT * FROM nn_ComputeNet_InternalValues;</code></pre>
+
+<p>Výsledkem jsou tyto struktury:</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>id_neuron</th>
+
+			<th>val</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>5</td>
+
+			<td>0.984122623404696</td>
+		</tr>
+	</tbody>
+</table>
+
+<table>
+	<thead>
+		<tr>
+			<th>id_neuron</th>
+
+			<th>val</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>1</td>
+
+			<td>–1</td>
+		</tr>
+
+		<tr>
+			<td>2</td>
+
+			<td>1</td>
+		</tr>
+
+		<tr>
+			<td>3</td>
+
+			<td>0.0166427942550775</td>
+		</tr>
+
+		<tr>
+			<td>4</td>
+
+			<td>0.972952595778587</td>
+		</tr>
+
+		<tr>
+			<td>5</td>
+
+			<td>0.984122623404696</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>Na základě vzniklých hodnot můžeme provést jeden krok učení:</p>
+
+<pre
+class="brush: sql"><code>-- Učení neuronové sítě
+ALTER TABLE nn_ComputeNet RENAME TO nn_CorrectWeights;
+ALTER TABLE nn_ComputeNet_InternalValues RENAME TO nn_CorrectWeights_InternalValues;
+CALL nn_CorrectWeights(iNetID, '1', @dLearn, @out_dErrorSum);</code></pre>
+
+<p>Po provedení procedury (a případně potvrzení transakce) jsou váhy
+sítě upravené algoritmem backpropagation podle předchozího stavu sítě,
+dočasně uložených výstupních hodnot všech neuronů sítě a
+požadovaných hodnot výstupní vrstvy.</p>
+
+<p>Pro pohodlné vyzkoušení učení neuronové sítě je k dispozici procedra
+<code>nn_TeachXOR_Dynamic( //ID//, //cílová úroveň chyby//, //maximum kroků//)</code>.
+Kód v následující ukázce učí síť vytvořenou výše uvedeným postupem
+na cílovou úroveň chyby 0,0001 v maximálním počtu 10 000 kroků:</p>
+
+<pre
+class="brush: sql"><code>-- Učení neuronové sítě pro XOR
+CALL nn_TeachXOR_Dynamic(3, 0.0001, 10000);</code></pre>
+
+<h3>Kód učení neuronových sítí pro heuristiku vyhledávání spojů</h3>
+
+<p>V diplomové práci používáme neuronové sítě k určení vhodné trasy
+pro dosažení cílové zastávky v nejlepším čase.<br>
+Zde je kód pro vytvoření a učení neuronové sítě pro zastávku 5:</p>
+
+<pre
+class="brush: sql"><code>-- Vytvoření sítě pro zastávku 5 se třiceti neurony v jedné skryté vrstvě:
+CALL mhd_nn_CreateNetForStation(5, '30');
+
+-- Učení právě vzniklé sítě pro zastávku 5 do cílové
+-- úrovně chyby 0.0001, maximálně po 40 000 kol učení:
+CALL mhd_nn_TeachStationNet(5, LAST_INSERT_ID(), 0.0001, 40000);</code></pre>
+
+<p>Všechny procesy se v naší implementaci zaznamenávají do logu. To je
+užitečné zejména pokud něco nepracuje podle očekávání. Většinou je
+chyba na straně uživatele a v logu je zapsán její příčina (ve sloupci
+<code>level</code> je hodnota <code>error</code> nebo <code>warning</code>).</p>
+
+<p>Zde je ukázka záznamů z učení neuronové sítě zastávky
+s ID 530:</p>
+
+<div><img src="images/navod/QB-Log_uceni_neuronove_site_zastavky.png"
+alt=""></div>
+
+<p>Další vysvětlení najdete ve výše jmenovaných zdrojích –
+v diplomové prácí, ve zdrojových kódech jednotlivých procedur a na webu
+autora.</p>
+
+<p>Případné dotazy směřujte na mail <a
+href="mailto:ondra&#64;dynawest.cz">ondra&#64;<!-- -->dynawest.cz</a> nebo
+JabberID <code>ondra.zizka@jabber.cz</code>.</p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/diplomka/diplomka-navod_na_zprovozneni.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

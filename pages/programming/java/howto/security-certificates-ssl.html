@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../../index.html">Blog</a></li>
+            <li><a href="../../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../../about.html">About Me</a></li>
+            <li><a href="../../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Java security – how to work with SSL certificates</h1>
+
+<pre
+class="brush: bash"><code># Get the server's cert.
+openssl s_client -connect support.stage.redhat.com:443
+# Store the cert incl. -----BEGIN .... and -----END ... to stage.pem
+
+# Import.
+sudo keytool -import -alias support.stage.redhat.com -keystore /etc/java-6-sun/security/cacerts -file stage.pem
+
+# Check if it's really there.
+keytool -keystore /etc/java-6-sun/security/cacerts -list | grep stage</code></pre>
+
+<h2>Sources</h2>
+
+<ul>
+	<li><a href="http://blogs.sun.com/andreas/entry/no_more_unable_to_find">No more
+	‚unable to find valid certification path to requested
+	target‘</a> *****</li>
+
+	<li><a
+	href="http://java.sun.com/javase/6/docs/technotes/tools/solaris/keytool.html">keytool –
+	Key and Certificate Management Tool</a> *****</li>
+
+	<li>„Connecting to SSL services“: <a
+	href="http://confluence.atlassian.com/display/JIRA/Connecting+to+SSL+services">http://confluence.atlassian.com/…SSL+services</a>
+	*****</li>
+
+	<li><a
+	href="http://conshell.net/wiki/index.php/OpenSSL_to_Keytool_Conversion_tips">OpenSSL
+	to Keytool Conversion tips</a> ***</li>
+</ul>
+
+<p>-----BEGIN CERTIFICATE-----
+MIIDUzCCArygA­wIBAgICApowDQYJ­KoZIhvcNAQEFBQAw­gZ0xCzAJBgNVBA­YTAlVT
+MRcwFQYDVQQIEw5Ob3J0aC­BDYXJvbGluYTEQ­MA4GA1UEBxMHUm­FsZWlnaDEWMBQG
+A1UEChMNUmVkI­EhhdCwgSW5jLjEL­MAkGA1UECxMCSVMxFjA­UBgNVBAMTDVJlZCBI
+YXQgSVMgQ0ExJjAk­BgkqhkiG9w0BCQEW­F3N5c2FkbWluL­XJkdUByZWRoYX­QuY29t
+MB4XDTEwMDMyM­zA3MTI1OFoXDTE­yMDMyMjA3MTI1O­FowgZkxCzAJBgNVBA­YTAlVT
+MRcwFQYDVQQIEw5Ob3J0aC­BDYXJvbGluYTEW­MBQGA1UEChMNUm­VkIEhhdCwgSW5j
+LjELMAkGA1UEC­xMCSVMxITAfBgNVBAM­TGHN1cHBvcnQuc3RhZ2U­ucmVkaGF0LmNv
+bTEpMCcGCSqGSIb3­DQEJARYac3lzYW­RtaW4tcmhjb3JwQHJlZGhhdC­5jb20wgZ8w
+DQYJKoZIhvcNA­QEBBQADgY0AMIG­JAoGBANwkCOjqkZN1a9UZ­x3ghl8v/cOG+I2kj
+1SggHDlPDO5W1­qwbKOIduL156W6goX5­qzH1dhTJMoLGcBqn8a­YeLYVvf0rQ9hk8u
+ZvJmXdwNqA4cK­S53cW3dmDzU6V7DIR­PUawh/cQ2T6Ab81g­kxHuXdhAWKsD95bb4Y
+WsdNnL6/O3npAg­MBAAGjgaMwgaAw­CQYDVR0TBAIwA­DAsBglghkgBhvhC­AQ0EHxYd
+T3BlblNTTCBHZ­W5lcmF0ZWQgQ2Vyd­GlmaWNhdGUwHQYD­VR0OBBYEFKq7K0bna­wI3
+da76+NWa20pwK­zlVMB8GA1UdIw­QYMBaAFA2sGXDtBKde­eKv+i6g06yEmwVY1MCUG
+A1UdEQQeMByBGnN5c2FkbWluL­XJoY29ycEByZWRo­YXQuY29tMA0GCSqG­SIb3DQEB
+BQUAA4GBANfwu­LigUmnxEy3E2Ly­bIlrm5OJV9U3KLu­a3I18uUg5jmBRb6fhq­cddw
+kiX/WVZyhAy+XZWM3U­toDSoQRqvgdcklmu­USlKRS8/aWniD0cVK1uD­xK9QVNkIyb
+BiWGuekG2xawh3lIC­NVHbaSTxxn3kHGxCWS­btwXngI7+cRrCz3xE -----END
+CERTIFICATE-----</p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/java/howto/security-certificates-ssl.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../../js/bootstrap.min.js"></script>
+<script src="../../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

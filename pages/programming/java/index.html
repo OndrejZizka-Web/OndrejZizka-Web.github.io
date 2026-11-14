@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2012-01-01</span></div>
+        <div class="doc-body"><h1>Java + Java EE</h1>
+
+<p>This page is a mix of czech and english, sorry for non-separated and loosely
+organized content, but hopefully you will find your subject by using
+<code>Ctrl+F</code> :-)</p>
+
+<hr>
+
+<ul>
+	<li><a href="howto/quartz-howto-intro.texy">Quartz intro</a> and <a
+	href="web/wicket/wicket-quartz-scheduler-example.html">how to use Quartz in
+	Wicket</a></li>
+
+	<li><a href="web/wicket/index.html">My Wicket notes</a></li>
+
+	<li><a href="jboss/svn-commit-irc-bot-java.html">SVNbot</a> – an IRC bot
+	announcing SVN commits, written in Java</li>
+
+	<li><a
+	href="http://ondrazizka.googlecode.com/svn/maven/mysql/mysql-connector-java/5.1.12/">MySQL
+	JDBC driver for Maven</a> – mavenized Connector/J</li>
+
+	<li><a
+	href="http://code.google.com/p/ondrazizka/source/browse/#svn/maven/cz/dynawest/third/pircbot/PircBot">PircBot
+	Mavenized</a> – PircBot IRC Bot framework library in a provisory Maven
+	repository.</li>
+
+	<li><a href="jaxb/jaxb-howto-introduction-tutorial.html">JAXB example</a> –
+	keywords: JAXB howto example tutorial intro.</li>
+
+	<li><a href="sardine-java-webdav-client-library.html">Sardine – WebDAV client
+	library for Java</a></li>
+
+	<li><a href="jboss/jboss-as-startup-run-sh-java-system-variables.html">JBoss AS
+	Java system variables</a> (<code>-D</code> for <code>bin/run.sh</code>)</li>
+
+	<li><a href="jboss/Tomcat-JON-Windows-2003-2008.html">JBoss Operation Network
+	and Tomcat on Windows 2003: No-go</a></li>
+
+	<li><a href="jetty-how-to-stop.html">How to stop Jetty</a></li>
+
+	<li><a href="jboss/web-services.html">JBoss WebServices (JBossWS) notes</a></li>
+
+	<li><a href="jboss/clustering-session-replication.html">Simple JBoss AS
+	clustering example</a> (2 nodes, JSP session replication).</li>
+</ul>
+
+<p>My usual MySQL JDBC params:</p>
+
+<pre
+class="brush: plain"><code>jdbc:mysql://localhost/test?characterEncoding=UTF-8&amp;characterSetResults=UTF-8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull</code></pre>
+
+<h2>Maven Tips</h2>
+
+<ul>
+	<li><a href="maven/log4j-missing-jmx-sun-deps.html">Maven and Log4j: Missing JMX
+	dependencies</a> – mavenized jmxri and jmxtools.</li>
+
+	<li><a href="maven/profile-activation-and-properties.html">Profile activation
+	and properties</a></li>
+
+	<li><a href="maven/how-to-add-existing-project-jar-to-maven-repository.html">How
+	to add existing Java project's <code>.jar</code>s to Maven repository</a></li>
+
+	<li><a href="maven/maven-create-distribution-package.html">How to create an
+	application distribution package with Maven</a></li>
+
+	<li><a href="maven/maven-create-jnlp-file.html">How to create a JNPL file (for
+	Java WebStart) with Maven</a></li>
+
+	<li><a href="maven/mavenize-quick-and-dirty.html">Quick and dirty
+	mavenization</a> – How to install an existing library with dependencies to
+	Maven repository.</li>
+
+	<li>I've presented Maven 2 for the company I work for. Download here: <a
+	href="download/Maven2presentation.pdf">Maven presentation for Red Hat /
+	JBoss</a>. See <a
+	href="https://www.jboss.org/community/docs/DOC-13358">https://www.jboss.org/…cs/DOC-13358</a> .</li>
+
+	<li>A short polemic against <a
+	href="http://ant.apache.org/ivy/m2comparison.html">Ivy / Maven2
+	Comparison</a>:</li>
+
+	<li>Read my own opinion about <a href="maven/maven-ant-ivy-comparison.html">How
+	Maven 2 compares to Ivy</a>.</li>
+
+	<li><a href="maven/ant-run-plugin-short.html">Short code for Antrun Maven
+	plugin</a></li>
+</ul>
+
+<p>To start maven goals in debug mode:</p>
+
+<pre class="brush: xml"><code>mvnDebug test ...</code></pre>
+
+<p>This does not work for me:</p>
+
+<pre
+class="brush: xml"><code>mvn test -DargLine="-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=4000"</code></pre>
+
+<h2>Java alternative of PHP's <code>preg_replace_callback</code></h2>
+
+<ul>
+	<li><a href="php_preg_replace_callback.html">Here</a>.</li>
+</ul>
+
+<h2>XSLT transformation in Java</h2>
+
+<p>My <a href="xslt-commandline-with-xalan.html">XSLT + Java notes</a> show:</p>
+
+<ul>
+	<li>How to call Xalan from a command line</li>
+
+	<li>A simple class for XSLT conversion using JDK's XSLT</li>
+
+	<li>Template which does some change and copies all other data</li>
+</ul>
+
+<h2>What I would change about Java</h2>
+
+<ul>
+	<li><a href="java-feature-requests.html">My Java feature requests</a></li>
+</ul>
+
+<h2>Enum with a lookup map</h2>
+
+<ul>
+	<li><a href="enum-with-lookup-map.html">Enum with a lookup map</a></li>
+</ul>
+
+<h2>JAXB – a List with inherited classes</h2>
+
+<ul>
+	<li><a href="jaxb/jaxb-list-with-inherited-classes.html">JAXB – a List with
+	inherited classes</a></li>
+</ul>
+
+<h2>Groovy bootloader bug with DOMBuilder</h2>
+
+<ul>
+	<li>Is <a href="groovy-dombuilder-bug.html">this</a> a bug?</li>
+</ul>
+
+<h2>JBoss</h2>
+
+<ul>
+	<li>Unsign JBoss AS distribution:
+	<code>find . -type f -iname '*.jar' -exec zip -d '{}' META-INF/JBOSSCOD.{SF,RSA} \;</code></li>
+
+	<li><a href="jboss/filesystem-resource-adapter.html">Filesystem Resource
+	Adapter</a></li>
+
+	<li><a href="jboss/jboss-embedded-bottstrapping.html">Bootstrapping JBoss
+	Embedded server</a> A very brief how-to – just a maven deps and the
+	bootstraping code.</li>
+
+	<li><a href="jboss/common-mistakes-and-exceptions.html">Common JBoss AS mistakes
+	and exceptions</a></li>
+
+	<li><a href="jboss/jboss-vs-spring.html">JBoss vs. Spring</a> An attempt to
+	answer what to use as a base for an enterprise web application.</li>
+</ul>
+
+<h2>How to transform <code>web.xml</code> with XSTL and XPath</h2>
+
+<p>In short, the trick is that XPath doesn't work well with element names
+containing a minus. So you have to match e.g <code>web-xml</code>
+like this:</p>
+
+<pre class="xpath"><code>*[name()='web-xml']</code></pre>
+
+<h2>How to incrementally update a JAXB-mapped object</h2>
+
+<p>Using a factory delegating the setters to the original object. <em>To be
+eventually written later.</em></p>
+
+<h2>JSON with JAXB – Jackson</h2>
+
+<ul>
+	<li>How to <a href="jaxb/jaxb-json-jackson-howto.html">create JSON output from
+	POJOs using JAXB annotations</a>.</li>
+</ul>
+
+<h2>JBoss AOP in a standalone application – example / howto</h2>
+
+<p>Few articles about JBoss AOP:</p>
+
+<ul>
+	<li>A <a href="jboss/jboss-aop-howto-example-standalone-app.html">brief
+	introduction to usage of JBoss MC with JBoss AOP</a></li>
+
+	<li><a href="java.lang.IllegalArgumentException-Unknown-AOP-tag-bean.html">JBoss
+	AOP:
+	<code>java.lang.IllegalArgumentException: Unknown AOP tag: bean</code></a></li>
+
+	<li><a href="jboss-aop-could-not-find-class.html">JBoss AOP: Could not find
+	class</a></li>
+</ul>
+
+<h2>JBoss Microcontainer in a standalone application</h2>
+
+<ul>
+	<li>A <a
+	href="jboss/jboss-microcontainer-howto-example-standalone-app.html">brief
+	introduction to usage of JBoss MC in a standalone app</a>.</li>
+</ul>
+
+<h2>Java Concurency, Threads and Synchronization</h2>
+
+<ul>
+	<li>Attempt for <a href="modifier-and-concurent-readers.html">one modifier and
+	many concurent readers</a> – a variant of producers and consumers
+	problem.</li>
+</ul>
+
+<h2>Maven: Order of execution of plugins in profiles</h2>
+
+<p>I was curious in which order Maven executes the plugins:<br>
+Whether it uses POM profile appearance order, or uses the ordering from the
+command line's <code>-P</code> param value.</p>
+
+<p>Here is the <a
+href="maven/maven-plugin_in_profiles_execution_order.html">result of my
+try-out</a>.</p>
+
+<h2>Spring AOP common mistake: CGLIB2 is not available</h2>
+
+<p>You've added a new bean to Spring. And want to do some AOP over its
+methods.<br>
+But you run into this:</p>
+
+<pre
+class="brush: text"><code>org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'udalostiQueueController' defined in class path resource [properties/Actions.xml]: Initialization of bean failed; nested exception is org.springframework.aop.framework.AopConfigException: Cannot proxy target class because CGLIB2 is not available. Add CGLIB to the class path or specify proxy interfaces.
+
+Caused by: org.springframework.aop.framework.AopConfigException: Cannot proxy target class because CGLIB2 is not available. Add CGLIB to the class path or specify proxy interfaces.
+        at org.springframework.aop.framework.DefaultAopProxyFactory.createAopProxy(DefaultAopProxyFactory.java:67)
+        at org.springframework.aop.framework.ProxyCreatorSupport.createAopProxy(ProxyCreatorSupport.java:106)
+        at org.springframework.aop.framework.ProxyFactory.getProxy(ProxyFactory.java:110)
+        etc.</code></pre>
+
+<p>The reason is simple: To do AOP, Spring needs either CGLIB to do class
+instrumentation (bytecode magic) at runtime, or you have to use your bean
+through an interface.</p>
+
+<p>So, put all your public methods into an interface and put all it's methods
+into an implementation. Use the implementation in Spring as the bean class, and
+when obtaining the bean in the code, store it into interface-typed
+reference.</p>
+
+<pre
+class="brush: java"><code>public interface MyBean {
+  public void doSomethingInAOP();
+}
+
+public class MyBeanImpl implements MyBean {
+  public void doSomethingInAOP(){ ... }
+}</code></pre>
+
+<pre
+class="brush: xml"><code>&lt;bean id="myBean" class="info.insolvencnirejstrik.controllers.MyBeanImpl" /&gt;
+
+&lt;aop:config&gt;
+
+  &lt;aop:pointcut id="controllerMethods" expression="execution(* info.insolvencnirejstrik.controllers.*.*(..))"/&gt;
+
+  &lt;aop:advisor advice-ref="txAdvice" pointcut-ref="controllerMethods"/&gt;
+
+&lt;/aop:config&gt;</code></pre>
+
+<pre
+class="brush: java"><code>MyBean bean = appContext.getBean("myBean");</code></pre>
+
+<h2>Ibatis instantiation error</h2>
+
+<p><a href="ibatis-instantiation-exception.html">Ibatis instantiation
+exception</a> can arise from the lack of default constructor.</p>
+
+<h2>StackOverflowError with Xerces 2.0.2</h2>
+
+<p>Beware of DBCP in combination with Spring and iBatis using Maven. DBCP uses
+Xerces 2.0.2, which is old buggy version and causes stack overflow exception
+when parsing Spring's <code>applicationContext.xml</code>, which uses namespaces
+(e.g. for AOP).</p>
+
+<pre><code>Caused by: java.lang.StackOverflowError at org.apache.xerces.util.URI.isConformantSchemeName</code></pre>
+
+<p>Because Maven uses the „nearest node in dependency graph“ rule for
+resolving version conflicts, it choses DBCP's Xerces 2.0.2, because other
+dependencies have Xerces deeper.</p>
+
+<h2>Maven Unzip Plugin</h2>
+
+<p>I'm going to write unzip plugin for Maven2. Stay tuned.</p>
+
+<p>//Update:// So here it is: <a
+href="http://www.pohlidame.cz/insolvencni-rejstrik/maven-unzip-plugin.html">Maven
+Unzip Plugin</a></p>
+
+<p>Enjoy :-)</p>
+
+<h2>Jabber (XMPP) Maven plugin</h2>
+
+<p>I've created a simple plugin for Maven2, which can send a message from the
+Maven build process.</p>
+
+<p>See <a href="maven/jabber-xmpp-maven-plugin.html">Jabber (XMPP) Maven
+plugin</a></p>
+
+<p>Used in the <a href="http://www.pohlidame.cz/">Insolvenční rejstřík</a>
+project.</p>
+
+<h2>JPA and Hibernate mapping with MySQL – common errors and exceptions</h2>
+
+<p>Some <a href="hibernate-common-errors-and-exceptions.html">tips for those
+tampering with Java Persistence API and Hibernate</a> – how to tame the
+exceptions comming from Hibernate EntityManager, Hibernate Annotations
+and JDBC.</p>
+
+<h2>ImmutableProperties class</h2>
+
+<p>I've created an <a href="immutable_properties.html">immutable adapter of the
+java.util.Pro­perties class</a>. Not that there aren't bunches of similar over
+the net…</p>
+
+<h2>How to read properties file in Spring Framework</h2>
+
+<p>A new short tutorial on <a
+href="howto-spring-reading_properties_file.html">how to provide properties read
+from a file to a bean</a>.</p>
+
+<h2>Parametrized Spring Configuration</h2>
+
+<p>Here's a short sketch of my idea about <a
+href="howto-substitutions_in_spring_configuration-tutorial.html">parametrizing
+Spring configuration</a>, using placeholders
+(<code>PropertyPlaceholderConfigurer</code>) and overrides
+(<code>PropertyOverrideConfigurer</code>).</p>
+
+<h2>Web service client from WSDL using Axis2</h2>
+
+<p>Here's <a href="web_service_client_from_wsdl_using_axis2.html">how to create
+web service client from WSDL using Axis2</a>.</p>
+
+<h2>Logování v Javě ? <code>log4j</code> a
+<code>java.util.logging</code></h2>
+
+<p>Sepsal jsem si <a href="navod_logovani_java.util.logging.html">stručný
+úvod do logování v Javě</a><br>
+s ukázkaou konfigurace.</p>
+
+<h2>JPA with Hibernate common mistakes</h2>
+
+<pre
+class="exception"><code>ERROR [org.hibernate.LazyInitializationException] (main:) could not initialize proxy - no Session
+Exception in thread "main" org.hibernate.LazyInitializationException: could not initialize proxy - no Session
+        at org.hibernate.proxy.AbstractLazyInitializer.initialize(AbstractLazyInitializer.java:57)
+org.hibernate.LazyInitializationException: could not initialize proxy - no Session
+        at org.hibernate.proxy.AbstractLazyInitializer.getImplementation(AbstractLazyInitializer.java:111)
+        at org.hibernate.proxy.AbstractLazyInitializer.initialize(AbstractLazyInitializer.java:57)
+        at org.hibernate.proxy.AbstractLazyInitializer.getImplementation(AbstractLazyInitializer.java:111)
+        at org.hibernate.proxy.pojo.cglib.CGLIBLazyInitializer.invoke(CGLIBLazyInitializer.java:150)
+        at cz.dynawest.isir.entities.User$$EnhancerByCGLIB$$f6910a6b.setMail(&lt;generated&gt;)
+        at cz.dynawest.isir.test.Manipulace.main(Manipulace.java:49)
+        at org.hibernate.proxy.pojo.cglib.CGLIBLazyInitializer.invoke(CGLIBLazyInitializer.java:150)
+        at cz.dynawest.isir.entities.User$$EnhancerByCGLIB$$f6910a6b.setMail(&lt;generated&gt;)
+        at cz.dynawest.isir.test.Manipulace.main(Manipulace.java:49)\--
+
+**Two common reasons:**
+
+1) You have loaded an entity containing a collection (List, Set, ...), but by default,
+Hibernate does not load their members; instead, it puts a proxy, which waits for the case
+you access the collection and then loads it.
+
+
+2) You've loaded the entity using JPA's `getReference()` or Hibernate's `load()`.
+That creates a proxy object, which holds only an ID.
+Try calling JPA's `find()`, resp. Hibernate's `get()` //(sure, JPA quite messed the nomenclature...)//
+
+
+So you're trying to manipulate the entity without having any open transaction (session).
+Hibernate generally needs every database operation to happen in a transaction,
+opened either explicitly (using e.g. `EntityManager.getTransaction()`)
+or implicitly (using e.g. Spring AOP).
+
+
+
+------------------------------------------------</code></pre>
+
+<pre
+class="exception"><code>org.hibernate.PersistentObjectException: detached entity passed to persist</code></pre>
+
+<p>You load or create an entity in one transaction, which then ends, and then
+you try to call <code>persist()</code>. Instead, you must call
+<code>merge()</code>, because that's the method which is meant to re-attach
+detached entities. Use <code>persist()</code> to store the entity when you
+change it inside the same transaction as it was loaded in.</p>
+
+<hr>
+
+<p><strong>Generally speaking:</strong></p>
+
+<p>If you load an entity using a DAO, usualy you have a transaction in that
+DAO's methods. Thus when changing the entity inside DAO, use
+<code>persist()</code>; When you change it outside DAO and then call some DAO
+method to save it, call <code>merge()</code>.</p>
+
+<h2>Začátky se Spring AOP (Aspect Oriented Programming)</h2>
+
+<p>Rozchodil jsem Spring AOP a zde dávám <a
+href="navod-spring-aop-zacatky.html">stručný návod, jak si Spring AOP</a>
+rozchodíte taky.</p>
+
+<h2>FreeMarker templates via Spring in non-web application</h2>
+
+<p>Note on how to use <a
+href="navod-spring_freemarker_in_standalone_application.html">FreeMarker
+configured by Spring Dependency Injection in a standalone (non-web)
+application</a>.</p>
+
+<h2>iBatis inline map format: empty String in nullValue</h2>
+
+<blockquote>
+	<p>If i want to set a nullValue replacement for an empty String I use this in
+	an explicit parameterMap:</p>
+
+	<pre
+	class="brush: xml"><code>&lt;parameter property="street" jdbcType="VARCHAR" nullValue=""/&gt;</code></pre>
+
+	<p>I want to do the same thing using inline parameters. I've tried the
+	following:</p>
+
+	<pre
+	class="ibatis"><code>#street:VARCHAR:""#
+#street:VARCHAR:#
+#street,jdbcType=VARCHAR,nullValue=""#
+#street,jdbcType=VARCHAR,nullValue=#</code></pre>
+
+	<p>but none works.</p>
+
+	<p>How should i write the statement?</p>
+
+	<p>Thanks, Ondra</p>
+</blockquote>
+
+<blockquote>
+	<p>I recommend not using <code>nullValue</code> replacement. It's confusing
+	and doesn't work the way most people would expect it to, quite the opposite
+	actually. It's used to map nullable columns to non-nullable class members, like
+	int, long, double, boolean etc…</p>
+
+	<p><strong>It will not be available in iBATIS 3.</strong></p>
+
+	<p>Clinton Begin</p>
+</blockquote>
+
+<blockquote>
+	<p>Quite bad news for me :(</p>
+
+	<p>I use <code>nullValue</code> as a convenient brief instrument to unify both
+	null values OR empty String to <code>NULL</code> in the database (e.g. when
+	importing from Excel and some cells are empty (that yields <code>null</code>)
+	and some have empty strings). Handling it in Java or SQL code would clutter it
+	quite much.</p>
+
+	<p>Can we expect some substitute for this in iBatis 3?</p>
+
+	<p>Ondra</p>
+</blockquote>
+
+<p>While waiting for response, I realized this:</p>
+
+<p>In case of MySQL, one can use <code>NULLIF(expr1,expr2)</code> function in
+<code>INSERT</code>, which returns <code>NULL</code> if <code>expr1</code> =
+<code>expr2</code> is true, otherwise returns <code>expr1</code>.</p>
+
+<pre
+class="brush: sql"><code>INSERT INTO table SET name = NULLIF(#name#,'');</code></pre>
+
+<h2><code>java.lang.InstantiationException</code> in iBatis when using
+java.util.Map</h2>
+
+<p>Exception:</p>
+
+<pre><code>JavaBeansDataExchange could not instantiate result class.  Cause: java.lang.InstantiationException: java.util.Map</code></pre>
+
+<p>SQL mapping code:</p>
+
+<pre
+class="brush: xml"><code>&lt;select id="getMatchingDluzniciForUser" parameterClass="long" resultClass="map"&gt;
+SELECT * FROM table
+&lt;/select&gt;</code></pre>
+
+<p><strong>Cause:</strong> iBatis is trying to instantiate
+<code>java.util.Map</code>, which is an interface, thus can't be
+instantiated.</p>
+
+<p><strong>Fix:</strong> Instead, use <code>java.util.HashMap</code> or other
+<code>Map</code> implementation as the result class.</p>
+
+<h2>Compiling Connector/J</h2>
+
+<p>If you try to compile MySQL Connector/J from the source, after resolving
+dependencies, you will probably end up with many compiler errors.</p>
+
+<p>That is because of the special way how Connector/J is compiled. Let <a
+href="http://www.jroller.com/mmatthews/">Mark Matthews</a> <a
+href="http://bugs.mysql.com/bug.php?id=38060#c176729">say it</a></p>
+
+<blockquote>The issue is that you can't compile Connector/J with <em>just</em>
+JDK6, as the driver supports JDBC4 and pre-JDBC4 APIs from the same codebase,
+and there are new classes and methods in JDBC4 that aren't available
+pre-JDK6.Therefore, the way it works is that you have to set JAVA_HOME to point
+to JDK-1.4 or 1.5, and then set the Ant properties
+„com.mysql.jdbc­.java6.javac“ with the full path to your JDK6 java
+compiler, and „com.mysql.jdbc­.java6.rtjar“ with the full path to your JDK6
+runtime class libraries, when invoking Ant.</blockquote>
+
+<h2><code>SQLException</code> for zero <code>DATETIME</code> or
+<code>TIMESTAMP</code> column? Use <code>zeroDateTimeBehavior</code></h2>
+
+<p>When working with MySQL over JDBC and the driver encounters a zero
+<code>DATE</code>, <code>TIME</code>, or <code>DATETIME</code> value (that is,
+e.g, ‚0000–00–00‘ for <code>DATE</code>), an exception is thrown:</p>
+
+<pre
+class="exception"><code>java.sql.SQLException: Cannot convert value '0000-00-00 00:00:00' from column 4 to TIMESTAMP.</code></pre>
+
+<p>In this case, using SQL commands like</p>
+
+<pre>SET GLOBAL sql_mode = 'NO_ZERO_DATE';</pre>
+
+<p>does not help much, because that works only in „strict SQL mode“, and
+needs to be set for every connection, or globally for the whole server.</p>
+
+<p>What helps is setting JDBC driver's <code>zeroDateTimeBehavior</code>
+property to <code>convertToNull</code>:</p>
+
+<blockquote>
+	<p>What should happen when the driver encounters DATETIME values that are
+	composed entirely of zeroes (used by MySQL to represent invalid dates)? Valid
+	values are <code>"exception"</code>, <code>"round"</code> and
+	<code>"convertToNull"</code>.</p>
+</blockquote>
+
+<p>The way to set it depends on the way you configure JDBC driver. The most
+common case is to use connection URL parameters. In my case it reads:</p>
+
+<pre><code>jdbc:mysql://localhost/test?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8</code></pre>
+
+<h2><code>java</code> and <code>javaw</code> difference</h2>
+
+<p><a href="java_javaw_difference.html">What's the difference between
+<code>java</code> and <code>javaw</code>?</a></p>
+
+<h2>Návod: Import projektu ze SVN do NetBeans projektu</h2>
+
+<p>Chtěl jsem se trochu povrtat v projektu <a
+href="http://poi.apache.org/subversion.html">Apache POI</a>, ale jak prúvodci
+v NetBeans, tak instrukce na stránce projektu předpokládají, že se SVN
+umíte, jak když bičem mrská, což v mém případě bylo přesně
+naopak :-)</p>
+
+<p>Proto jsem sepsal velmi stručný <a
+href="navod-svn_subversion_v_netbeans.html">núvod, jak do NetBeans dostat
+projekt ze Subversion repository</a>.</p>
+
+<h2>Levn? Java/JSP/J2EE hosting</h2>
+
+<p>Pokud hledáte levný hosting pro svoji J2EE webovou aplikaci, možná vás
+zaujme <a href="nabidka_levny_j2ee_jsp_hosting.html">tato nabídka</a>.</p>
+
+<h2>Converting a number to Excel column character name</h2>
+
+<p>When working with Excel sheets, you might need to convert the column number
+to it's letter name – like <code>1</code> to <code>A</code>, <code>2</code>
+to <code>B</code>, <code>43</code> to <code>AQ</code>, etc. It's not as trivial
+as converting a number between two radixes. Here is <a
+href="converting_number_to_excel_column_letters_name.html">my solution</a>.</p>
+
+<h2>Uzávěry v jazyce Java – přes místní vnitřní třídu</h2>
+
+<p>Při tvorbě GUI k jednomu systému se mi zastesklo po snadnosti uzávěry
+v JavaScriptu. Prozkoumal jsem <a
+href="uzavery_v_jave_mistni_vnitrni_trida.html">možnosti uzávěr
+v Javě</a>.</p>
+
+<h2>Spring Framework – úvod</h2>
+
+<p>Připravil jsem velmi stručný <a
+href="navod-spring-framework-zacatky.html">tutoriál na rozběhání jedné
+části Spring Frameworku, a sice Beans Factory</a>. V češtině.</p>
+
+<h2>Hibernate super-quick start in NetBeans</h2>
+
+<p>Here's my how-to for <a
+href="hibernate_netbeans_howto_tutorial.html">starting a Hibernate project using
+Java Persistence API (JPA)</a>.</p>
+
+<p>Later, I'll write something about object-relational mapping.</p>
+
+<h2>Hibernate Compatibility Matrix Error</h2>
+
+<p>Beware of the Hibernate Compatibility Matrix at <a
+href="http://www.hibernate.org/6.html">http://www.hibernate.org/6.html</a>.</p>
+
+<p><strong>Hibernate EntityManager 3.3.2 GA</strong> is said to be compatible
+with <strong>Hibernate Annotations 3.3.x</strong>. But, it is not compatible
+with Hibernate Annotations 3.3.0 – only with Hibernate Annotations
+3.3.1. This information could spare you few minutes, as it would do to me if
+I knew it :)</p>
+
+<pre><code>java.lang.NoSuchMethodError: org.hibernate.cfg.AnnotationConfiguration.addProperties(Ljava/util/Properties;)Lorg/hibernate/cfg/AnnotationConfiguration;</code></pre>
+
+<h2>Simplest One-line Formatter for <code>java.util.logging</code></h2>
+
+<p>I didn't like the two-line output of
+<code>java.util.logging.SimpleFormatter</code>. On current widescreen LCDs,
+whole log record can fit at a single line. So I've written
+<code>cz.dynawest.logging.SimplestFormatter</code>. Compare:</p>
+
+<pre
+class="log"><code>13.7.2008 0:47:10 cz.dynawest.isir.Conversion3Controller ZpracujArchiv - INFO:   Test
+13.7.2008 0:47:10 cz.dynawest.isir.Conversion3Controller ZpracujArchiv - INFO:   Test2</code></pre>
+
+<p>vs.</p>
+
+<pre
+class="log"><code>13.7.2008 0:47:10 cz.dynawest.isir.Conversion3Controller ZpracujArchiv
+INFO:   Test
+13.7.2008 0:47:10 cz.dynawest.isir.Conversion3Controller ZpracujArchiv
+INFO:   Test2</code></pre>
+
+<p>If you like it, the source code is available for <a
+href="download/cz.dynawest.logging.SimplestFormatter.zip">download here</a>.</p>
+
+<h2>Java tipy a triky</h2>
+
+<p>Patříte mezi programátory, kteří prvně hledají řešení na Google
+jako slovní úlohu a až pak studují jakékoliv API? Pak vám možná pomůže
+moje <a href="tipy.html">stránka tipů pro Javu</a>. Zatím není nijak moc
+rozsáhlá, budu postupně doplňovat.<br>
+Podobných tipů a triků jsou po webu kvanta, ale ne tolik v češtině.</p>
+
+<p>//Update:// Tak nakonec stejně vše zveřejňuju v angličtině…</p>
+
+<h2>Bug in MySQL JDBC implementation – Connector/J</h2>
+
+<p>I've found a bug in <a
+href="http://dev.mysql.com/downloads/connector/j/5.1.html">Connector/J</a> ver.
+5.1.6. It appears upon subsequently called <code>Connection.isValid()</code>,
+which uses unsynchronized threads.</p>
+
+<p>Reported at <a
+href="http://bugs.mysql.com/bug.php?id=38060&amp;thanks=2&amp;notify=3">http://bugs.mysql.com/bug.php?…</a>.</p>
+<!-- jdk_jre_64bit_not_found.texy -->
+<h2>Java Runtime Environment or Java Developement Kit not found on
+64-bit system</h2>
+
+<p>I have 64-bit version of Windows XP and 64-bit version of JDK and JRE.<br>
+During instalation of jEdit, I got this message from the installer:</p>
+
+<blockquote>
+	<p>Setup was unable to find an installed Java Runtime Environment or Java
+	Developement Kit of version 1.4, or higher. You must have installed at least JDK
+	or JRE 1.4 to continue setup.</p>
+</blockquote>
+
+<p>jEdit installer looks for 32-bit version of JRE. Install it alongside the
+64-bit version to fix the problem.</p>
+
+<p>The same problem was with NetBeans installer.</p>
+<!-- texy_java_implementation.texy -->
+<h2>Texy! Java Implementation</h2>
+
+<p>Anyone knows about any? Please, <a href="mailto:ondra&#64;dynawest.cz">let me
+know via e-mail</a>.</p>
+
+<p><a href="http://download.html.info/refs.zip">Texy! syntax use cases
+here</a>.</p>
+
+<h2>Java implementace překladače Texy!</h2>
+
+<blockquote>Zdravím,
+	<p>nechtěl by někdo čirou náhodou implementovat překladač Texy
+	v Javě?</p>
+
+	<p><a href="http://www.texy.info">www.texy.info</a></p>
+
+	<p>Mohlo by to být dobré téma projektu / bakalářky… Formální
+	specifikace není, jen podle popisu syntaxe a ukázek použití…</p>
+
+	<p>Java komunita by vás jistě oslavovala :-)</p>
+	Ondra</blockquote>
+
+<hr>
+
+<blockquote>
+	<p>Autor Texy David Grudl sestavil sadu testovacích souborů, na kterých lze
+	ověřit implementaci překladače. K dispozici na <a
+	href="http://download.texy.info/refs.zip">http://download.texy.info/refs.zip</a></p>
+
+	<p>Algou a omegou původní PHP imiplementace jsou PCRE. Knihovna pro Javu,
+	která zvládá PCRE podle Perl 5, je na <a
+	href="http://jakarta.apache.org/oro/">http://jakarta.apache.org/oro/</a> .</p>
+
+	<p>Ondra Žižka</p>
+</blockquote>
+
+<h2>My usual MySQL JDBC params</h2>
+
+<pre
+class="brush: plain"><code>jdbc:mysql://localhost/test?characterEncoding=UTF-8&amp;characterSetResults=UTF-8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull</code></pre>
+
+<h2>Úplné začátky v Javě</h2>
+
+<p>Java často začátečníka odradí relativní složitost přípravy kódu a
+jeho překladu do čehokoliv spustitelného (v roce 1998 to byl i můj
+případ a Javou jsem se prokousal až o další dva roky později :-) .</p>
+
+<p>Pro ten případ jsem připravil velmi polopatický <a
+href="navod-java_zacatky.html">návod, jak vytvořit zdroják v Javě, jak ho
+přeložit do souboru <code>.class</code> a jak jej spustit</a>.</p>
+
+<h2>J2EE – Java pro web</h2>
+
+<p>V poslední dobé se prokousávám světem J2EE. Je to svět rozsáhlý a
+nepřehledný. V této souvislosti uvedu jeden trefný citát:</p>
+
+<blockquote>
+	<p>Entrance to this world is a cultural conversion, not a choice of one simple
+	programming language over another.</p>
+
+	<p>-- GBdirect, „Active Web Sites and Comparison of Scripting Languages“</p>
+</blockquote>
+
+<p>Pro kamaráda jsem začal psát <a href="navod-j2ee_uvod.html">velmi
+stručný úvod</a>, aby se hned zkraje neutopil v záplavě tří až
+pětipísmenných zkratek.</p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/java/index.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

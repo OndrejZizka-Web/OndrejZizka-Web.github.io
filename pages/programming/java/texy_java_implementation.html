@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>JTexy! – Texy! Java Implementation project</h1>
+
+<p>I am about to port <a href="http://www.html.info/">Texy!</a> to Java.</p>
+
+<p>But that's a long-term plan, therefore this page is here as a
+placeholder.</p>
+
+<p>Texy! author, David Grudl, created a test suite of several Texy! formatted
+files, which can be used to validate the implementation.</p>
+
+<p>Available at <a
+href="http://download.texy.info/refs.zip">http://download.texy.info/refs.zip</a>
+.</p>
+
+<h2>Notes…</h2>
+
+<h3>Oh no – JDK6's regular expressions do not support recursion :(</h3>
+
+<p>I am looking for a Java regexp lib with support for recursion, like:
+<code>&lt;a+(?0)&gt;</code>. See <a
+href="http://www.php.net/manual/en/regexp.reference.recursive.php">http://www.php.net/…ecursive.php</a>.
+I need it for this expression:</p>
+
+<pre
+class="regex"><code>(?:mUi)^/--++ *+(.*)(?: *(?&lt;= |^)\\.((?:\\([^)\\n]+\\)|\\[[^\\]\\n]+\\]|\\{[^}\\n]+\\}|&lt;&gt;|&gt;|=|&lt;){1,4}?))?$((?:\\n.*+)*)(?:\\n(?0)|\\n\\\\--.*$|\\z)</code></pre>
+
+<p>JDK does not support it, ORO does neither, nor Stevesoft Pat does.</p>
+
+<h3><code>dev.java.net</code> is sooooo slooow…</h3>
+
+<p>Gone to Google Code: <a
+href="http://code.google.com/p/jtexy/">http://code.google.com/p/jtexy/</a></p>
+
+<h3>What's the relation between ORO and Jakarta Regexp?</h3>
+
+<p>ORO developement stalled in 2004? Is Jakarta Regexp a successor? Is Jakarta
+Regexp PERL compatible? ORO claims so, Regexp does not.</p>
+
+<h3>Parsing core: TexyParser.php @ 152</h3>
+
+<p><a
+href="http://php.net/manual/en/function.preg-match-all.php">PHP's preg_mat­ch_all</a></p>
+
+<pre
+class="php"><code>// parse loop
+$matches = array();
+$priority = 0;
+foreach ($this-&gt;patterns as $name =&gt; $pattern)
+{
+        preg_match_all(
+                $pattern['pattern'],
+                $text,
+                $ms,
+                PREG_OFFSET_CAPTURE | PREG_SET_ORDER
+        );
+
+        foreach ($ms as $m) {
+                $offset = $m[0][1];
+                foreach ($m as $k =&gt; $v) $m[$k] = $v[0];
+                $matches[] = array($offset, $name, $m, $priority);
+        }
+        $priority++;
+}</code></pre>
+
+<p><code>PREG_OFFSET_CAPTURE</code> – makes the returned multidimensional
+array even more multidimensional – stores the string at [0] and the offset at
+[1] (well, PHP is really that shitty).</p>
+
+<p><code>PREG_SET_ORDER</code> – the matches are ordered so that sub-group is
+next to it's parent group or it's sibling (depth-first instead of
+breadth-first).</p>
+
+<p><code>|...|U</code> makes all quantifiers ungreedy:</p>
+
+<blockquote>
+	<p>You could also make ALL the quantifiers in a regular expression
+	„ungreedy“ by using the U modifier. <a
+	href="http://www.skdevelopment.com/php-regular-expressions.php">http://www.skdevelopment.com/…ressions.php</a></p>
+</blockquote>
+
+<h3><strong>AAAAaaaaaa!</strong></h3>
+
+<p>No Java library supports global ungreediness! :-((<br>
+* <a
+href="http://stackoverflow.com/questions/1552198/java-regexp-ungreedy-flag">StackOverflow
+post:</a><br>
+* <a href="http://forums.sun.com/thread.jspa?threadID=730126">Java forums
+post:</a><br>
+* <a
+href="http://forums.sun.com/thread.jspa?messageID=10836887&amp;#10836887">Java
+forums archive:</a><br>
+* Ales Novak – ales A netbeans.com<br>
+* java.util.regex JavaDoc: <a
+href="http://java.sun.com/javase/7/docs/api/java/util/regex/Pattern.html">http://java.sun.com/…Pattern.html</a><br>
+* java.util.regex tester: <a
+href="http://www.regexplanet.com/simple/index.html">http://www.regexplanet.com/…e/index.html</a></p>
+
+<h3>Promising clues:</h3>
+
+<p>* OpenJDK should support LAZY<br>
+* There's a PHP port to Java: <a
+href="http://www.java2s.com/Open-Source/Java-Document/EJB-Server-resin-3.1.5/quercus/com/caucho/quercus/lib/regexp/JavaRegexpModule.java.java-doc.htm">http://www.java2s.com/…java-doc.htm</a><br>
+* I could hack the JDK code: <a
+href="http://hg.openjdk.java.net/jdk7/2d/jdk/file/3b6d7e15ccd9/src/share/classes/java/util/regex/Pattern.java">http://hg.openjdk.java.net/…Pattern.java</a><br>
+* <a
+href="http://hg.openjdk.java.net/jdk7/2d/jdk/file/3b6d7e15ccd9/src/share/classes/java/util/regex/Pattern.java">http://hg.openjdk.java.net/…Pattern.java</a><br>
+* 2721 private void addFlag(), 2760 private void subFlag()</p>
+
+<h3><code>preg_match_all()</code>:</h3>
+
+<p>Is this the same as multiple calls to <code>preg_match()</code>?<br>
+→ <code>preg_match()</code> returns the number of times pattern matches. That
+will be either 0 times (no match) or 1 time because <code>preg_match()</code>
+will stop searching after the first match. <code>preg_match_all()</code> on the
+contrary will continue until it reaches the end of subject.</p>
+
+<p>Is there similar in Java, or do I have to iterate?</p>
+
+<h3>Need to re-design…</h3>
+
+<p>Original design is, despite of author's credits,… not perfect.<br>
+* The way modules are registered<br>
+* and whole callback system</p>
+
+<h3>Questions</h3>
+
+<p><code>RegExp.Patterns.php</code> – slash hell – do the slashes belong
+to RE or to PHP?</p>
+
+<p>protect() – will I preserve it? <em>Yes.</em></p>
+
+<p>Is dom4j or jDOM enough for #JTexy? <em>Yet seems so.</em></p>
+
+<p>modifier.decorate( elmRet ) dosn't need texy reference – it should keep it
+from it's creation.</p>
+
+<p>Why Texy doesn't keep <code>$handler</code>, <code>$pattern</code>,
+<code>$name</code> together in a
+<code>class</code>? <code>function registerLinePattern($handler, $pattern, $name)</code></p>
+
+<p>WTF, <code>list(, $mParam, $mMod, $mContent) = $matches;</code> everywhere?
+Again, why not put it in a <code>class</code>?</p>
+
+<p><code>$pattern . 'Am', // anchored &amp; multiline</code> → #JTexy: Is it
+the same as prepended <code>^</code> ?</p>
+
+<p>TexyParser.php @ 169: <code>$priority++;</code> – later patterns have
+higher priority? <em>No, the other way.</em></p>
+
+<p>What is <code>TexyLineParser.again</code> good for? Never set to
+<code>true</code>?</p>
+
+<h2>Texy Refactoring</h2>
+
+<blockquote>
+	<p>Zdravím,</p>
+
+	<p>mám pár návrhů na mírný refactoring parseru:</p>
+
+	<p><strong>1) Zavést třídu pro patterny; handlery uložit k patternům
+	rovnou jako referenci funkce.</strong></p>
+
+	<pre
+	class="php"><code>public class RegexpInfo {
+
+        public String name;
+        public String perlRegexp;
+        public String regexp;
+        public String flags;
+        public String mode;
+        public String htmlElement;
+
+        // Handler of this pattern - a "callback".
+        public PatternHandler handler;
+
+        public enum Type { LINE, BLOCK };
+        public Type type = Type.LINE;
+}</code></pre>
+
+	<p><strong>2) V parseru: Výsledky <code>preg_match_all()</code> převést na
+	pole objektů, místo pole polí (… polí polí, jak je zvykem
+	v PHP).</strong></p>
+
+	<pre
+	class="php"><code>class ParserMatchInfo implements Comparable&lt;ParserMatchInfo&gt;
+{
+        public final RegexpInfo pattern;
+        public final List&lt;MatchWithOffset&gt; groups;
+        public final int offset;
+        public final int priority;
+}</code></pre>
+
+	<p>Taková třída je taky přirozeným místem pro funkci
+	<code>cmp()</code>.</p>
+
+	<p><strong>3) Při vytváření objektu s informacemi o matchnutí rovnou
+	uložit referenci na použitý patten, místo jeho jména.</strong><br>
+	Zaprvé se tak ušetří jeden lookup, zadruhé to zpřehlední kód.</p>
+
+	<p><strong>4) V názvech proměnných zavést pojem <code>group</code> pro
+	skupiny matchnutí reg. výrazu. „Match“ ponechat pro celý
+	match.</strong><br>
+	Aneb:</p>
+
+	<pre
+	class="php"><code>preg_match_all( $pattern['pattern'],  $text,  $ms,  PREG_SET_ORDER );
+$matches[0];    // --&gt; First match
+$matches[0][0]; // --&gt; Group - matched text of the whole first match.
+$matches[0][1]; // --&gt; First sub-group of the first match.</code></pre>
+
+	<p>Tak nebude nutné pojmenovávat proměnné $ms, $matches, $m,
+	$mMatches, …</p>
+
+	<p>**5) Přesunout TexyParagraphMo­dule.process() do TexyBlockParser</p>
+
+	<p>**6) Zavést třídu ParserEvent, dědit od ní a tyto používat pro model
+	událostí.</p>
+
+	<hr>
+
+	<p>Jsou to všechno interní věci, takže to nikoho moc netrápí, ale když
+	už je to ten opensource a někdo by to mohl chtít časem hackovat… ;-)</p>
+
+	<p>Ondra</p>
+
+	<p>PS: Kódy jsou v Javě; nápady na refaktorizaci totiž pocházejí ze
+	vznikajícího JTexy.</p>
+</blockquote>
+
+<h2>Sun feature request</h2>
+
+<h3>Synopsis</h3>
+
+<p>Regex: Support for UNGREEDY or (?U) flag</p>
+
+<h3>Description</h3>
+
+<p>Perl regular expressions have „/…/U“ and „(?U)“. Many of text
+processing tools based on regexp use this extensively (e.g. Texy).</p>
+
+<p>These tools are done in a way that makes quite hard to add the ungreedy
+(reluctant) mode, using <code>.*?</code>, to all closures – they have many
+regular expressions (few dozens to hundreds), and many of them change with each
+release.</p>
+
+<h3>Justification</h3>
+
+<ol>
+	<li>This would make porting such text tools easier to port to Java, and thus
+	would contribute to spread</li>
+
+	<li>None of other Java regexp libs (including ORO and Jakarta Regexp) has
+	support for this feature.</li>
+
+	<li>I believe it wouldn't be hard to implement since there already is support
+	for in-place reluctant closures. Checking for a flag when processing a closure
+	shouldn't be complicated.</li>
+</ol>
+
+<h3>Expected Behavior:</h3>
+
+<p>Regex: „.*foo“ with UNGREEDY flag or „(?U).*foo“ String:
+„AAAfooBBBfoo“</p>
+
+<p>Desired result:<br>
+group(1): AAAfoo<br>
+group(2): BBBfoo</p>
+
+<h3>Actual Behavior:</h3>
+
+<p>Current result:<br>
+group(1): AAAfooBBBfoo</p>
+
+<h3>Source code for an executable test case:</h3>
+
+<p>String inputStr = „AAAfooBBBfoo“; String patternStr = „.*foo“;</p>
+
+<p>Pattern pattern = Pattern.compi­le(patternStr); Matcher matcher =
+pattern.matcher(in­putStr);</p>
+
+<p>… etc.</p>
+
+<h3>Workaround</h3>
+
+<p>Well, changing all closures to be reluctant. <em>sigh</em></p>
+
+<h3>User Info</h3>
+
+<p><a href="mailto:ozizka&#64;redhat.com">ozizka&#64;<!-- -->redhat.com</a></p>
+
+<h2>Java implementace překladače Texy!</h2>
+
+<p>Texy je bezesporu jeden z pokladů českého opensource. Je škoda, že je
+zatím jen pro PHP.</p>
+
+<blockquote>Zdravím,
+	<p>nechtěl by někdo čirou náhodou implementovat překladač Texy
+	v Javě?</p>
+
+	<p><a href="http://www.texy.info">www.texy.info</a></p>
+
+	<p>Mohlo by to být dobré téma projektu / bakalářky… Formální
+	specifikace není, jen podle popisu syntaxe a ukázek použití…</p>
+
+	<p>Java komunita by vás jistě oslavovala :-)</p>
+	Ondra</blockquote>
+
+<hr>
+
+<blockquote>
+	<p>Autor Texy David Grudl sestavil sadu testovacích souborů, na kterých lze
+	ověřit implementaci překladače. K dispozici na <a
+	href="http://download.texy.info/refs.zip">http://download.texy.info/refs.zip</a></p>
+
+	<p>Algou a omegou původní PHP imiplementace jsou PCRE. Knihovna pro Javu,
+	která zvládá PCRE podle Perl 5, je na <a
+	href="http://jakarta.apache.org/oro/">http://jakarta.apache.org/oro/</a> .</p>
+
+	<p>Ondra Žižka</p>
+</blockquote>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/java/texy_java_implementation.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

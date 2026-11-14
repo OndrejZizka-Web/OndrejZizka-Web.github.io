@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../../index.html">Blog</a></li>
+            <li><a href="../../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../../about.html">About Me</a></li>
+            <li><a href="../../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>FreeTTS Troubleshooting</h1>
+
+<h1>Java sound problems in Linux – LINE UNAVAILABLE</h1>
+
+<p>It's a JVM bug described <a
+href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4498848">here</a></p>
+
+<p>Also <a
+href="http://sourceforge.net/projects/freetts/forums/forum/137669/topic/722735?message=1659298">here</a>
+:</p>
+
+<blockquote>
+	<ol start="2">
+		<li>Another possibility, which I have not verified, might be due to a delay
+		that we put it to the closing of the currentClip.
+			<p>We put in this delay to workaround a Java Sound bug in Linux.</p>
+
+			<p>The resulting scenario is: because the last clip was not closed before the
+			next clip attempts to play,</p>
+
+			<p>the audio device is still occupied, thus generating a
+			LineUnavailable­Exception.</p>
+
+			<p>Though, we've hardly experienced any problems with the JavaClipAudio­Player,
+			so I doubt this is the problem.</p>
+		</li>
+	</ol>
+</blockquote>
+
+<p>Also <a
+href="http://sourceforge.net/projects/freetts/forums/forum/137669/topic/930844?message=2221602">here</a>
+about „long sentences“:</p>
+
+<blockquote>
+	<p>The problem, it seems is in the code that breaks up a very long sentence.
+	FreeTTS is designed to synthesize text with low latency. When given a very long
+	sentence, such as in your example, it will decide that the sentence is too long
+	to be synthesized in a timely fashion and break it up into smaller bits. This
+	logic is rarely (if every executed) since it only is invoked when very long
+	sentences occur. If I change your sample code to concatenate a period instead
+	of a comma after every „Number xx“, things are synthesized just fine with no
+	line unavailable error.</p>
+</blockquote>
+
+<h2>Workaround:</h2>
+
+<pre
+class="brush: java"><code>System.setProperty("com.sun.speech.freetts.audio.AudioPlayer.openFailDelayMs", "100");
+System.setProperty("com.sun.speech.freetts.audio.AudioPlayer.totalOpenFailDelayMs", "30000");</code></pre>
+
+<p>Also <a
+href="http://sourceforge.net/projects/freetts/forums/forum/137669/topic/1293759?message=3178304">here</a>
+:</p>
+
+<blockquote>
+	<p>If you disable the ARts sound daemon under KDE FreeTTS will work and not give
+	the error:<br>
+	<code>LINE UNAVAILABLE: Format is PCM_SIGNED 16000.0 Hz, 16 bit, mono, 2 bytes/frame, big-endian</code>
+	Or something simular to t he error above. I believe the issue (and reply if I'm
+	wrong) is the ARts daemon grabs the /dev/dsp device and prevents FreeTTS from
+	using it. Though I don't run ETS (Enlightenment sound daemon) this daemon too,
+	could be a problem for fellow FreeTTS users/developers. I believe this daemon
+	too grabs on to /dev/dsp and prevents others from using it.</p>
+</blockquote>
+
+<p>Also, <a
+href="http://sourceforge.net/projects/freetts/forums/forum/137669/topic/686662?message=1582276">testing
+the line availability</a> :</p>
+
+<blockquote>
+	<ol start="2">
+		<li>To test if an environment supports sound, copy the code
+		in <code>com.sun.speech.freetts.audio.JavaStreamingAudioPlayer.openLine()</code>
+			<p>to a method in your application (remember to include the
+			javax.sound.sam­pled.* packages).</p>
+
+			<p>Before you call FreeTTS methods, call this method to see if your environment
+			supports sound.</p>
+
+			<p>If it does, remember to close the audio line, since FreeTTS will try to open
+			it again.</p>
+		</li>
+	</ol>
+</blockquote>
+
+<h2>Solution:</h2>
+
+<p>Fix FreeTTS according to <a
+href="http://forums.sun.com/thread.jspa?threadID=5189363">this link</a>, which
+is now unavailable because Oracle fucked it up. That page supposedly contained a
+fix for FreeTTS making it not vulnerable to that JVM's bug.</p>
+
+<h2>Also see:</h2>
+
+<ul>
+	<li><a
+	href="http://sourceforge.net/search/?group_id=42080&amp;type_of_search=forums&amp;words=LINE+UNAVAILABLE&amp;search=Search">FreeTTS
+	forum search</a></li>
+
+	<li><a
+	href="http://freetts.sourceforge.net/docs/index.php#What_does_the_message_Line_unavailable">FreeTTS
+	FAQ</a></li>
+
+	<li><a
+	href="http://www.ryan-h.com/uncategorized/java-speech-jsapi-freetts">Useful
+	howto</a> at ryan-h's blog.</li>
+</ul>
+
+<h1>Problem finding dependencies – ZipException` „Error opening
+ZIP file“</h1>
+
+<p>After I mavenized FreeTTS, I started getting an exception from JDK saying
+it can't read ZIP file somewhere in <code>VoiceManager.java</code>.</p>
+
+<p>I used strace to figure out a „Error opening ZIP file“. That did not
+help because it did not tell me about JVM's calls to <code>open()</code> for
+some reason, but anyway, here's the command:</p>
+
+<pre
+class="brush: bash"><code>sudo strace -e trace=all -o log.txt \
+java -Xrunjdwp:transport=dt_socket,server=y,address=4000 \
+     -Djpda.listen=true -Djpda.address=4000 \
+     -Dmbrola.base="`pwd`/../mbrola301"\
+     -Dfreetts.voicespath="`pwd`/../mbrola301/voices"\
+     -jar /home/ondra/work/BOTS/SpeechBot/SpeechBot-mavenized/target/SpeechBot-1.0-SNAPSHOT.jar \
+     irc.eng.brq.redhat.com '#some'</code></pre>
+
+<h2>The cause</h2>
+
+<p>The problem was that mavenization of FreeTTS and MBrola involved re-naming
+the .jar files.</p>
+
+<p>But FreeTTS not only has hard-coded dependencies in it's
+<code>MANIFEST.MF</code>'s <code>Class-Path</code>, which is quite stupid for a
+library, it also has code inside which actually relies on these data, which is
+the real peak of stupidity. So if you Mavenize such library, it ends up in
+different directories. So it will not usually work in IDE.</p>
+
+<p>You need to flatten the dependencies to a single dir, using e.g.
+<code>mvn dependencies:copy</code>, see <a
+href="http://ondra.zizka.cz/pages/programming/java/maven/maven-create-distribution-package.html">this
+example</a>. You also need to set Maven to put all app's dependencies to
+it's jar's <code>MANIFEST.MF</code>'s <code>Class-Path</code> – here
+it's ok because it's an app, not a library.</p>
+
+<p>Then you need to manually rewrite all FreeTTS libraries' MANIFEST.MF in the
+local repository, so that you can rebuild your application. Change the
+<code>Class-Path</code> to reflect the names of the jar files; Usually, that
+means adding <code>-&lt;version&gt;</code> so it's e.g.
+<code>cmulex-1.2.jar:freetts-1.2.jar:...</code>.</p>
+
+<p>Then you run a shell command like</p>
+
+<pre
+class="brush: bash"><code>java -Dmbrola.base="`pwd`/../mbrola301"\
+     -Dfreetts.voicespath="`pwd`/../mbrola301/voices"\
+     -jar /home/ondra/work/BOTS/SpeechBot/SpeechBot-mavenized/target/SpeechBot-1.0-SNAPSHOT.jar \
+     irc.eng.brq.redhat.com '#some'</code></pre>
+
+<p>Here you don't need to specify -cp because the deps are in the
+app's MANIFEST.MF as per the explanation above.</p>
+
+<h1>Problems finding Voices</h1>
+
+<p>I had some troubles make FreeTTS find MBrola's voices.</p>
+
+<p>Don't forget to set the <code>mbrola.base</code> system property when you run
+your application, e.g.:</p>
+
+<pre
+class="brush: plain"><code>java -jar myapp.jar -Dmbrola.base="`pwd`/../mbrola301"</code></pre>
+
+<p>eventually you can set <code>freetts.voicespath</code> to different dir:</p>
+
+<pre
+class="brush: plain"><code>java -jar myapp.jar -Dmbrola.base="`pwd`/../mbrola301" -Dfreetts.voicespath="`pwd`/../mbrola301/voices"</code></pre>
+
+<hr>
+
+<p>There are few voices in FreeTTS with MBrola.</p>
+
+<pre
+class="brush: plain"><code>// This is a tiny database, contains only data for time demo app.
+System.setProperty("freetts.voices","com.sun.speech.freetts.en.us.cmu_time_awb.AlanVoiceDirectory");
+
+// Using this throws the ClassCastException. You need to recompile it.
+System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+
+// MBrola voices.
+System.setProperty("freetts.voices", "de.dfki.lt.freetts.en.us.MbrolaVoiceDirectory");</code></pre>
+
+<p>Even after setting <code>mbrola.voices</code>, it kept finding only
+<code>mbrola_us1</code>, <code>mbrola_us2</code>, <code>mbrola_us3</code>.
+I added some voices from their web, but these were not listed as available.
+I guess I need some other <code>VoiceDirectory</code> implementation because
+the voices are hardcoded in <code>KevinVoiceDirectory</code> so I guess
+there's no dynamic loading despite all that mess in
+<code>VoiceDirectory.java</code>.</p>
+
+<h1>Weird ClassCastException for KevinVoiceDirec­tory, gone after
+re-compiling</h1>
+
+<p>After solving „Error reading ZIP“ by changing
+FreeTTS's jar's M­ANIFEST.MF's Class-Path value to reflect my jar names
+(mavenized), I started getting this:</p>
+
+<pre
+class="brush: plain"><code>Exception in thread "main" java.lang.ClassCastException: com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory cannot be cast to com.sun.speech.freetts.VoiceDirectory
+        at com.sun.speech.freetts.VoiceManager.getVoices(VoiceManager.java:113)
+        at cz.dynawest.speechbot.synt.MbrolaSpeaker.&lt;init&gt;(MbrolaSpeaker.java:38)
+        at cz.dynawest.speechbot.SpeechBot.&lt;init&gt;(SpeechBot.java:25)
+        at cz.dynawest.speechbot.SpeechBot.main(SpeechBot.java:65)</code></pre>
+
+<p>After re-compiling KevinVoiceDirectory and storing it in jar, it works.</p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/java/misc/freetts-line-unavailable-classcastexception-kevinvoicedirectory-error-opening-zipfile.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../../js/bootstrap.min.js"></script>
+<script src="../../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

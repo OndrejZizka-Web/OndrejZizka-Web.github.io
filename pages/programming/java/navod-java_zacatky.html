@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Úplné začátky v Javě – kompilace</h1>
+
+<p><strong>Návod pro práci s Javou v konzoli, nikoliv přes IDE (<a
+href="http://www.netbeans.org/">NetBeans</a>).</strong> Každý programátor
+v Javě by měl tyto základy určitě znát, jinak se dřív nebo později
+ztratí.</p>
+
+<p><em><strong>Napsáno:</strong> Kdysi dávno (2002?)</em><br>
+<em><strong>Aktualizace:</strong> 17.7.2008</em></p>
+
+<hr>
+
+<h2>Jak přeložit soubor s příponou <code>.java</code></h2>
+
+<p>Pokud máte soubor s příponou <code>.java</code>, máte zdrojový kód
+neboli zdroják. Takže:</p>
+
+<ul>
+	<li>Stáhnete a <strong>nainstalujte JDK</strong> odněkud z <a
+	href="http://java.sun.com/">http://java.sun.com/</a> – v době tvorby
+	stránky je to „JDK 6 Update 7“ <a
+	href="http://java.sun.com/javase/downloads/index.jsp">zde</a>. Vyberte
+	<em>offline instalation</em>.
+		<p><strong>JDK – Java Developement Kit</strong> – je hafo
+		souborů, které</p>
+
+		<ol style="list-style-type:lower-alpha">
+			<li>umožní kompilaci,</li>
+
+			<li>obsahují knihovny.</li>
+		</ol>
+
+		<p>Potřebují ho jen ti, kteří chtějí v Javě programovat.</p>
+
+		<p>Pro běh zkompilovaných .class souborů stačí <strong>JRE – Java
+		Runtime Environment</strong>.</p>
+	</li>
+
+	<li>Do systémové proměnné <code>PATH</code> přidejte cestu k právě
+	nainstalovanému JDK. To provedete buď na konzoli příkazem
+		<pre
+		class="bat"><code>set PATH=%PATH%;"D:\Program Files\j2sdk141\bin\";</code></pre>
+
+		<p>(cestu samozřemě změňte tam, kam jste JDK instalovali),<br>
+		nebo nastavíte na Windows XP v
+		<code>Ovládací panely -&gt; Systém -&gt; Upřesnít -&gt; Proměnné prostředí -&gt; Systémové proměnné</code>.<br>
+		První možnost trvá do uzavření konzole a je možno jí automatizovat
+		pomocí <code>.bat</code> souboru.<br>
+		Druhá možnost je trvalá.</p>
+	</li>
+
+	<li>Spusťte konzoli. To proveďte přes zkratku <code>Win+R</code>, zapište
+	<code>cmd</code> a OK. Nyní se dostaňte pomocí dosových příkazů
+	<code>cd ..</code> apod. do adresáře, kde máte zdroják. Zvažte, jestli se
+	radši nenaučíte používat <em>Total Commander</em>, jelikož v tom stačí
+	mačknout <code>Ctrl+šipku dolů</code>, napsat <code>cmd</code> a stisknout
+	Enter, a už jste doma.</li>
+
+	<li>Zkuste spustit kompilátor Javy – <code>javac.exe</code>. Prostě
+	napište <code>javac</code> a entr. Pokud vám toto nejde, někde se stala
+	chyba – zřejmě máte špatně systémovou proměnnou <code>PATH</code>.
+	Opakuji, že nastavení pomocí <code>set path=...</code> platí do zavření
+	konzole! Hodnotu <code>PATH</code> zkontrolujete pomocí příkazu
+	<code>set path</code>. Pokud by se vám to nedařilo, můžete to zkusit
+	ošmejdit přes <code>.bat</code> s příkazem
+		<pre
+		class="brush: java"><code>`javac {cesta k javac.exe} %1 %2 %3 %4 %5 %6 %7 %8 %9`,</code></pre>
+
+		<p>který dáte do adresáře Windows. Když pak z jakéhokoliv adresáře
+		spustíte příkaz <code>javac</code>, všechny parametry se předají
+		kompilátoru <code>javac.exe</code>.</p>
+	</li>
+
+	<li>Mrkněte na výpis. Pokud vám dává smysl, zapamatujte si, co všechno
+	můžete ovlivnit.</li>
+
+	<li>Přeložte zdroják příkazem <code>javac Zdrojak.java</code> . Pokud jste
+	uspěli, máte soubor <code>Zdrojak.class</code>, který už obsahuje hotový
+	„program“.</li>
+</ul>
+
+<h2>Jak spustit soubor s příponou <code>.class</code></h2>
+
+<p>Máte soubor s příponou <code>.class</code>. Ten obsahuje tzv. „bajtový
+kód“ Javy.</p>
+
+<p><em> Žádné <code>.exe</code> nečekejte – na to Java není dělaná.
+Neexistuje nic, co by z <code>.class</code> udělalo rozumně veliké
+nezávislé <code>.exe</code> (nezávislé = nepotřebuje nainstalovanou Javu).
+Jinak se můžete kouknout na <a
+href="http://www.duckware.com/jexepack/index.html">JexePack</a> a <a
+href="http://www-kiv.zcu.cz/~herout/pruzkumy/jexepack/jexepack.html">český
+referát o něm</a>. </em></p>
+
+<p>Po instalaci současných JRE (je i součástí JDK) se soubory
+<code>.jar</code> spouštějí jako <code>.exe</code>. Soubory
+<code>.class</code> není příliš často třeba spouštět, ale můžete
+použít můj JavaLoader – pokud ho najdete :-)</p>
+
+<p>Podívejme se, jak ze souboru <code>.class</code> dostat nějakou akci:</p>
+
+<ul>
+	<li>Pokud soubor <code>.class</code> nemáte ve stejném adresáři, ve kterém
+	se nacházíte, V následujícím kroku zadejte parametr
+	<code>-classpath &lt;cesta k .class&gt;</code> . Pokud byste to měli dělat
+	často, pak do systémových proměnných přidejte proměnnou
+	<code>CLASSPATH</code> a nastavte ji na onen adresář (kde je váš
+	<code>.class</code> soubor).</li>
+
+	<li>Spusťte
+		<pre class="bat"><code>java [-classpath ...] &lt;JménoTřídy&gt;</code></pre>
+
+		<p>V našem případě to bude</p>
+
+		<pre><code>java [-classpath ...] Zdrojak</code></pre>
+
+		<p>Všimněte si a vtlučte si do hlavy, že jako <strong>parametr, co
+		spustit</strong>, se nedává název souboru, ale <strong>jméno
+		třídy</strong>!<br>
+		Podmínkou pro úspěšné spuštění je, že v adresáři, který je
+		definovaný v systémové proměnné <code>CLASSPATH</code><br>
+		nebo za parametrem <code>-classpath</code>, se musí vyskytovat soubor
+		<code>"JménoTřídy.class"</code>,<br>
+		a v něm musí být veřejná třída <code>JménoTřídy</code> a v ní
+		statická veřejná metoda <code>main</code><br>
+		nevracející nic a s parametrem typu pole <code>String</code>ů, neboli:</p>
+
+		<pre
+		class="brush: java"><code>public class JménoTřídy { public static void main(String[]){...} }</code></pre>
+
+		<p>Tato metoda se spustí jako první. Je obdobou funkce
+		<code>int main(int argc, char* argv[])</code> v <em>C++</em>.</p>
+	</li>
+
+	<li> –Tyto dva kroky vám odpadnou, pokud použijete můj JavaLoader.–
+	Kdoví, kde je mu konec.</li>
+</ul>
+
+<p>Běží? Gratuluji :-) Konzoli máte za sebou. Zbytek už je pure
+Java code.</p>
+
+<p>Pro normální vývoj doporučují <a
+href="http://www.netbeans.org/"><em>NetBeans IDE</em></a>, případně jeho
+verzi pro začátečníky <em>BlueJ Edition</em> (tamtéž).</p>
+
+<p>Kdyby tu něco bylo špatně, napište mi – <a
+href="mailto:ondra&#64;dynawest.cz">ondra&#64;<!-- -->dynawest.cz</a>.</p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/java/navod-java_zacatky.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

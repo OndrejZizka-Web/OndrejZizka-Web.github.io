@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>PHP Database abstraction library</h1>
+
+<p><a href="lib-docs/index.html">Documentation</a> (together with my other
+libs)</p>
+
+<p>Once, at times when there was no better option, I used my own lib to
+abstract the db data retrieval.</p>
+
+<p>It used inheritancy to make it available for more databases (that was
+influenced by Java I was turing to from PHP at that time).</p>
+
+<p>It provided methods for quite every aspect of a DB. But since I worked only
+with MySQL, only that implementation was written :)</p>
+
+<h2>Usage example</h2>
+
+<pre
+class="brush: php"><code>$aasAreas = Array();
+$sSQL = "SELECT id, x, y, x2 AS r, popis FROM ".$oFW-&gt;GetOption('tables.areas')
+       ." WHERE id_ad=".asq((int)$_GET['id']);
+$oRes = $oFW-&gt;GetDB()-&gt;Select($sSQL);
+if(!$oRes || !$oRes-&gt;IsOk()){ $sError = $oRes-&gt;GetError(); break; }
+else while( $a = $oRes-&gt;FetchRow() ){
+    $aasAreas[] = $a;
+}</code></pre>
+
+<h2>Another usage example</h2>
+
+<pre
+class="brush: php"><code>&lt;?
+header("Content-Type: text/plain");
+
+$oMySQLConn = new cDBAccess_MySQL('localhost:3350', 'test', 'test');
+$oMySQLConn-&gt;SetConnectionCharset('cp1250');  // cp1250_general_ci
+$oMySQLConn-&gt;SetSelectMode( CDBA_SELECT_RETURNS_CRESULT_ON_ERROR );
+$oMySQLConn-&gt;Connect();
+$oResult =&amp; $oMySQLConn-&gt;Select($sql = "SELECT 1 + 1");
+$oResult =&amp; $oMySQLConn-&gt;Select($sql = "SHOW DATABASES");
+// var_dump($oResult);
+if( (!$oResult) || !$oResult-&gt;IsOK() )
+  //echo $oMySQLConn-&gt;GetError();
+  echo $oResult-&gt;GetError();
+else{
+        //echo "\n".$oResult-&gt;GetCell(0,0);
+        while($a = $oResult-&gt;FetchRow(MYSQL_NUM)){
+                echo "\n". $a[0];
+        }
+}
+$oMySQLConn-&gt;FreeResults();
+echo "\n".$oResult-&gt;NumRows();
+
+echo "\nErrors num: ". $oMySQLConn-&gt;GetErrorsNum();
+foreach($oMySQLConn-&gt;GetErrors() as $i =&gt; $oError){
+        echo "\n". $oError-&gt;Dump('_TXT_', 1);
+        //echo "&lt;br/&gt;Error: ". var_export($oError, 1);
+}
+$oMySQLConn-&gt;ClearErrors();
+foreach($oMySQLConn-&gt;GetErrors() as $i =&gt; $oError){
+        echo "\n". $oError-&gt;Dump('_TXT_', 1);
+}
+
+
+//      CheckTable() test
+echo " ".(int)$bTableOk = $oMySQLConn-&gt;CheckTable('i18n', Array(
+        Array('name'=&gt;'idstr', 'null'=&gt;false, 'key'=&gt;'primary',  'types'=&gt;''),
+        Array('name'=&gt;'lang',  'null'=&gt;false, 'key'=&gt;'multiple', 'types'=&gt;''),
+        Array('name'=&gt;'val',   'null'=&gt;false, 'key'=&gt;'none',     'types'=&gt;''),
+) );
+?&gt;</code></pre>
+
+<h2>Base (abstract) class</h2>
+
+<pre
+class="brush: php"><code>&lt;?php
+
+/*****************************************************************
+   cDBAccess - Yet another database access wrapper
+   Written by Ondra Zizka @ Dynawest, ondra@dynawest.cz
+   @version 1.0.5
+
+         Changes:
+         1.0.5 - Added:   $this-&gt;dbflags - flags for database connection.
+         1.0.4 - Changed: SetConnectionCharset() sets internal variable.
+         1.0.3 - Added:   GetQueriesCount() counts performed queries (those passed to database)
+         1.0.2 - Introduced CDBA_SELECT_RETURNS_CRESULT_ON_ERROR:
+                        and CDBA_SELECT_RETURNS_NULL_ON_ERROR:
+                 cDBAccess::Select() has $iFlags param. When passed to with -"-,
+                 it returns cDBA_Result object even upon failure.
+                 The failure is detectable with cDBA_Result-&gt;IsOK().
+               - function cDBA_Result::IsOK()
+               - functions cDBA_Result::GetError(), cDBA_Result::GetErrno()
+         1.0.1 - _Query() renamed to _Execute()
+               - var $bConnected;
+               - function GetLastError()
+               - function GetLastErrorString()
+               - function Disconnect()
+               - function GetConnection()
+               - function IsConnected()
+*****************************************************************/
+
+
+
+define('CDBA_SELECT_RETURNS_NULL_ON_ERROR', 0);
+define('CDBA_SELECT_RETURNS_CRESULT_ON_ERROR', 1);
+
+
+/**  class cDBAccess - Yet another database access wrapper  */
+class cDBAccess{
+
+        var $dbspoj;
+        var $dbhost;
+        var $dbuser;
+        var $dbpass;
+        var $dbflags;
+        function SetFlags($iFlags){ $this-&gt;dbflags = $iFlags; }
+        function GetFlags(){ return $this-&gt;dbflags; }
+
+        var $sDatabase;
+        var $sDatabaseDefault;
+        var $sConnCharset;
+        var $sConnCharsetDefault;
+
+        var $bStrict;
+        var $bConnected;
+        var $iSelectMode = CDBA_SELECT_RETURNS_NULL_ON_ERROR;
+        function GetSelectMode()            { return $this-&gt;iSelectMode; }
+        function SetSelectMode($iMode){
+                switch( $iMode ){
+                        case CDBA_SELECT_RETURNS_NULL_ON_ERROR:
+                        case CDBA_SELECT_RETURNS_CRESULT_ON_ERROR:
+                                $this-&gt;iSelectMode = $iMode;
+                                return true; break;
+                        default: user_error('Unknown select mode ['.$iMode.']'); return false; break;
+                }
+        }
+
+        var $aoErrors = Array();
+        var $aoSelectResults = Array();
+        var $iQueries = 0;
+        function GetQueriesCount()         { return $this-&gt;iQueries; }
+        function _IncQueriesCount(){ $this-&gt;iQueries++; }
+
+
+
+        // Constructor
+        function cDBAccess($dbhost="", $dbuser="", $dbpass="", $sDatabaseDefault=null, $sConnCharsetDefault=null){
+                $this-&gt;dbhost           = $dbhost;                 //
+                $this-&gt;dbuser           = $dbuser;                 //
+                $this-&gt;dbpass           = $dbpass;                 //
+
+                $this-&gt;sDatabase        = '';                      //
+                $this-&gt;sDatabaseDefault = $sDatabaseDefault;       //
+                $this-&gt;sConnCharset     = '';                      //
+                $this-&gt;sConnCharsetDefault = $sConnCharsetDefault; //
+
+                $this-&gt;bConnected       = false;
+        }
+
+        // Errors //
+        function _AddError($sError, $iErrno, $sSQL){ $this-&gt;aoErrors[] = new cDBA_Error($sError, $iErrno, $sSQL); }
+        function _SetError($sError, $iErrno, $sSQL){
+                $this-&gt;ClearErrors();
+                $this-&gt;_AddError($sError, $iErrno, $sSQL);
+        }
+        function GetErrors()   { return $this-&gt;aoErrors; }
+        function GetErrorsNum(){ return Count($this-&gt;aoErrors); }
+        function GetLastError(){ return (!is_array($this-&gt;aoErrors) || Count($this-&gt;aoErrors) &lt;= 0) ? null : $this-&gt;aoErrors[Count($this-&gt;aoErrors)-1]; }
+        function GetLastErrorString() {
+                return (is_array($this-&gt;aoErrors) &amp;&amp; Count($this-&gt;aoErrors) &gt; 0) ? $this-&gt;aoErrors[Count($this-&gt;aoErrors)-1]-&gt;GetString() : ""; }
+        function ClearErrors(){ $this-&gt;aoErrors = Array(); }
+
+
+        /** Connection */
+        function IsConnected(){ return $this-&gt;bConnected &amp;&amp; is_resource($this-&gt;dbspoj); }
+
+        function Disconnect(){
+                if($this-&gt;bConnected)
+                        $this-&gt;_Disconnect();
+                $this-&gt;bConnected = false;
+                $this-&gt;dbspoj = null;
+        }
+        /** Abstract - override */
+        function _Disconnect(){}
+
+        /**  Acquires and returns the real connection. Does not set the memberv value.  */
+        function _Connect(){
+                $this-&gt;Disconnect();
+
+                // Verbose intentially to allow copy and paste...
+                $spoj = null;
+                if(!$spoj){
+                        $this-&gt;_AddError("cDBAccess is an abstract class. Use some extended class.", 0,
+                          "Host: [$this-&gt;dbhost], User: [$this-&gt;dbuser], Using password: ".($this-&gt;dbpass ? 'YES' : 'NO'));
+                        return false;
+                }
+                $this-&gt;bConnected = true;
+                return $spoj;
+        }
+
+        /**  Connects to the database [and sets the default database].  */
+        function Connect(){
+                $spoj = $this-&gt;_Connect();
+                if(!$spoj){ return false; }
+                $this-&gt;dbspoj = $spoj;
+
+                // Default Charset
+                if($this-&gt;sConnCharsetDefault){
+                        $this-&gt;SetConnectionCharset($this-&gt;sConnCharsetDefault);
+                }
+
+                // Default database
+                if($this-&gt;sDatabaseDefault){
+                        $this-&gt;UseDatabase($this-&gt;sDatabaseDefault);
+                }
+
+                return true;
+        }
+        function GetConnection(){ return $this-&gt;dbspoj; }
+
+
+        /**  Select the active database.  */
+        function UseDatabase($sDatabase){ return false; }
+
+
+
+
+        /**  Executes a SQL statement  */
+        function _Execute($sSQL){
+                if(!$this-&gt;dbspoj) do{
+                        if(!$this-&gt;bStrict){
+                                if($this-&gt;Connect()){ break; }
+                        }
+                        $this-&gt;_AddError('Can\'t execute when not connected.',  2006, $sSQL);
+                }while(false);
+
+                return null;
+        }
+
+
+        /**  Executes a SQL statement  */
+        function &amp;Execute($sSQL){
+                $rRes = $this-&gt;_Execute($sSQL);
+                $iRows = 0;
+                return $this-&gt;CreateResult($rRes, $sSQL, $iRows);
+        }
+
+
+        /**  Makes a SELECT and returns the result.
+         *   Result returned by reference to let the object know when you unset($res); .
+         *   @returns  Depends on select mode set by SetSelectMode():
+         *          CDBA_SELECT_RETURNS_NULL_ON_ERROR: Returns null on error.
+         *      CDBA_SELECT_RETURNS_CRESULT_ON_ERROR: Returns cDBA_Result object with error info.
+         *   @see cDBAccess::SetSelectMode()
+         */
+        function &amp;Select($sSQL){
+                $oRes = null;
+
+                $rRes = $this-&gt;_Execute($sSQL);
+                // OK
+                if($rRes &amp;&amp; 'resource' == gettype($rRes) &amp;&amp; $this-&gt;IsSelectResult($rRes)){
+                        $iRows = 0;//... set in subclass
+                        $oRes =&amp; $this-&gt;CreateResult($rRes, $sSQL, $iRows, 0,0);
+                        $this-&gt;CollectResult($oRes);
+                }
+                // Error
+                else if($this-&gt;iSelectMode == CDBA_SELECT_RETURNS_CRESULT_ON_ERROR){
+                        $iRows = 0;
+                        $sError = 1;//... set in subclass
+                        $iErrno = 1;//... set in subclass
+                        // !!! Incompatibility with oldre cDBAccess !!!
+                        // -&gt;&gt; CDBA_SELECT_RETURNS_NULL_ON_ERROR
+                        $oRes =&amp; $this-&gt;CreateResult(null, $sSQL, 0, $sError, $iErrno);
+                }
+                return $oRes;
+        }
+
+        /**  Creates a result object. Needed to let subclass use another result class.  */
+        function &amp;CreateResult($rRes, $sSQL, $iRows, $sError, $iErrno){
+                return new cDBA_Result($rRes, $sSQL, $iRows, $sError, $iErrno);
+        }
+
+        /**  Returns whether the result contains rows (comes from SELECT or SHOW)  */
+        function IsSelectResult($rRes){ return false; }
+
+        /**  Collects a result handler from SELECT to free it later.  */
+        function CollectResult(&amp;$oRes){
+                $this-&gt;aoSelectResults[] = &amp;$oRes;
+        }
+
+        /**  Releases results in stored handlers.  */
+        function FreeResults(){
+                foreach($this-&gt;aoSelectResults as $i =&gt; $oRes){
+                        $this-&gt;aoSelectResults[$i]-&gt;FreeResult();
+                        //$this-&gt;aoSelectResults[$i] = 0;
+                        unset($this-&gt;aoSelectResults[$i]);
+                }
+        }
+
+
+        /**  SetConnectionCharset() - sets connection charset.   [MySQL &gt; 4.1.1]  */
+        function SetConnectionCharset($sCharset){ $this-&gt;sConnCharset = $sCharset; return false; }
+
+
+
+} /* class cDBAccess */
+
+
+
+
+/*****************************************************************
+   class cDBA_Error - cDBA Error container
+*****************************************************************/
+class cDBA_Error{
+        var $sError;
+        var $iErrno;
+        var $sSQL;
+
+        // Constructor
+        function cDBA_Error($sError, $iErrno, $sSQL){
+                $this-&gt;sError = $sError;    //
+                $this-&gt;iErrno = $iErrno;    //
+                $this-&gt;sSQL   = $sSQL;      //
+        }
+
+        function GetString(){ return $this-&gt;sError; }
+        function GetNumber(){ return $this-&gt;iErrno; }
+        function GetSql()   { return $this-&gt;sSQL; }
+
+        // Dump() //
+        function Dump($f='_DEF_', $bDebug=false){
+                if(!$bDebug) return '[SQL error]';
+                $sql = $this-&gt;sSQL;
+                    if($f=='_DEF_'){ $f = '&lt;div class="sql_error"&gt;&lt;b&gt;MySQL error:&lt;/b&gt; &lt;i&gt;%s&lt;/i&gt;'.($this-&gt;sSQL?'&lt;br/&gt;&lt;b&gt;SQL:&lt;/b&gt; %s':'')."&lt;/div&gt;\n"; $sql = htmlspecialchars($this-&gt;sSQL); }
+                elseif($f=='_PBB_'){ $f = '[block.sql_error][b]SQL error:[/b] %s'.($this-&gt;sSQL?'[br/][b]SQL:[/b] [span.sql]%s[/span]':'')."[/block]\n"; $sql = str_replace('[', '[[', $this-&gt;sSQL); }
+                elseif($f=='_TXT_'){ $f = 'SQL error: %s'.($this-&gt;sSQL ? '  [SQL: %s]' : '')."\n"; }
+                return sprintf($f, $this-&gt;sError, $sql);
+        }
+
+} /* class cDBA_Error */
+
+
+
+
+/*****************************************************************
+   class cDBA_Result - a class for SELECT result.
+*****************************************************************/
+class cDBA_Result{
+
+        var $rRes;
+        var $sSQL;
+        var $iRows;
+        var $sError;
+        function GetError()       { return $this-&gt;sError; }
+        //function SetError($sError){ $this-&gt;sError = $sError; }
+
+        var $iErrno;
+        function GetErrno()       { return $this-&gt;iErrno; }
+        //function SetErrno($iErrno){ $this-&gt;iErrno = $iErrno; }
+
+
+        // Constructor //
+        function cDBA_Result(&amp;$rRes, $sSQL, $iRows, $sError=null, $iErrno=null){
+                $this-&gt;rRes  =&amp; $rRes;    //
+                $this-&gt;sSQL  =  $sSQL;    //
+                $this-&gt;iRows =  $iRows;   //
+                $this-&gt;sError = $sError;  //
+                $this-&gt;iErrno = $iErrno;  //
+        }
+
+
+        /**  Error during query?  */
+        function IsOK(){ return empty($this-&gt;iErrno) &amp;&amp; empty($this-&gt;sError) &amp;&amp; (TRUE == $this-&gt;rRes || is_resource($this-&gt;rRes) ); }
+
+        /**  Frees a result.  */
+        function FreeResult(){ $this-&gt;rRes = null; /*$this-&gt;sSQL = '';*/ $this-&gt;iRows = 0; return false; }
+
+        /**  Returns a number of rows in a result.  */
+        function NumRows(){ return $this-&gt;iRows; }
+
+        /**  Returns content of one cell in a result.  */
+        function GetCell($iRow, $iField){ return false; }
+
+        function DataSeek($iOffset){ return null; }
+
+        function FetchField($iOffset=null){ return ($iOffset == null) ? null : null; }
+
+        function FieldSeek($iOffset){ return null; }
+
+        function NumFields(){ return null; }
+
+        function FieldType($iOffset){ return null; }
+
+        function FieldTable($iOffset){ return null; }
+
+        /**  @returns an array of objects with information about columns of the result.  */
+        function GetColumns(){ return Array(); }
+
+} /* class cDBA_Result */
+?&gt;</code></pre>
+
+<h2>MySQL extension</h2>
+
+<pre
+class="brush: php"><code>&lt;?php
+
+require_once dirname(__FILE__).'/'.'lib.cDBAccess.php';
+if(!function_exists('mysql_pconnect'))
+        user_error('Function mysql_pconnect() not found! Needed in '.__FILE__);
+
+
+define ('MYSQL_ERR_NO_SUCH_TABLE', 1146);
+define ('MYSQL_ERR_DUPLICATE_KEY', 1022);
+define ('MYSQL_ERR_DUPLICATE_ENTRY', 1062);
+if(!defined('MYSQL_CLIENT_MULTI_RESULTS'))
+        define('MYSQL_CLIENT_MULTI_RESULTS', 131072);
+
+/*****************************************************************
+   cDBAccess_MySQL - Extension of cDBAccess for MySQL
+   Written by Ondra Zizka @ Dynawest, ondra@dynawest.cz
+   @version 1.0.6
+
+         History:
+         1.0.6:
+            - Added:  _Connect() - $this-&gt;dbflags - flags for database connection.
+         1.0.5:
+           - Changed: SetConnectionCharset() calls parent::SetConnectionCharset()
+         1.0.4:
+                - Added:   CheckTable()
+                - Changed: GetCell() - removed mysql_data_seek(0) at the end of call.
+         1.0.3:
+                - Added:   _IncQueriesCount() - Counts queries performed.
+                - Changed: Execute() and Select() now returns cDBA_Result_MySQL object, see IsOK().
+                -
+         1.0.2:
+                - Changed function GetCell($iRow, $iField, $xDefault=null):
+                        When $xDefault is set, returns it when coordinates are out of data bounds.
+          - Several compatibility changes, documentation improvements.
+         1.0.1:
+           Upravena cResult_MySQL::FreeResult()  (rRes muze byt 1 pro dotazy bez vracenych dat)
+                 Upravena cResult_MySQL::NumRows() (pokud rRes == 1, vraci ulozeny pocet z mysql_affected_rows())
+
+*****************************************************************/
+class cDBAccess_MySQL extends cDBAccess {
+
+        function _Connect(){
+                $spoj = @mysql_pconnect($this-&gt;dbhost, $this-&gt;dbuser, $this-&gt;dbpass, $this-&gt;dbflags);
+                if(!$spoj){
+                        $this-&gt;_AddError(@mysql_error(), @mysql_errno(),
+                            "Connect() Host: $this-&gt;dbhost, User: $this-&gt;dbuser, Using password: ".($this-&gt;dbpass ? 'YES' : 'NO').", Flags: $this-&gt;dbflags");
+                        $this-&gt;bConnected = false;
+                        return false;
+                }
+                $this-&gt;bConnected = true;
+                return $spoj;
+        }
+
+        /** Note: mysql_close() will not close persistent links created by mysql_pconnect().  */
+        function _Disconnect(){ return true; /* @mysql_close($spoj); */ }
+
+
+        function _AddError($sError, $iErrno, $sSQL){ $this-&gt;aoErrors[] = new cDBA_MySQL_Error($sError, $iErrno, $sSQL); }
+
+
+        /**  Select the active database.  */
+        function UseDatabase($sDatabase){
+                $bDbOk = @mysql_select_db($sDatabase);
+                if(!$bDbOk){
+                        $this-&gt;_AddError(@mysql_error($this-&gt;dbspoj), @mysql_errno($this-&gt;dbspoj), "USE ".mysql_escape_string($this-&gt;sDatabaseDefault));
+                        return false;
+                }
+                return true;
+        }
+
+        /**  Retrieves the ID generated for an AUTO_INCREMENT column by the previous INSERT query.  */
+        function GetLastInsertId(){
+                return @mysql_insert_id($this-&gt;dbspoj);
+        }
+
+
+
+        /**  Executes a SQL statement  */
+        function _Execute($sSQL){
+                if(!$this-&gt;dbspoj) do{
+                        if(!$this-&gt;bStrict){
+                                if($this-&gt;Connect()){ break; }
+                        }
+                        $this-&gt;_AddError('Can\'t execute when not connected.',  2006, $sSQL);
+                        return null;
+                }while(false);
+
+                $this-&gt;_IncQueriesCount();
+
+                // For SELECT, SHOW, DESCRIBE, EXPLAIN statements,  returns a resource on success  or FALSE on error.
+                // For other type of SQL statements,                returns TRUE       on success  or FALSE on error.
+                $rRes = mysql_query($sSQL, $this-&gt;dbspoj);
+                if(!$rRes){
+                        $this-&gt;_AddError(mysql_error($this-&gt;dbspoj), mysql_errno($this-&gt;dbspoj), $sSQL);
+                }
+                return $rRes;
+        }
+
+
+        /**  Executes a SQL statement.
+         *   @returns false on failure,
+         *            cResult_MySQL object on success (no matter whether rows were returned).
+                      If no rows were returned, cResult_MySQL-&gt;rRes contains 1.  */
+        function Execute($sSQL){
+                if( !isset($sSQL) ) return $this-&gt;CreateResult(null, null, 0, '$sSQL parameter not passed to '.__METHOD__.'($sSQL).', 0);
+                if( !$this-&gt;IsConnected() )
+                        return $oRes =&amp; $this-&gt;CreateResult(null, "", 0, "Not connected.", 1001);
+                $rRes = $this-&gt;_Execute($sSQL);
+                $oRes = false;
+
+                // Error
+                if( TRUE == $rRes || is_resource($rRes) ){
+                        $iRows = mysql_affected_rows($this-&gt;dbspoj);
+                        $oRes = $this-&gt;CreateResult($rRes, $sSQL, $iRows, null, null);
+                        return $oRes;
+                }
+                // OK
+                //if( false === $rRes || null === $rRes ){
+                else if($this-&gt;iSelectMode == CDBA_SELECT_RETURNS_CRESULT_ON_ERROR){
+                        $sError = mysql_error($this-&gt;dbspoj);
+                        $iErrno = mysql_errno($this-&gt;dbspoj);
+                        // !!! Incompatibility with oldre cDBAccess !!!
+                        // -&gt;&gt; CDBA_SELECT_RETURNS_NULL_ON_ERROR
+                        $oRes = $this-&gt;CreateResult(null, $sSQL, 0, $sError, $iErrno);
+                }
+                return $oRes;
+        }
+
+        /**  Makes a SELECT and returns the result.
+         *   Result returned by reference to let the object know when you unset($res); .
+         *   @returns  Depends on select mode set by SetSelectMode():
+         *          CDBA_SELECT_RETURNS_NULL_ON_ERROR: Returns null on error.
+         *      CDBA_SELECT_RETURNS_CRESULT_ON_ERROR: Returns cDBA_Result object.
+         *   @see cDBAccess::SetSelectMode()
+         */
+        function &amp;Select($sSQL){
+                if( !isset($sSQL) ) return $this-&gt;CreateResult(null, null, 0, '$sSQL parameter not passed to '.__METHOD__.'($sSQL).', 0);
+                if( !$this-&gt;IsConnected() ){
+                        $oRes =&amp; $this-&gt;CreateResult(null, "", 0, "Not connected.", 1001); return $oRes;
+                }
+                $rRes = $this-&gt;_Execute($sSQL);
+                $oRes = null;
+                // OK
+                if($rRes &amp;&amp; 'resource' == gettype($rRes) &amp;&amp; $this-&gt;IsSelectResult($rRes)){
+                        $iRows = mysql_num_rows($rRes);
+                        $oRes =&amp; $this-&gt;CreateResult($rRes, $sSQL, $iRows, null, null);
+                        $this-&gt;CollectResult($oRes);
+                }
+                // Error
+                else if($this-&gt;iSelectMode == CDBA_SELECT_RETURNS_CRESULT_ON_ERROR){
+                        $sError = mysql_error($this-&gt;dbspoj);
+                        $iErrno = mysql_errno($this-&gt;dbspoj);
+                        // !!! Incompatibility with oldre cDBAccess !!!
+                        // -&gt;&gt; CDBA_SELECT_RETURNS_NULL_ON_ERROR
+                        $oRes =&amp; $this-&gt;CreateResult(null, $sSQL, 0, $sError, $iErrno);
+                }
+                return $oRes;
+        }
+
+
+        /**  Performs a select and returns value from the specified cell. */
+        function SelectCell($sSQL, $iRow=0, $iCol=0){
+                $oRes = $this-&gt;Select($sSQL);
+                if(null == $oRes || !$oRes-&gt;IsOK()) return null;
+                $xVal = $oRes-&gt;GetCell($iRow, $iCol, FALSE);
+                if( FALSE == $xVal )
+                        return null;
+                return $xVal;
+        }
+
+
+        /**  Returns whether the result contains rows (comes from SELECT or SHOW)  */
+        function IsSelectResult($rRes){ return mysql_num_fields($rRes); }
+
+
+        /**  Creates a result object. Needed to let subclass use another result class.  */
+        function CreateResult($rRes, $sSQL, $iRows, $sError, $iErrno){
+                $o = new cDBA_MySQL_Result($rRes, $sSQL, $iRows, $sError, $iErrno);
+                return $o;
+        }
+
+
+
+        /**  SetConnectionCharset() - sets connection charset.   [MySQL &gt; 4.1.1]  */
+        function SetConnectionCharset($sCharset){
+                //echo "\n".CallInfo();///
+                parent::SetConnectionCharset($sCharset); // sets the internal variable
+                $sSQL = "SET CHARACTER SET '".mysql_escape_string($sCharset)."'";
+                $bSucc = $this-&gt;Execute($sSQL);
+                //echo "&lt;br&gt;Succ: ".(int)$bSucc;///
+                if(!$bSucc){
+                        $this-&gt;_AddError("Error when setting CHARSET to [$sCharset].", 0, '');
+                        //echo AdjustedPrintR(debug_print_backtrace());///
+                        return false;
+                }
+        }
+
+
+        /** Returns number of rows affected by the last query performed.
+                @deprecated
+                You should use cDBA_Result::NumRows() instead. */
+        function AffectedRows(){ return mysql_affected_rows($this-&gt;dbspoj); }
+
+
+
+
+        /**&lt;***********************************************************************&gt;
+        *  Checks whether a table is in given format.                              *
+        * @param sTable  table name
+        * @param aaCols  expected columns. Members:
+        *                ['name']: Column's name
+        *                ['null']: true = can / false = can't be null / not set or null = whatever
+        *                ['key']:  pri* = primary / uni* = unique / mul = normal multiple key / not set = whatever
+        * @param bStrict  If true, no other columns accepted
+        ***************************************************************************/
+        function CheckTable($sTable, $aaCols, $bStrict=false){
+                //echo "\n".CallInfo();///
+
+                // Get columns
+                $sql = "SHOW COLUMNS FROM ".$sTable;
+                $oRes = $this-&gt;Select($sql);
+                // ERR 1146: Table does not exist.
+                if( null == $oRes || !$oRes-&gt;IsOK() )
+                        return false;
+
+                // Look for columns
+                $iOk = 0;
+                while($asRow = $oRes-&gt;FetchRow()){
+
+                        // Find the column info for this column
+                        $aColInfo = null;
+                        foreach($aaCols as $aColInfoCur){
+                                if($aColInfoCur['name'] == $asRow['Field']){
+                                        $aColInfo = $aColInfoCur; break;
+                                }
+                        }
+
+                        // Column not listed in check-list
+                        if( null == $aColInfo ){
+                                // If in strict mode, refuse any other column.
+                                if( $bStrict ){ $iOk = 0; break; }
+                                continue; // Else continue to next column.
+                        }
+                        // Column found in check-list, check properties
+                        else{
+                                // Type
+                                $sType = substr($asRow['Type'], 0, strcspn($asRow['Type'],'(') );
+                                //echo " ".$asRow['Field']." ".$sType." [".$aColInfo['types']."]";
+
+                                if(!empty($aColInfo['types']) &amp;&amp; !in_array($sType, explode(' ', $aColInfo['types'])))
+                                        continue;
+                                // NULL
+                                if( isset($aColInfo['null']) &amp;&amp; null !== $aColInfo['null'] ){
+                                        if( ( $aColInfo['null'] ? 'YES' : 'NO') != $asRow['Null'] )
+                                                continue;
+                                }
+                                // Index
+                                if( isset($aColInfo['key']) ){
+                                        $sKeyOpt = strtoupper(substr($aColInfo['key'],0,3));
+                                        if($sKeyOpt == 'NON'){
+                                                if( $bStrict &amp;&amp;  '' != $asRow['Key'] ) // none
+                                                        continue;
+                                        }
+                                        elseif( $sKeyOpt != $asRow['Key'] ) // PRI, UNI, MUL
+                                                continue;
+                                }
+                        }
+                        // One more column is ok, count it.
+                        $iOk++;
+                }// while($asRow)
+
+                $oRes-&gt;FreeResult();
+
+                return Count($aaCols) == $iOk;
+        }// cDBAccess_MySQL::CheckTable()
+
+
+
+} /* class cDBAccess_MySQL */
+
+
+
+
+
+/*****************************************************************
+   class cDBA_MySQL_Result - a class for SELECT result.
+*****************************************************************/
+class cDBA_MySQL_Result extends cDBA_Result {
+        var $rRes;
+        var $sSQL;
+
+        // Constructor //
+        /*function cDBA_MySQL_Result(&amp;$rRes, $sSQL, $iRows){
+                $this-&gt;rRes  =&amp; $rRes;    //
+                $this-&gt;sSQL  =  $sSQL;    //
+                $this-&gt;iRows =  $iRows;   //
+        }*/
+
+        /**  Frees a result.  */
+        function FreeResult(){
+                $bSucc = true;
+                if( is_resource($this-&gt;rRes) )
+                        $bSucc = mysql_free_result($this-&gt;rRes);
+                //unset($this-&gt;rRes);
+                $this-&gt;rRes = null; /*$this-&gt;sSQL = '';*/ $this-&gt;iRows = 0;
+                return $bSucc;
+        }
+
+        /**  For a result created by queries returning some rows (SELECT, SHOW, DESCRIBE), returns a number of rows in a result.
+             For other queries (done with Execute()) like UPDATE, INSERT, DELETE, returns a number of rows affected by that query. */
+        function NumRows(){
+                return is_resource($this-&gt;rRes) ? mysql_num_rows($this-&gt;rRes) : $this-&gt;iRows;
+        }
+
+        /**  Returns content of one cell in a result.  */
+        function GetCell($iRow, $xField, $xDefault=null){
+                if($iRow   &gt;= $this-&gt;NumRows()   || $iRow   &lt; 0)
+                        return (null !== $xDefault) ? $xDefault : Array("Bad row index [$iRow/".$this-&gt;NumRows()."]");
+                if( is_int( $xField ) )
+                if($xField &gt;= $this-&gt;NumFields() || $xField &lt; 0)
+                        return (null !== $xDefault) ? $xDefault : Array("Bad field index [$xField/".$this-&gt;$this-&gt;NumFields()."]");
+                $ret = mysql_result($this-&gt;rRes, $iRow, $xField);
+                //mysql_data_seek($this-&gt;rRes, 0);
+                return $ret;
+        }
+
+
+        function FetchRow($iType=MYSQL_ASSOC){
+                $ret = mysql_fetch_array($this-&gt;rRes, $iType);
+                //if( !$ret ){ echo "x"; var_dump($ret); }
+                if( $ret === FALSE || is_array($ret) ) return $ret;
+                $aBT = debug_backtrace();
+                echo "Not a MySQL result in ".$aBT[1]['file']." @ ".$aBT[1]['line'];
+        }
+
+        function DataSeek($iOffset){ return mysql_data_seek($this-&gt;rRes, $iOffset); }
+
+        // Fields //
+
+        function FetchField($iOffset=null){ return ($iOffset === null) ? mysql_fetch_field($this-&gt;rRes) : mysql_fetch_field($this-&gt;rRes, $iOffset); }
+
+        function FieldSeek($iOffset){ return mysql_field_seek($this-&gt;rRes, $iOffset); }
+
+        function NumFields(){ return mysql_num_fields($this-&gt;rRes); }
+
+        function FieldType($iOffset){ return mysql_field_type($this-&gt;rRes, $iOffset); }
+
+        function FieldTable($iOffset){ return mysql_field_table($this-&gt;rRes, $iOffset); }
+
+        /**  @returns an array of objects with information about columns of the result.  */
+        function GetColumns(){
+                $aoColumns = Array();
+
+                $iFieldsCount = $this-&gt;NumFields();
+                for( $i = 0; $i &lt; $iFieldsCount; $i++ ){
+                        $aoColumns[] = $this-&gt;FetchField($i);
+                }
+                return $aoColumns;
+        }
+
+} /* class cDBA_Result */
+
+
+
+
+
+/*****************************************************************
+   class cDBA_MySQL_Error  -  specializes the Dump
+*****************************************************************/
+class cDBA_MySQL_Error extends cDBA_Error{
+
+        //  Not needed, called default
+        /*function cDBA_MySQL_Error($sError, $iErrno, $sSQL){
+                parent::cDBA_Error($sError, $iErrno, $sSQL);
+        }*/
+        function Dump($f='_DEF_', $bDebug=false){
+                if(!$bDebug) return '[MySQL error]';
+                $sql = $this-&gt;sSQL;
+                    if($f=='_DEF_'){ $f = '&lt;div class="mysql_error"&gt;&lt;b&gt;MySQL error:&lt;/b&gt; &lt;i&gt;%s&lt;/i&gt;'.($this-&gt;sSQL?'&lt;br/&gt;&lt;b&gt;SQL:&lt;/b&gt; %s':'')."&lt;/div&gt;\n"; $sql = htmlspecialchars($this-&gt;sSQL); }
+                elseif($f=='_PBB_'){ $f = '[block.mysql_error][b]MySQL error:[/b] %s'.($this-&gt;sSQL?'[br/][b]SQL:[/b] [span.sql]%s[/span]':'')."[/block]\n"; $sql = str_replace('[', '[[', $this-&gt;sSQL); }
+                elseif($f=='_TXT_'){ $f = 'MySQL error: %s'.($this-&gt;sSQL ? '  [SQL: %s]' : '')."\n"; }
+                return sprintf($f, $this-&gt;sError, $sql);
+                //$iErrno
+        }
+} /* cDBA_MySQL_Error */</code></pre>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/php/php-database-layer-cdbaccaess.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

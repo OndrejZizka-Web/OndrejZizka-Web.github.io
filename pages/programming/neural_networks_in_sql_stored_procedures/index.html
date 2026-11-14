@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Neural Networks SQL implementation – Stored Procedures</h1>
+<!--
+//The page is being updated at the moment.//
+-->
+<p>Have you ever worked with neural networks? Did you run out of memory? And
+were you looking for a simple solution for work with many large networks, for
+teaching them and for their storage? Then this may interest you.</p>
+<a>
+<h2>Contents</h2>
+
+<ul>
+	<li>Introduction</li>
+
+	<li>News</li>
+
+	<li>Persistent Tables</li>
+
+	<li>Neural Network Creation</li>
+
+	<li>Geting Info about Neural Network</li>
+
+	<li>Neural Network Computation</li>
+
+	<li>Teaching the Neural Network with Backpropagation Algorithm</li>
+
+	<li>Training sets</li>
+
+	<li>Project Info</li>
+
+	<li>Future developement</li>
+
+	<li>Download</li>
+
+	<li>Resources</li>
+</ul>
+
+<h2>Introduction</h2>
+
+<p>For an overview of what neuron networks are and what they are used to, see
+e.g. Wikipedia's ar­ticle. This page assumes you have some experience with
+neural networks.</p>
+
+<h3>Why implement neural networks in SQL, when C++/Java implementation is much
+faster?</h3>
+
+<p>Imagine a task solved by a very large neural networks, like speech
+recognition, text recognition and all the other *recognitions, time-tabling,
+etc. The count of the weights of such nets rises up to millions.</p>
+
+<p>Thinking of OOP NN implementation in Java, each weight will consume about
+30–70 bytes of memory, each neuron about 50–100. That consumes about 70 MB
+for each such network.</p>
+
+<p>Now imagine some graph task with hundreds of nodes where each node has
+it's own neural network. All networks should be available for computation at
+any time (say, you use them on a server for a service of some kind). We are
+getting to the limits of the computers that are commonly available for a common
+mortals.</p>
+
+<p>Now imagine that these neural networks do not learn by simple
+backpropagation, instead they learn using techniques like Reinforcement
+Learning. What would you do? Would you have all the networks in memory? Would
+you load, compute, and store it again and again? What to do with the RL-data?
+Stop all computations and let the net learn for a while, making it inaccessible
+for a while?</p>
+
+<p>Moving the entire process to a database leaves all these problems far behind
+you. You have one persistent representation of the network, which can be used
+for computing and taught at the same time.</p>
+
+<p>The memory management is left up to the server, which caches the table rows
+based on how often you use them.</p>
+
+<p>With reinforcement learning, you can log the results and teach the net in the
+background process, which modifies the weights when the server has resources for
+it, but allows computation of the network for „time-critical“ task (don't
+let your users wait).</p>
+
+<p>So, generally speaking, SQL implementation of neural networks enables you to
+use much larger networks and more of them than if you used only in-memory
+networks.</p>
+
+<p><strong>Notes:</strong></p>
+
+<ul>
+	<li>Code is full of debugging logs (<code>CALL LoggP(...)</code>) and commented
+	statements, which can be safely deleted.</li>
+
+	<li>Procedures listed below use the procedures and functions listed on the MySQL
+	Stored Procedures page.</li>
+
+	<li>I also have versions of stored procedures that work with multiple networks
+	at once, but they are not tested yet.</li>
+</ul>
+
+<h2>News</h2>
+
+<p>//2008–05–03:// Available for download: Complete database creation
+script. <strong>Do not use the snippets from the page, they may be
+obsolete</strong> and are here mostly for explanation / documentation purposes.
+I'll try to keep the ZIP file up to date. However, that's the snapshot right
+from my database, so expect it to have plenty of debug stuff like
+<code>Logg()</code> calls etc.</p>
+
+<p>//2008–04–29:// I'm finishing a version which gets training data from a
+database. While being more optimized than independent case-by-case training, it
+learns much much
+faster. <!-- On XOR 2,2,1 network it does about 5 000 "teach cases"
+per minute on my slow computer. --></p>
+
+<h2>Persistent Tables</h2>
+
+<p>This implementation is designed to hold any number of networks of any
+architecture in fixed number of tables. So, all neurons are in one table
+(<code>nn_net_neurons</code>), all connections in other
+(<code>nn_net_synapses</code>), and the networks themselves are registered in
+the <code>nn_networks</code> table.</p>
+
+<p>Originally, I used InnoDB tables for integrity checking. But since that
+slowed down the computation, which took about seven times longer, I had to
+switch to MyISAM or Memory engine.</p>
+
+<pre
+class="brush: sql"><code>CREATE TABLE  nn_networks (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(45) NOT NULL,
+  `inputs` int(10) unsigned NOT NULL default '0',
+  `outputs` int(10) unsigned NOT NULL default '0',
+  `architecture` enum('perceptron') NOT NULL default 'perceptron',
+  `definition` varchar(255) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Neural networks';</code></pre>
+
+<pre
+class="brush: sql"><code>CREATE TABLE  nn_net_neurons (
+  `id_net` int(10) unsigned NOT NULL,
+  `id_neuron` int(10) unsigned NOT NULL auto_increment,
+  `bias` double NOT NULL,
+  PRIMARY KEY  (`id_neuron`),
+  KEY `id_net` (`id_net`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Neural net neurons';</code></pre>
+
+<pre
+class="brush: sql"><code>CREATE TABLE  nn_net_synapses (
+  `id_from` int(10) unsigned default '0',
+  `id_to` int(10) unsigned default '0',
+  `weight` double NOT NULL,
+  UNIQUE KEY `from_to` (`id_from`,`id_to`),
+  KEY `id_to` (`id_to`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Connections between neurons';</code></pre>
+
+<pre
+class="brush: sql"><code>CREATE TABLE lib_logg (
+  `whn` datetime NOT NULL,
+  `thread` int(10) unsigned NOT NULL,
+  `level` enum('info','warn','error','enter','leave') NOT NULL default 'info',
+  `str` text,
+  `rout` varchar(255) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;</code></pre>
+
+<h2>Neural Network Creation</h2>
+
+<h3>Usage:</h3>
+
+<pre
+class="brush: sql"><code>##    Layers definition,  initial weigths range, initial bias range, OUT network ID
+CALL nn_CreatePerceptron('2,2,1','XOR', 0.10, 0.5, @out_NetID);</code></pre>
+
+<h3>Result:</h3>
+
+<p>Creates a perceptron with an architecture defined by first parameter.
+<code>2,2,1</code> creates 2 input neurons, 2 hidden neurons and 1 output
+neuron. Layers are fully connected („cartesian product“). Second parameter
+is the name of the network (not unique). Third parameter is the range of initial
+weights, which are set randomly. Fourth parameter is the range of initial
+biases, also set randomly. In the fifth parameter the procedure returns an ID of
+the created network.</p>
+
+<h3>Source:</h3>
+
+<p>Procedure <code>nn_CreatePerceptron</code> is a wrapper for
+<code>nn_GeneratePerceptron</code> (see below).</p>
+
+<pre
+class="brush: sql"><code>CREATE PROCEDURE `nn_CreatePerceptron`(
+  sLayers VARCHAR(255), sName VARCHAR(255),
+  dWeightsRange DOUBLE, dBiasRange DOUBLE,
+  out_iNetId INT UNSIGNED)
+BEGIN
+
+  /*
+   *  Creates a network with perceptron architecture.
+   *  INSERTs into nn_network, nn_net_neurons and nn_net_synapses.
+   *  @returns: The ID of the network created goes into  out_iNetId
+   */
+
+  ##  Log
+  CALL Logg(CONCAT( 'nn_CreatePerceptron( sLayers: ', NSQ(sLayers), ', sName: ', NSQ(sName), ' )' ));
+
+  ##  Generate the perceptron to temp table.
+  CALL nn_GeneratePerceptron(sLayers, dWeightsRange, dBiasRange);
+
+
+  ##  Create the new network record and get it's new ID.
+  INSERT INTO nn_networks SET name = sName, architecture = 'perceptron', definition = sLayers,
+   inputs = sLayers, outputs = SUBSTRING_INDEX(sLayers, ',', -1);
+  SELECT LAST_INSERT_ID() INTO out_iNetId;
+
+  ##  Get last neuron's ID.
+  SELECT IFNULL(MAX(id_neuron)+1,0) INTO @iLastNeuronId FROM nn_net_neurons;
+
+  CALL Logg(CONCAT( 'Created network #',out_iNetId,' and neurons with ID #',@iLastNeuronId,' and up.' ));
+
+
+  INSERT INTO nn_net_neurons
+    SELECT out_iNetId AS id_net, id_neuron + @iLastNeuronId, bias
+      FROM nn_GeneratePerceptron_neurons;
+  CALL Logg(CONCAT( 'Created neurons for nn #',out_iNetId,'' ));
+
+  INSERT INTO nn_net_synapses
+    SELECT IF( 0 = id_from, NULL, CAST( id_from + @iLastNeuronId AS UNSIGNED ) ) AS id_from,
+           IF( 0 = id_to,   NULL, CAST( id_to   + @iLastNeuronId AS UNSIGNED ) ) AS id_to,
+           weight
+      FROM nn_GeneratePerceptron_synapses;
+  CALL Logg(CONCAT( 'Created synapses for nn #',out_iNetId,'' ));
+
+
+END $$</code></pre>
+
+<p>Procedure <code>nn_GeneratePerceptron</code> is called by
+<code>nn_CreatePerceptron</code>. That's because
+<code>nn_GeneratePerceptron</code> works independently and creates the network
+in a virtual space, before merging it to the persistent tables. This helps
+isolating the eventual transactions and improves the performance.</p>
+
+<pre
+class="brush: sql"><code>CREATE PROCEDURE `nn_GeneratePerceptron`(
+  sLayers VARCHAR(255), dWeightsRange DOUBLE, dBiasRange DOUBLE
+)
+body: BEGIN
+
+  ##  Push old auto-increment settings and set to 1,1.
+  SET @oldInc = @@session.auto_increment_increment, @oldOff = @@session.auto_increment_offset;
+  SET @@session.auto_increment_increment = 1, @@session.auto_increment_offset = 1;
+
+
+  SET @sLayers = sLayers;
+
+  CALL Logg(CONCAT('nn_GeneratePerceptron( ', @sLayers, ' )'));
+
+  ##  Create tables for the result. ##
+  DROP TEMPORARY TABLE IF EXISTS nn_GeneratePerceptron_neurons;
+  DROP TEMPORARY TABLE IF EXISTS nn_GeneratePerceptron_synapses;
+
+  CREATE TEMPORARY TABLE nn_GeneratePerceptron_neurons(
+    `id_neuron` int unsigned NOT NULL auto_increment,
+    `bias` double NOT NULL
+    , PRIMARY KEY  (`id_neuron`)
+  ) ENGINE=Memory COMMENT='Neural net neurons';
+
+  CREATE TEMPORARY TABLE nn_GeneratePerceptron_synapses(
+    `id_from` int unsigned,
+    `id_to` int unsigned,
+    `weight` double NOT NULL,
+    UNIQUE KEY  (`id_from`,`id_to`)
+  ) ENGINE=Memory COMMENT='Connections between neurons';
+
+
+  DROP TEMPORARY TABLE IF EXISTS nn_GeneratePerceptron_tmp;
+  CREATE TEMPORARY TABLE nn_GeneratePerceptron_tmp(
+    `id_neuron` int unsigned NOT NULL auto_increment,
+    `bias` double NOT NULL,
+    PRIMARY KEY  (`id_neuron`)
+  ) ENGINE=Memory COMMENT='New layer neurons';
+
+  DROP TEMPORARY TABLE IF EXISTS nn_GeneratePerceptron_prev_layer;
+  CREATE TEMPORARY TABLE nn_GeneratePerceptron_prev_layer(
+    `id_neuron` int unsigned #NOT NULL
+    #, PRIMARY KEY  (`id_neuron`)
+    , UNIQUE KEY  (`id_neuron`)
+  ) ENGINE=Memory COMMENT='IDs of previous layer neurons.';
+
+
+
+  ##  Create pseudo-synapses for the input layer.
+  SET @iNeurons = CAST( @sLayers AS UNSIGNED );
+  CALL lib_GenerateSequence(1, @iNeurons, 1);
+  ##  Instead, create virtual layer, to which the WHILE loop will create synapses.
+  INSERT INTO nn_GeneratePerceptron_prev_layer
+   VALUES (NULL); -- Only one pseudo-synapse per input neuron.
+
+
+  SET @iLayer = 0;
+
+  create_layers:
+  WHILE @sLayers != '' DO
+
+    # Get the next layer's volume
+    SET @sHead = SUBSTRING_INDEX(@sLayers, ',', 1);
+    #CALL Logg(CONCAT( 'Head: ', @sHead ));
+    SET @sLayers = SUBSTRING( @sLayers, LENGTH(@sHead)+2 );  -- +2 - SUBSTRING() is 1-based.
+    #CALL Logg(CONCAT( 'Tail: ', @sLayers ));
+
+    SET @iNeurons = CAST( @sHead AS UNSIGNED );
+    IF NOT @iNeurons THEN ITERATE create_layers; END IF;
+    SET @iLayer = @iLayer + 1;
+
+    ##  Create the layer. ##
+
+    CALL Logg(CONCAT('Generating layer ', @iLayer, ' with ', @iNeurons, ' neurons.'));
+
+    # Last inserted id.
+    SELECT IFNULL(MAX(id_neuron),0) INTO @iLastId FROM nn_GeneratePerceptron_neurons;
+    # Create new neurons IDs.
+    CALL lib_GenerateSequence(@iLastId+1, @iLastId + @iNeurons, 1);
+    # Insert neurons with corresponding IDs.
+    INSERT INTO nn_GeneratePerceptron_neurons
+      SELECT NULL AS id_neuron,
+        -- 0.0 AS bias
+        -- (RAND()-0.5)*1.6 AS bias  # &lt;-0.8, 0.8)
+        (RAND()-0.5)*2*dBiasRange AS bias
+        FROM lib_GenerateSequence;
+    CALL Logg('...neurons generated.');
+
+
+    # Connect this new layer with previous layer.
+    INSERT INTO nn_GeneratePerceptron_synapses
+      SELECT
+        nn_GeneratePerceptron_prev_layer.id_neuron AS id_from,
+        lib_GenerateSequence.i AS id_to,
+        (RAND()-0.5)*2*dWeightsRange AS weight
+      FROM nn_GeneratePerceptron_prev_layer CROSS JOIN lib_GenerateSequence;
+    CALL Logg('...synapses generated.');
+
+    # Make this layer the "previous" for next turn
+    TRUNCATE nn_GeneratePerceptron_prev_layer;
+    INSERT INTO nn_GeneratePerceptron_prev_layer
+      SELECT i AS id_neuron FROM lib_GenerateSequence;
+
+    ##  Final Report of this layer creation round.
+    SELECT COUNT(*) INTO @iNeuronsTotal FROM nn_GeneratePerceptron_neurons;
+    SELECT COUNT(*) INTO @iSynapsesTotal FROM nn_GeneratePerceptron_synapses;
+    CALL Logg(CONCAT('Generated layer', NS(@iLayer), '. The net has now ',
+                NS(@iNeuronsTotal), ' neurons and ',
+                NS(@iSynapsesTotal),' synapses.'));
+
+
+  END WHILE;
+
+
+  ##  Create pseudo-synapses for the output layer.
+  INSERT INTO nn_GeneratePerceptron_synapses
+    SELECT id_neuron AS id_from, NULL AS id_to, 1.0 AS weight   FROM nn_GeneratePerceptron_prev_layer;
+  ##  Reset input pseudo-synapses weights.
+  UPDATE nn_GeneratePerceptron_synapses SET weight = 1.0 WHERE id_from IS NULL;
+  ##  Reset input neurons' biases to zero.
+  UPDATE nn_GeneratePerceptron_neurons AS neu
+    LEFT JOIN nn_GeneratePerceptron_synapses AS syn ON neu.id_neuron = syn.id_to
+    SET bias   = 0.0 WHERE syn.id_from IS NULL;
+
+
+  ##  Restore original auto-increment settings.
+  SET @@session.auto_increment_increment = @oldInc, @@session.auto_increment_offset = @oldOff;
+
+END $$</code></pre>
+
+<h2>Geting Info about Neural Network</h2>
+
+<p>When we have an existing network, we want to be able to identify it's input
+and output neurons. That's what <code>nn_GetInputNeuronIDs</code> and
+<code>nn_GetOutputNeuronIDs</code> are.</p>
+
+<h3>Usage:</h3>
+
+<pre
+class="brush: sql"><code>##  Get the input neuron IDs for the network with ID 1.
+CALL nn_GetInputNeuronIDs( 1 );
+
+##  Get the output neuron IDs for the network with ID 1.
+CALL nn_GetOutputNeuronIDs( 1 );</code></pre>
+
+<h3>Result:</h3>
+
+<p>For the XOR network with 2,2,1 architecture, the output could be
+like this:</p>
+
+<div><img src="images/img/xor-2-2-1-network.png" alt=""
+style="float:right"></div>
+
+<table>
+	<thead>
+		<tr>
+			<th>pos</th>
+
+			<th>id_neuron</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>1</td>
+
+			<td>1</td>
+		</tr>
+
+		<tr>
+			<td>2</td>
+
+			<td>2</td>
+		</tr>
+	</tbody>
+</table>
+
+<table>
+	<thead>
+		<tr>
+			<th>pos</th>
+
+			<th>id_neuron</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>1</td>
+
+			<td>5</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Source:</h3>
+
+<pre
+class="brush: sql"><code>CREATE PROCEDURE `nn_GetInputNeuronIDs`(iNetID INTEGER)
+    COMMENT 'Returns tmp.t. (pos, id_neuron) with given net''s input neurons.'
+body:
+BEGIN
+
+  #CALL LoggP('nn_GetInputNeuronIDs', CONCAT('nn_GetInputNeuronIDs( ',NS(iNetID),' )'));
+
+  DROP TEMPORARY TABLE IF EXISTS nn_GetInputNeuronIDs;
+  CREATE TEMPORARY TABLE nn_GetInputNeuronIDs (
+    `pos` int unsigned NOT NULL auto_increment,
+    `id_neuron` INTEGER UNSIGNED NOT NULL,
+    PRIMARY KEY USING HASH (`pos`)
+  ) ENGINE=Memory ROW_FORMAT=FIXED COMMENT='Input neuron IDs indexed by position.';
+
+  IF iNetID IS NULL THEN LEAVE body; END IF;
+
+  INSERT INTO nn_GetInputNeuronIDs
+  -- SELECT syn.id_to FROM nn_net_synapses AS syn WHERE syn.id_from = 0;
+  SELECT NULL AS pos, id_to AS id_neuron
+    FROM nn_net_synapses AS syn
+    LEFT JOIN nn_net_neurons AS neu ON neu.id_net = iNetID AND syn.id_to = neu.id_neuron
+    WHERE id_net = iNetID AND syn.id_from IS NULL
+    ORDER BY id_to;
+END $$</code></pre>
+
+<pre
+class="brush: sql"><code>CREATE PROCEDURE `nn_GetOutputNeuronIDs`(iNetID INTEGER)
+    COMMENT 'Returns tmp.t. (pos, id_neuron) with given net''s output neurons.'
+body:
+BEGIN
+
+  CALL LoggP('nn_GetOutputNeuronIDs', CONCAT('nn_GetOutputNeuronIDs( ', NS(iNetID), ' )'));
+
+  DROP TEMPORARY TABLE IF EXISTS nn_GetOutputNeuronIDs;
+  CREATE TEMPORARY TABLE nn_GetOutputNeuronIDs (
+    `pos` int unsigned NOT NULL auto_increment,
+    `id_neuron` INTEGER UNSIGNED NOT NULL,
+    PRIMARY KEY USING HASH (`pos`)
+  ) ENGINE=Memory ROW_FORMAT=FIXED COMMENT='Output neuron IDs indexed by position.';
+
+  IF iNetID IS NULL THEN LEAVE body; END IF;
+
+  INSERT INTO nn_GetOutputNeuronIDs
+  -- SELECT syn.id_to FROM nn_net_synapses AS syn WHERE syn.id_from = 0;
+  SELECT NULL AS pos, id_from AS id_neuron
+    FROM nn_net_synapses AS syn
+    LEFT JOIN nn_net_neurons AS neu ON neu.id_net = iNetID AND syn.id_from = neu.id_neuron
+    WHERE id_net = iNetID AND  syn.id_to IS NULL
+    ORDER BY id_from;
+
+  #SELECT * FROM nn_GetInputNeuronIDs; -- DEBUG
+
+END $$</code></pre>
+
+<h2>Neural Network Computation</h2>
+
+<h3>Procedure <code>nn_ComputeNet</code></h3>
+
+<p>Computes a single network output for given input.</p>
+
+<h3>Usage:</h3>
+
+<pre
+class="brush: sql"><code>CALL nn_ComputeNet(1, '-1, 1', TRUE);
+SELECT * FROM nn_ComputeNet;</code></pre>
+
+<pre
+class="brush: sql"><code>SELECT * FROM nn_ComputeNet_InternalValues;</code></pre>
+
+<h3>Result:</h3>
+
+<table>
+	<thead>
+		<tr>
+			<th>id_neuron</th>
+
+			<th>val</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>5</td>
+
+			<td>0.984</td>
+		</tr>
+	</tbody>
+</table>
+
+<table>
+	<thead>
+		<tr>
+			<th>id_neuron</th>
+
+			<th>val</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>1</td>
+
+			<td>–1</td>
+		</tr>
+
+		<tr>
+			<td>2</td>
+
+			<td>1</td>
+		</tr>
+
+		<tr>
+			<td>3</td>
+
+			<td>0.0166427942550775</td>
+		</tr>
+
+		<tr>
+			<td>4</td>
+
+			<td>0.972952595778587</td>
+		</tr>
+
+		<tr>
+			<td>5</td>
+
+			<td>0.984122623404696</td>
+		</tr>
+	</tbody>
+</table>
+
+<h3>Source:</h3>
+
+<pre
+class="brush: sql"><code>CREATE PROCEDURE `nn_ComputeNet`(
+  iNetId INTEGER, sadInput VARCHAR(255), bStoreInternalValues BOOLEAN)
+body: BEGIN
+
+  DROP TEMPORARY TABLE IF EXISTS nn_ComputeNet;
+  CALL LoggP('nn_ComputeNet', F3('nn_ComputeNet( {1}, {2}, {3} );.', NS(iNetId), NSQ(sadInput), NSB(bStoreInternalValues) ));
+  IF iNetId IS NULL OR sadInput IS NULL THEN LEAVE body; END IF;
+
+  SET @bStoreInternalValues = TRUE; -- IFNULL(bStoreInternalValues, FALSE);
+
+
+  ##  Get a table with input values as rows.
+  # pos, val
+  CALL lib_Explode(',', sadInput);
+  #SELECT * FROM lib_Explode; LEAVE body;            -- DEBUG
+
+  # pos, id_neuron
+  CALL nn_GetInputNeuronIDs( iNetId );
+  #SELECT * FROM nn_GetInputNeuronIDs; LEAVE body;   -- DEBUG
+
+  SET @iCntInputNeurons = (SELECT COUNT(*) FROM nn_GetInputNeuronIDs);
+  SET @iCntInputValues  = (SELECT COUNT(*) FROM lib_Explode);
+  IF @iCntInputNeurons != @iCntInputValues THEN
+    CALL Logg_error(F2('Number of input neurons {1} and number of input values {2} differs.', @iCntInputNeurons, @iCntInputValues ));
+    LEAVE body;
+  END IF;
+
+
+  ##  Create the work table and fill it with input neurons' IDs.
+  DROP TEMPORARY TABLE IF EXISTS nn_ComputeNet_new_layer;
+  DROP TEMPORARY TABLE IF EXISTS nn_ComputeNet_prev_layer;
+  CREATE TEMPORARY TABLE nn_ComputeNet_prev_layer  (
+    id_neuron INT UNSIGNED NOT NULL
+    ,PRIMARY KEY USING HASH (id_neuron)
+    ,val DOUBLE NOT NULL
+  ) ENGINE = Memory  ROW_FORMAT = FIXED
+  SELECT id_neuron, val
+      FROM lib_Explode AS ex
+      LEFT JOIN nn_GetInputNeuronIDs AS inp USING(pos);
+
+  CALL LoggP('nn_ComputeNet', CONCAT('Input: ', (
+    SELECT GROUP_CONCAT( CONCAT(id_neuron,': ',val) SEPARATOR '; ') FROM nn_ComputeNet_prev_layer
+  )));
+
+
+  ##  If we were asked to store internal neurons' output values, do so.
+  IF @bStoreInternalValues THEN
+    DROP TEMPORARY TABLE IF EXISTS nn_ComputeNet_InternalValues;
+    CREATE TEMPORARY TABLE nn_ComputeNet_InternalValues (
+      id_neuron INT UNSIGNED NOT NULL
+      ,PRIMARY KEY USING HASH (id_neuron)
+      ,val DOUBLE NOT NULL
+    ) ENGINE = Memory  ROW_FORMAT = FIXED
+      SELECT * FROM nn_ComputeNet_prev_layer;
+  END IF;
+
+  SET @iInputNeurons = (SELECT COUNT(*) FROM nn_ComputeNet_prev_layer);
+  SET @iRound = 1;
+
+  compute_layers:
+  LOOP
+
+    SET @iRound = @iRound +1;
+    IF @iRound &gt; 5 THEN LEAVE compute_layers; END IF; -- DEBUG
+    #CALL LoggP('nn_ComputeNet', F1('Computing next layer. %s neurons on input.', @iInputNeurons));  -- DEBUG
+
+    ##  Compute the values for the next layer.
+    CREATE TEMPORARY TABLE nn_ComputeNet_new_layer  (
+      id_neuron INT UNSIGNED NOT NULL
+      ,PRIMARY KEY USING HASH (id_neuron)
+      ,val DOUBLE NOT NULL
+    ) ENGINE = Memory  ROW_FORMAT = FIXED
+    SELECT neu.id_neuron,
+      #SIGMOID(SUM(inp.val * syn.weight)+neu.bias) AS val -- Too slow :-/
+      1 / (1 + EXP(- (SUM(inp.val * syn.weight)+neu.bias) ) ) AS val
+      FROM nn_ComputeNet_prev_layer AS inp
+      LEFT JOIN nn_net_synapses AS syn ON inp.id_neuron = syn.id_from
+      LEFT JOIN nn_net_neurons  AS neu ON syn.id_to = neu.id_neuron
+      WHERE neu.id_neuron IS NOT NULL
+      GROUP BY(neu.id_neuron);
+    #CALL LoggP('nn_ComputeNet', 'Computed.');  -- DEBUG
+
+    ##  Update the number of input neurons for next layer.
+    SELECT COUNT(*) INTO @iInputNeurons FROM nn_ComputeNet_new_layer;
+    ##  If no further neurons are left, quit the loop.
+    IF 0 = @iInputNeurons THEN LEAVE compute_layers; END IF;
+
+    CALL LoggP('nn_ComputeNet', CONCAT('Input: ', (
+      SELECT GROUP_CONCAT( CONCAT(id_neuron,': ',val) SEPARATOR '; ') FROM nn_ComputeNet_prev_layer
+    )));
+
+
+    ##  Switch  ##
+    DROP TEMPORARY TABLE IF EXISTS nn_ComputeNet_prev_layer;
+    ALTER TABLE nn_ComputeNet_new_layer RENAME TO nn_ComputeNet_prev_layer;
+
+    ##  If we were asked to store internal neurons' output values, do so.
+    ##  This can be after the Switch - we do NOT want to duplicate output values.
+    IF @bStoreInternalValues THEN
+      INSERT INTO nn_ComputeNet_InternalValues SELECT * FROM nn_ComputeNet_prev_layer;
+    END IF;
+
+  END LOOP;
+
+  ALTER TABLE nn_ComputeNet_prev_layer RENAME TO nn_ComputeNet;
+
+END $$</code></pre>
+
+<h2>Teaching the Neural Network with Backpropagation Algorithm</h2>
+
+<p>For explanation of backpropagation, see Don Tveter's backpro­pagation
+tutorial.</p>
+
+<h3>Usage:</h3>
+
+<p>Again, the API is very simple. First, procedure <code>nn_ComputeNet</code>
+computes the net's output. While doing that, it also stores the internal
+neurons' values; we asked to do so by setting the third parameter to
+<code>TRUE</code>.</p>
+
+<pre
+class="brush: sql"><code>CALL nn_ComputeNet( iNetID, '1, -1', TRUE );  ##  Be sure to set to TRUE!</code></pre>
+
+<p>Then we have to rename the tables, because MySQL does not allow to pass the
+result set in any other way. (At least one row could be spared… see my MySQL
+wish-list.)</p>
+
+<pre
+class="brush: sql"><code>DROP TEMPORARY TABLE IF EXISTS nn_CorrectWeights, nn_CorrectWeights_InternalValues;
+ALTER TABLE nn_ComputeNet RENAME TO nn_CorrectWeights;
+ALTER TABLE nn_ComputeNet_InternalValues RENAME TO nn_CorrectWeights_InternalValues;</code></pre>
+
+<p>And finally we call the <code>nn_CorrectWeights</code> procedure, which
+applies the backpropagation algorithm to the network, and returns the <em>error
+value</em> to the OUT param.</p>
+
+<p>First param is the ID of the network to compute, then comes the Lambda, Fi,
+Psi, Alfa, Beta, Gama, Pi, or however you call it – I call it „learning
+rate“. Finally it's the output variable for error level.</p>
+
+<pre
+class="brush: sql"><code>CALL nn_CorrectWeights(iNetID, '1', @dLearn, @out_dErrorSum);</code></pre>
+
+<p>Based on the error level, you can apply the simulated annealing, as we will
+show later. Using that, you can get to very low error levels, less than
+0.0001 for some tasks.</p>
+
+<h3>Result:</h3>
+
+<p>After calling <code>nn_CorrectWeights</code>, the weights in the persistent
+table are updated to reflect the changes made by the backpropagation
+algorithm.</p>
+
+<h3>Source:</h3>
+
+<pre
+class="brush: sql"><code>CREATE PROCEDURE `nn_CorrectWeights`(
+  id_net INTEGER, sadValuesWanted VARCHAR(255), dLearn DOUBLE, OUT out_dErrorSum DOUBLE
+)
+BEGIN body: BEGIN
+
+  CALL LoggP('nn_CorrectWeights', F2('nn_CorrectWeights( {1}, {2} )', NS(id_net), NSQ(sadValuesWanted) ));
+  IF id_net IS NULL OR sadValuesWanted IS NULL THEN LEAVE body; END IF;
+
+
+
+
+  ###  Check the output neurons table for existence and structure.  ###
+  CALL lib_TemporaryTableHasColumns('nn_CorrectWeights', 'id_neuron,val', @iInputExists);
+  IF NOT @iInputExists THEN
+    CALL Logg_error('nn_CorrectWeights input table must be: (id_neuron INTEGER UNSIGNED NOT NULL, val DOUBLE NOT NULL).'); LEAVE body;
+  END IF;
+  #CALL LoggP('nn_CorrectWeights', 'nn_CorrectWeights input table OK');
+
+  CALL lib_TemporaryTableHasColumns('nn_CorrectWeights_InternalValues', 'id_neuron,val', @iInputExists);
+  IF NOT @iInputExists THEN
+    CALL Logg_error('... nn_CorrectWeights_InternalValues input table must be: (id_neuron INTEGER UNSIGNED NOT NULL, val DOUBLE NOT NULL).'); LEAVE body;
+  END IF;
+  #CALL LoggP('nn_CorrectWeights', '... nn_CorrectWeights_InternalValues input table OK');
+
+
+
+
+  ###  Create the list of wanted neuron network output values  from the string param.
+  ###  Result: TEMPORARY TABLE nn_CorrectWeights_Wanted( id_neuron INT PK,  val DOUBLE ).
+  CALL lib_TemporaryTableHasColumns('nn_CorrectWeights_Wanted', 'id_neuron, val', @bHas);
+  IF NOT @bHas THEN
+
+    CALL lib_Explode(',', sadValuesWanted);
+    DROP TEMPORARY TABLE IF EXISTS nn_CorrectWeights_Wanted;
+    ALTER TABLE lib_Explode RENAME TO nn_CorrectWeights_Wanted;     # TODO: Feature request - RENAME OVERWRITE TO...
+    #CALL LoggP('nn_CorrectWeights', '... exploded the wanted values');
+
+
+
+    ###  Get the output neurons and check if their count also matches.
+    CALL lib_TemporaryTableHasColumns('nn_GetOutputNeuronIDs', 'pos, id_neuron', @bHas);
+    IF NOT @bHas THEN
+      CALL nn_GetOutputNeuronIDs( id_net );
+    END IF;
+
+
+    ###  Mint wanted values' positions into neurons ID.
+    #CALL LoggP('nn_CorrectWeights', '... converting wanted values\' position into output neuron\'s ID.');
+
+    /* This way is unsafe (? - PK collision), but fast. But DROP PRIMARY KEY is available only for MyISAM.
+    ALTER TABLE nn_CorrectWeights_Wanted DROP PRIMARY KEY;   -- Does this prevent PK collision? I think so.
+    UPDATE nn_CorrectWeights_Wanted AS want LEFT JOIN nn_GetOutputNeuronIDs AS out_neu USING(pos)
+      SET want.pos = out_neu.id_neuron;
+    ALTER TABLE nn_CorrectWeights_Wanted MODIFY COLUMN pos id_neuron INT UNSIGNED NOT NULL PRIMARY KEY; */
+
+    #   This way is safe.
+    DROP TEMPORARY TABLE IF EXISTS nn_CorrectWeights_Wanted_pos;
+    ALTER TABLE nn_CorrectWeights_Wanted RENAME TO nn_CorrectWeights_Wanted_pos;
+    CREATE TEMPORARY TABLE nn_CorrectWeights_Wanted (
+      id_neuron INT UNSIGNED NOT NULL PRIMARY KEY,
+      val       DOUBLE NOT NULL
+    ) ENGINE = Memory
+    SELECT out_neu.id_neuron, want.val
+      FROM nn_CorrectWeights_Wanted_pos AS want
+      LEFT JOIN nn_GetOutputNeuronIDs AS out_neu USING(pos);
+    DROP TEMPORARY TABLE nn_CorrectWeights_Wanted_pos;
+
+    CALL LoggP('nn_CorrectWeights', CONCAT('Wanted values: ', (
+      SELECT GROUP_CONCAT( CONCAT(id_neuron,': ',val) SEPARATOR '; ') FROM nn_CorrectWeights_Wanted
+    )));
+
+  END IF;
+
+
+
+
+  ###  Check if the counts of wanted values and actual output values are equal.
+  SELECT COUNT(*) INTO @iCntWanted FROM nn_CorrectWeights_Wanted;
+  SELECT COUNT(*) INTO @iCntComputed FROM nn_CorrectWeights;
+  IF @iCntWanted != @iCntComputed THEN
+    CALL LoggP_error('nn_CorrectWeights', 'Counts of wanted and computed values differs.'); LEAVE body;
+  END IF;
+  #CALL LoggP('nn_CorrectWeights', '... counts OK');
+
+  SELECT COUNT(*) INTO @iCntOutputNeurons FROM nn_GetOutputNeuronIDs;
+  IF @iCntWanted != @iCntOutputNeurons THEN
+    CALL LoggP_error('nn_CorrectWeights', 'Counts of wanted values and output neurons differs.'); LEAVE body;
+  END IF;
+  #CALL LoggP('nn_CorrectWeights', '... count in iCntOutputNeurons OK');
+
+
+
+  ###  Rename the input table to nn_CorrectWeights_Computed.
+  DROP TEMPORARY TABLE IF EXISTS nn_CorrectWeights_Computed;
+  ALTER TABLE nn_CorrectWeights RENAME TO nn_CorrectWeights_Computed;
+
+
+
+
+
+
+
+  #####################################################################
+  ###  Enough of checking; Now the weights correction really begins.
+  /*
+     We have:
+      nn_GetOutputNeuronIDs       (pos, id_neuron)
+      nn_CorrectWeights_Computed  (id_neuron, val)
+      nn_CorrectWeights_Wanted    (id_neuron, val)
+      nn_CorrectWeights_InternalValues (id_neuron, val)
+  */
+
+
+
+  ###  Create the table for data of the "current layer" - id_neuron and difference.
+  #CALL LoggP('nn_CorrectWeights', 'Creating table nn_CorrectWeights_cur_layer.');
+  DROP TEMPORARY TABLE IF EXISTS nn_CorrectWeights_prev_layer;
+  DROP TEMPORARY TABLE IF EXISTS nn_CorrectWeights_cur_layer;
+  CREATE TEMPORARY TABLE nn_CorrectWeights_cur_layer (
+    id_neuron INTEGER UNSIGNED NOT NULL PRIMARY KEY
+    ,error DOUBLE NOT NULL DEFAULT 0.0
+  ) ENGINE Memory   ROW_FORMAT = FIXED
+  SELECT comp.id_neuron
+    ,(want.val - comp.val)   *   comp.val * (1-comp.val) AS error
+    FROM nn_CorrectWeights_Computed AS comp
+    LEFT JOIN nn_CorrectWeights_Wanted AS want USING(id_neuron);
+
+  ###  Total error of the output layer.  Not used yet - later for teaching cycle control.
+  SELECT SUM(ABS(error)) INTO out_dErrorSum FROM nn_CorrectWeights_cur_layer;
+
+   -- DEBUG:
+  #CREATE TABLE IF NOT EXISTS foo (id_neuron INT, error DOUBLE);
+  #INSERT INTO foo SELECT 11111, 0.666666666666;
+  #INSERT INTO foo SELECT * FROM nn_CorrectWeights_cur_layer;
+
+  SET @iLayers = 0;
+  layers: LOOP
+
+    SET @iLayers = @iLayers + 1;
+    CALL LoggP('nn_CorrectWeights', F2('Correcting {1} th layer. IDs: {2}', @iLayers,
+      NS(  (SELECT GROUP_CONCAT( CONCAT(id_neuron,' / err: ', ROUND(error,5) ) SEPARATOR ',  ')
+              FROM nn_CorrectWeights_cur_layer AS cur)  )));
+
+
+
+
+    ###  Create table for previous layer.
+    #    Computes their diff and runs their output thru current neuron's function derivation.
+    CREATE TEMPORARY TABLE nn_CorrectWeights_prev_layer (
+      id_neuron INTEGER UNSIGNED NOT NULL
+      ,PRIMARY KEY USING HASH (id_neuron)
+      ,error     DOUBLE NOT NULL
+    ) ENGINE = Memory  ROW_FORMAT = FIXED
+    SELECT upstream.id_neuron,
+         SUM( cur.error * syn.weight )  *  upstream.val * (1-upstream.val)   AS error
+      FROM nn_CorrectWeights_cur_layer           AS cur
+      LEFT JOIN nn_net_synapses                  AS syn ON syn.id_to = cur.id_neuron
+      LEFT JOIN nn_CorrectWeights_InternalValues AS upstream  ON syn.id_from = upstream.id_neuron
+      WHERE upstream.id_neuron != 0  #IS NOT NULL
+    GROUP BY upstream.id_neuron;
+
+    -- ##  ROW_COUNT() always returns -1. Is it a BUG??
+    -- CALL Logg(CONCAT('RC: ',ROW_COUNT()));
+
+    ###  If there are no more upstream neurons, quit the loop.
+    IF 0 = (SELECT COUNT(*) FROM nn_CorrectWeights_prev_layer) THEN LEAVE layers; END IF;
+    IF @iLayers &gt; 20 THEN CALL Logg('bye &gt;'); LEAVE layers;  END IF; -- DEBUG - prevent infinite loop.
+
+
+    CALL LoggP('nn_CorrectWeights',
+      (SELECT GROUP_CONCAT( F6('{1}(err:{2}) --(w:{3})--&gt; {4}(val:{5}) =&gt; delta:{6}',
+          NS(id_to), ROUND(cur.error,3),    NS(ROUND(syn.weight,3)),   NS(id_from),  NS(ROUND(iv.val,3)),
+          NS(ROUND(dLearn * cur.error * iv.val, 3)) ) SEPARATOR ' ;  ')
+        FROM nn_CorrectWeights_cur_layer       AS cur
+        LEFT JOIN nn_net_synapses              AS syn ON syn.id_to = cur.id_neuron
+        LEFT JOIN nn_CorrectWeights_InternalValues AS iv  ON syn.id_from = iv.id_neuron
+      )
+    );
+
+
+
+
+    ###  Update the BIAS of the neurons of the current layer.
+    UPDATE nn_CorrectWeights_cur_layer AS cur
+      LEFT JOIN nn_net_neurons AS neu USING(id_neuron)
+      SET neu.bias = neu.bias + dLearn * cur.error;
+    CALL LoggP('nn_CorrectWeights', F1('Updated %s biases.', ROW_COUNT())); -- DEBUG
+
+
+
+
+    ###  Update the WEIGHTS of synapses to previous layer's neurons
+    UPDATE nn_CorrectWeights_cur_layer       AS cur
+      LEFT JOIN nn_net_synapses              AS syn ON syn.id_to = cur.id_neuron
+      LEFT JOIN nn_CorrectWeights_InternalValues AS iv  ON syn.id_from = iv.id_neuron
+    SET syn.weight = syn.weight + dLearn * cur.error * iv.val;
+
+    CALL LoggP('nn_CorrectWeights', F1('Updated %s weights.', ROW_COUNT())); -- DEBUG
+
+
+    ###  Switch  ###
+    DROP TEMPORARY TABLE nn_CorrectWeights_cur_layer;
+    ALTER TABLE nn_CorrectWeights_prev_layer RENAME TO nn_CorrectWeights_cur_layer;
+
+
+  END LOOP layers;
+
+  #CALL LoggP('nn_CorrectWeights', 'All layers done, all weights updated.');
+
+END body;
+  DROP TEMPORARY TABLE IF EXISTS nn_CorrectWeights_Wanted;
+  DROP TEMPORARY TABLE IF EXISTS nn_CorrectWeights_Computed;
+  #DROP TEMPORARY TABLE IF EXISTS nn_GetOutputNeuronIDs;
+  # CALL LoggLeave('nn_CorrectWeights');
+END $$</code></pre>
+
+<h2>Training sets</h2>
+
+<p>For effective use of SQL implementation of NN, it's good to have an option
+to feed the network directly from the database. Assumming you prepared the data
+into an appropriate data structure, you can teach the network with one
+<code>CALL</code>.</p>
+
+<h3>Tables structure</h3>
+
+<p>A training data set is defined in the <code>nn_trainsets</code> table. Such
+set is, for example, train data for XOR.</p>
+
+<p>Each data set contains input-output pairs, I call them
+<code>train cases</code>, in the <code>nn_trainsets_cases</code> table. E.g. XOR
+train data has 4 train cases:<br>
+<code>{-1,-1} -&gt; {0.0}, {-1,1} -&gt; {1.0}, ...</code> etc.</p>
+
+<p>The individual input and output values are stored in
+<code>nn_trainsets_input</code> and <code>nn_trainsets_output</code> tables,
+respectively.</p>
+
+<pre
+class="brush: sql"><code>CREATE TABLE `nn_trainsets` (
+  `id_set` int(10) unsigned NOT NULL auto_increment,
+  `name` varchar(45) NOT NULL,
+  `input_count` int(10) unsigned NOT NULL,
+  `output_count` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`id_set`)
+) ENGINE=MyISAM ROW_FORMAT=FIXED;
+
+CREATE TABLE `nn_trainsets_cases` (
+  `id_case` int(10) unsigned NOT NULL auto_increment,
+  `id_set` int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`id_case`),
+  KEY `id_set` USING BTREE (`id_set`)
+) ENGINE=MyISAM ROW_FORMAT=FIXED;
+
+CREATE TABLE `nn_trainsets_input` (
+  `id_case` int(10) unsigned NOT NULL,
+  `pos` int(10) unsigned NOT NULL,
+  `val` double NOT NULL,
+  PRIMARY KEY  USING BTREE (`pos`,`id_case`)
+) ENGINE=MyISAM  ROW_FORMAT=FIXED;
+
+CREATE TABLE `nn_trainsets_output` (
+  `id_case` int(10) unsigned NOT NULL,
+  `pos` int(10) unsigned NOT NULL,
+  `val` double NOT NULL,
+  PRIMARY KEY  USING BTREE (`pos`,`id_case`)
+) ENGINE=MyISAM  ROW_FORMAT=FIXED;</code></pre>
+
+<h3>Modified procedures for computation and teaching</h3>
+
+<p>Due to need of optimization, procedures <code>nn_ComputeNet</code> and
+<code>nn_CorrectWeights</code> had to be modified. Two specialized procedures
+complete this task – <code>nn_ts_ComputeNet</code> and
+<code>nn_ts_CorrectWeights</code>. Their difference is in that they do not take
+serialized values in parameters; instead, they expect pre-created tables with
+these values.</p>
+
+<pre
+class="brush: sql"><code>CREATE PROCEDURE `nn_ts_ComputeNet`( iNetID INTEGER, bStoreInternalValues BOOLEAN )
+body: BEGIN
+
+  /*
+   *   PROCEDURE nn_ts_ComputeNet( iNetID, bStoreInternalValues )
+   *
+   *   Computes a network's output value.
+   *   Expects the following input tables:
+   *
+   *   nn_ts_ComputeNet_Input ( id_neuron INT UNSIGNED, val DOUBLE )
+   */
+
+  -- Code too long - snipped. --
+
+END $$
+
+
+CREATE PROCEDURE `nn_ts_CorrectWeights`( iNetID INTEGER, dLearn DOUBLE, OUT out_dErrorSum DOUBLE )
+BEGIN body: BEGIN
+
+  /*
+   *   PROCEDURE  nn_ts_CorrectWeights( id_net, dLearn, out_dErrorSum )
+   *
+   *   Corrects weights using the backprop algorithm.
+   *   Expects the following input tables:
+   *
+   *   nn_ts_CorrectWeights_Computed ( id_neuron INT UNSIGNED, val DOUBLE ) - computed values on output neurons.
+   *   nn_ts_CorrectWeights_InternalValues ( id_neuron INT UNSIGNED, val DOUBLE ) - computed values on hidden neurons.
+   *   nn_ts_CorrectWeights_Wanted ( id_neuron INT UNSIGNED, val DOUBLE ) - desired output values.
+   *
+   */
+
+  -- Code too long - snipped. --
+
+END body; END $$</code></pre>
+
+<h3>The training process</h3>
+
+<p>Finally, procedure <code>nn_ts_TeachTrainset</code> teaches the net using the
+prepared training data set. All it needs is the network ID, the training set ID,
+the learning rate, target error and the maximum rounds to be completed (a
+„round“ means that all cases from the training set are used
+exactly once).</p>
+
+<p>The training itself is done by „incremental backpropagation“. The process
+of teaching is stopped immediatelly when the target error is reached with some
+training case (insufficient, to be fixed).</p>
+
+<pre
+class="brush: sql"><code>CREATE PROCEDURE `neural_network`.`nn_ts_TeachTrainset` (
+  iNetID INT UNSIGNED, iTrainsetID INT UNSIGNED, dLearn DOUBLE, dTargetError DOUBLE, iMaxRounds INT UNSIGNED
+)
+body: BEGIN
+
+  /*
+   *   Teaches the given network using the given trainset.
+   *   Expects the following input tables:
+   *
+   *   `nn_trainsets_input` and `nn_trainsets_output` tables filled with the training data.
+   */
+
+  -- Code too long - snipped. --
+
+END body; $$</code></pre>
+
+<p>Then, teaching the neural network is as easy as a one-line <code>CALL</code>.
+This trains the network #2 using training set #1, having learn rate of
+<code>0.5</code>, target error <code>0.0001</code> and with maximum of
+<code>1000</code> passes through the training set:</p>
+
+<pre
+class="brush: sql"><code>CALL nn_ts_TeachTrainset( 2, 1, 0.5, 0.0001, 1000 );</code></pre>
+
+<p>This way, simulated annealing can be easily applied:</p>
+
+<pre
+class="brush: sql"><code>CALL nn_ts_TeachTrainset( 2, 1, 0.7,  0.01, 6000 );
+CALL nn_ts_TeachTrainset( 2, 1, 0.3,  0.003, 2000 );
+CALL nn_ts_TeachTrainset( 2, 1, 0.1,  0.0005, 1000 );
+CALL nn_ts_TeachTrainset( 2, 1, 0.05, 0.0001, 1000 );</code></pre>
+
+<p>You can have a look what was happening during the process:</p>
+
+<pre
+class="brush: sql"><code>SELECT * FROM lib_logg WHERE rout = 'nn_ts_TeachTrainset';</code></pre>
+
+<table>
+	<thead>
+		<tr>
+			<th>when</th>
+
+			<th>thread</th>
+
+			<th>level</th>
+
+			<th>message</th>
+
+			<th>routine</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td>2008–04–28 20:50:11</td>
+
+			<td>176</td>
+
+			<td>info</td>
+
+			<td>Teaching net #2 for trainset 1 case 3 (4996th case}</td>
+
+			<td>nn_ts_TeachTrainset</td>
+		</tr>
+
+		<tr>
+			<td>2008–04–28 20:50:11</td>
+
+			<td>176</td>
+
+			<td>info</td>
+
+			<td>#2 (1.00000 , –1.00000) computed: [0.97996];</td>
+
+			<td>nn_ts_TeachTrainset</td>
+		</tr>
+
+		<tr>
+			<td>2008–04–28 20:50:11</td>
+
+			<td>176</td>
+
+			<td>info</td>
+
+			<td>Error: 0.0004</td>
+
+			<td>nn_ts_TeachTrainset</td>
+		</tr>
+
+		<tr>
+			<td>2008–04–28 20:50:11</td>
+
+			<td>176</td>
+
+			<td>info</td>
+
+			<td>Teaching net #2 for trainset 1 case 1 (4997th case}</td>
+
+			<td>nn_ts_TeachTrainset</td>
+		</tr>
+
+		<tr>
+			<td>2008–04–28 20:50:11</td>
+
+			<td>176</td>
+
+			<td>info</td>
+
+			<td>#2 (-1.00000 , –1.00000) computed: [0.02026];</td>
+
+			<td>nn_ts_TeachTrainset</td>
+		</tr>
+
+		<tr>
+			<td>2008–04–28 20:50:11</td>
+
+			<td>176</td>
+
+			<td>info</td>
+
+			<td>Error: 0.0004</td>
+
+			<td>nn_ts_TeachTrainset</td>
+		</tr>
+
+		<tr>
+			<td>2008–04–28 20:50:11</td>
+
+			<td>176</td>
+
+			<td>info</td>
+
+			<td>Teaching net #2 for trainset 1 case 2 (4998th case}</td>
+
+			<td>nn_ts_TeachTrainset</td>
+		</tr>
+
+		<tr>
+			<td>2008–04–28 20:50:11</td>
+
+			<td>176</td>
+
+			<td>info</td>
+
+			<td>#2 (-1.00000 , 1.00000) computed: [0.97514];</td>
+
+			<td>nn_ts_TeachTrainset</td>
+		</tr>
+
+		<tr>
+			<td>2008–04–28 20:50:11</td>
+
+			<td>176</td>
+
+			<td>info</td>
+
+			<td>Error: 0.0006</td>
+
+			<td>nn_ts_TeachTrainset</td>
+		</tr>
+
+		<tr>
+			<td colspan="5">…</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>The structure of the network representation remains the same, so use the
+network with the same <code>CALL</code>s.</p>
+
+<h2>Project Info</h2>
+
+<p>Tested with MySQL version 5.0.51a, 5.1.24 and 6.0.4-alpha.<br>
+Currently developed only by myself :-) Anyone is welcome to <code>JOIN</code>
+and help with the tasks below.</p>
+
+<h2>Download</h2>
+
+<p>Download: Complete database creation script (ZIP, 15 kB).</p>
+
+<p><strong>Do not use the snippets from the page, they may be obsolete</strong>
+and are here mostly for explanation / documentation purposes.</p>
+
+<p>I'll try to keep the ZIP file up to date.</p>
+
+<p>However, that's the snapshot right from my database, so expect it to have
+plenty of debug stuff like <code>Logg()</code> calls etc.</p>
+
+<p>Also, there are some parts of code that might cause problems, like
+<code>DEFINER=<code>root</code>@<code>localhost</code></code> etc.</p>
+
+<p>And, lastly, the persistent <strong>tables may have the Memory
+engine</strong> set; so if you need your data to prevail the MySQL server
+reboot, ensure that ALL non-TEMPORARY tables' engine is MyISAM (recommended
+native engine) or PBXT (recommended plug-in engine, experimental).</p>
+
+<h2>Future developement</h2>
+
+<p>I will focus further developement on these areas:</p>
+
+<ul>
+	<li>I will consider moving whole computation to memory – first selecting the
+	concerned rows into a temp table, then computing, and finally merging them back
+	to the persistent tables.</li>
+
+	<li>Possibility to work with multiple networks at once – e.g. teaching
+	thousands of networks with same &lt;strike&gt;archi­tecture&lt;/stri­ke&gt;
+	number of input and output neurons by one CALL.</li>
+
+	<li>I will also consider implementing other neural networks, but their
+	implementation in SQL could be slower (eg. for competitive nets) than
+	ML-perceptrons, which are computed in linear time.</li>
+
+	<li>Serialization / deserialization to some common format – XML
+	or JSON.</li>
+
+	<li>Hibernate mapping for the entities.</li>
+</ul>
+
+<h2>Resources</h2>
+
+<ul>
+	<li>Don Tveter: Backpropagator's Re­view, esp.</li>
+
+	<li>Russell D. Reed, Robert J. Marks II: Neural Smithing. MIT Press
+	1999. ISBN-10: 0–262–18190–8</li>
+
+	<li>comp.ai.neural-nets FAQ</li>
+</ul>
+
+<p>Questions? See contacts.</p>
+
+<p>Keywords: Neural networks stored procedures mysql sql MyISAM InnoDB
+PBXT PBTX.</p>
+</a></div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/neural_networks_in_sql_stored_procedures/index.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

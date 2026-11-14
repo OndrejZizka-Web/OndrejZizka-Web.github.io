@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Výsledek nasazení PHP v praxi aneb navrch huj, uvnitř fuj.</h1>
+
+<div><img src="images/elePHPant_Right_Tiny_jde_pryc.png" alt=""
+style="float:right"></div>
+
+<p>Abych nezůstal u <a href="vyhody_a_nevyhody_php.html">teorie a
+subjektivních hodnocení <abbr title="Personal Home Page Tools">PHP</abbr></a>,
+přidám ukázku z jednoho webu napsaného v PHP – a to hned web
+zabývající se programováním. Jaký jiný web by měl být technicky
+dokonalý, ne-li web dávající rady, jak dobře programovat?</p>
+
+<p>Jedná se o portál –<code>*****.com</code>– ++to je jedno++. Celkem
+lákavá doména, hezký design (až na hnusný a otravný banner banan.cz, hned
+jsem ho přidal do AdBlocku), ale navrch huj, uvnitř fuj – a to právě
+kvůli PHP.</p>
+
+<h2>1) <code>magic_quotes</code></h2>
+
+<p>Původcem první chyby je královna „super fičur“ PHP a vrcholná
+zástupkyně filozofie PHP (tedy předpoklad, že programátor je blbec, a
+místo dobrého návrhu API to fixovat nahodilými obezličkami) –
+<code>magic_quotes_gpc</code>. Jenže na tuhle obezličku je nutné opět
+udělat obezličku, a to vede k <a
+href="http://php.vrana.cz/vypnuti-magic_quotes_gpc.php">takovýmhle
+komediím</a>, které nijak nesouvisejí s cílenou aplikací. Přesně to
+sedí na můj slogan pro PHP: <em>PHP – the Work-around Language</em>.</p>
+
+<p>Při zobrazení náhledu vidím \„php_sucsks\“, ale po odeslání
+komentáře je zobrazen správně.</p>
+
+<p>Autor webu <code>************.com</code> se na tedy tuto fičuru buďto
+vědomě spolehl, a potom má silné nedostatky ve schopnostech návrhu
+webových aplikací, nebo ještě hůř, použil výchozí nastavení PHP a ani
+neví, že to jde změnit.</p>
+
+<p>Jestliže se při práci s databází kdokoliv spoléhá na
+<code>magic_quotes</code>, pak mu doporučuji nezmiňovat to při pohovorech
+o zaměstnání a data často zálohovat. A pokud se jedná o druhou
+možnost, tak potom zapracovala výše uvedená filozofie PHP.</p>
+
+<h2>2) zpracování chybových stavů</h2>
+
+<p>Za druhou chybu může celkově špatný koncept PHP pro práci s chybovými
+stavy. Kudy chodím, tudy říkám, že PHP by mělo veškeré chyby převést
+na výjimky, a tento případ to potvrzuje. Při přidání komentáře se
+zobrazuje Warning:</p>
+
+<pre><code>Warning: Cannot modify header information - headers already sent by
+(output started at /mnt/data/accounts/p/programujte/data/www/www/pridej_kom.php:6)
+in /mnt/data/accounts/p/programujte/data/www/www/pridej_kom.php on line 62</code></pre>
+
+<p>Jenže autor použil klasický work-around z PHP pro zamezení opakovaného
+odeslání formuláře, tedy přesměrování požadavku po zpracování
+komentáře. Na localhostu tedy pravděpodobně při testování tento warning
+ani nezahlédl.</p>
+
+<p>Toto by se při vyhození výjimky nikdy stát nemohlo: Nastala by
+<code>Exception</code> a autor by přinejhorším viděl zastavený požadavek a
+výpis exception. V lepším případě by viděl warning aspoň v logu při
+debugu aplikace – to by ovšem musely být ladící nástroje pro PHP trochu
+dostupnější, a v ideálním případě by jeho aplikace neprošla
+unit-testy – to by ale ve světě PHP napřed muselo být testování zvykem
+a nikoli výjimkou.</p>
+
+<p>Řekněme tedy, že by PHP skriptař viděl místo své stránky takovouto
+děsivou nestvůru:</p>
+
+<pre><code>500 Internal Server Error
+java.lang.StringIndexOutOfBoundsException: String index out of range: -1
+        at java.lang.String.substring(String.java:1444)
+        at org.apache.axis2.builder.XFormURLEncodedBuilder.extractParametersFromRequest(XFormURLEncodedBuilder.java:155)
+        at org.apache.axis2.builder.XFormURLEncodedBuilder.processDocument(XFormURLEncodedBuilder.java:112)
+        at org.apache.axis2.transport.TransportUtils.createDocumentElement(TransportUtils.java:160)
+        at org.apache.axis2.transport.TransportUtils.createSOAPMessage(TransportUtils.java:111)
+        at org.apache.axis2.transport.http.util.RESTUtil.processXMLRequest(RESTUtil.java:60)
+        at org.apache.axis2.transport.http.AxisServlet$RestRequestProcessor.processXMLRequest(AxisServlet.java:788)
+        at org.apache.axis2.transport.http.AxisServlet.doPost(AxisServlet.java:193)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:760)
+        at javax.servlet.http.HttpServlet.service(HttpServlet.java:853)
+        at com.evermind[Oracle Application Server Containers for J2EE 10g (10.1.2.0.2)].server.http.ServletRequestDispatcher.invoke(ServletRequestDispatcher.java:824)
+        at com.evermind[Oracle Application Server Containers for J2EE 10g (10.1.2.0.2)].server.http.ServletRequestDispatcher.forwardInternal(ServletRequestDispatcher.java:330)
+        at com.evermind[Oracle Application Server Containers for J2EE 10g (10.1.2.0.2)].server.http.HttpRequestHandler.processRequest(HttpRequestHandler.java:830)
+        at com.evermind[Oracle Application Server Containers for J2EE 10g (10.1.2.0.2)].server.http.AJPRequestHandler.run(AJPRequestHandler.java:224)
+        at com.evermind[Oracle Application Server Containers for J2EE 10g (10.1.2.0.2)].server.http.AJPRequestHandler.run(AJPRequestHandler.java:133)
+        at com.evermind[Oracle Application Server Containers for J2EE 10g (10.1.2.0.2)].util.ReleasableResourcePooledExecutor$MyWorker.run(ReleasableResourcePooledExecutor.java:192)
+        at java.lang.Thread.run(Thread.java:534)</code></pre>
+
+<p>Zástupy rádoby-programátorů z řad čistých PHPčkářů se při
+takovém výpisu zděsí a utečou k mamince, která jim (pokud je rozumná)
+vysvětlí, že se nemusí bát, že to je vlastně to samé, jako onen warning,
+akorát se spoustou užitečných informací navíc a musí s ní počítat a
+vzniklou situaci ošetřit (nikoliv ji ignorovat operátorem <code>@</code>, jak
+je v PHP standardem).</p>
+
+<p><em>Poznámka: Věk je zde myšlen pouze obrazně ve smyslu
+programátorského vývoje, nemluvím o skutečném věku, jak je na internetu
+hloupým zvykem. Znám i pár skvělých náctiletých programátorů.</em></p>
+
+<p>Ti, kteří již dospívají ve velké programátory, přestanou plakat a
+začnou se dožadovat, aby takové výjimky mohli lovit všude, aby se jim
+žádná nepřevlekla za kus HTML kódu brutálně vloženého do výstupu bez
+ohledu na to, kde se zrovna ve výsledném dokumentu nacházíme!</p>
+
+<p>Kdepak, primitivní PHP vám třeba ještě před XML prologem
+vystřihne svoje:</p>
+
+<pre><code>&lt;br /&gt;
+&lt;b&gt;Warning&lt;/b&gt;:  Cannot add header information - headers already sent by (output started at /var/www/html/lavoro/downloadIt.php:21 in &lt;b&gt;/var/www/html/lavoro/downloadIt.php&lt;/b&gt; on line &lt;b&gt;21&lt;/b&gt;&lt;br /&gt;</code></pre>
+
+<p>a bez povšimnutí může proletět dále ke klientovi, ačkoliv chybějící
+hlavičky HTTP mohou zcela zásadně změnit chování webové aplikace. Ale jak
+by řekli tvůrci PHP – <a
+href="http://www.php.net/~derick/meeting-notes.html">„That's the
+PHP way.“</a></p>
+
+<h2>Reakce zástupce PHP komunity – redaktora serveru o programování</h2>
+
+<p>Ještě lepší jsou reakce reakce autora článku, kde jsem chybu
+objevil:</p>
+
+<blockquote>
+	<p>Reagoval na komentář od uživatele Ondra [#19281]: Mnohem jednoduší než
+	se načit Javu bylo pro mne napast si vlastní framework, kde sem opravdu
+	žádné magic ještě nikdy neřešil – framework řeší za mě.</p>
+</blockquote>
+
+<p>Áááha… „vlastní framework“, říkáte… však o tom píšu ve
+článku <a href="vyhody_a_nevyhody_php.html">Výhody a nevýhody
+PHP</a> :-)</p>
+
+<p>Naučit se Javu není tak těžké, věřte mi… u PHP je lehčí jen
+„začít generovat výstup“, ale postupem času se stejně musíte naučit
+zhruba stejné množství věcí jako v Javě – akorát jsou jejich
+řešení méně elegantní, nesystémová a nezapadají do konceptu
+všeho okolo.</p>
+
+<blockquote>
+	<p>Ano, tyhle chyby mi nevadí :) Nejsem za ně zodpovědný.</p>
+</blockquote>
+
+<p>Přijde mi typické pro PHP komunitu, když web o programování vykazuje
+takovéto zásadní nedostatky, a nevadí to ani čtenářům, ani autorům
+článků, ani programátorovi webu. Ten má jistě také „svůj
+framework“ – a pak to podle toho vypadá.</p>
+
+<p><em>Klíčové slovo: <strong>PHP sucks</strong>.</em></p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/php/vysledek_nasazeni_php_aneb_navrch_huj_uvnitr_fuj.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

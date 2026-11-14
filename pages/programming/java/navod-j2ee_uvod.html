@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Úvod do J2EE</h1>
+
+<h2>Komu tento úvod určen</h2>
+
+<p>Úvod píšu pro lidi, kteří (stejně jako dříve já) chtějí proniknout
+do J2EE, ale ztrácejí se v záplavě pojmů a zkratek. Předpokládám
+znalost webových standardů typu HTML, XML, HTTP a podobně, a dále znalost
+technologií Java 5.0+ – tj. jazyk, standardní knihovny J2SE, princip
+fungování tříd.</p>
+
+<p>Úvod se snažím psát co nejpraktičtěji – popisuji tedy technologie
+v pořadí, v jakém jsem se s nimi setkal já (nebo v jakém by to aspoň
+bývalo bylo nejlepší).</p>
+
+<p>Na komerčních knihách mě často štve, že jsou psané jak pro
+debily – každý detail odrbávají na dvě stránky. Já předpokládám,
+že jste inteligentní lidé, proto jeden fakt uvádím sice se snahou, aby bylo
+jeho vysvětlení srozumitelné a pochopitelné, ale uvedu ho jen jednou. Pokud
+moje vysvětlení nepochopíte, tak se omlouvám :-) a doporučuji Wikipedii,
+která pamatuje i na to, že člověk nemusí o daném tématu vědět
+vůbec nic.</p>
+
+<p>Úvod je skutečně velmi povrchní a nenaučí vás žádné konkrétní
+postupy – je to zkrátka pomůcka pro zorientování se ve světě J2EE.
+Pokud již základní orientaci máte, potom je pro vás spíše oficiální <a
+href="http://java.sun.com/j2ee/1.4/docs/tutorial/doc/">J2EE tutoriál</a>
+(v angličtině, rozsahem cca jako 600-stránková kniha).</p>
+
+<p>Fajn, i když trochu starší, je také <a
+href="http://www.myeclipseide.com/documentation/quickstarts/earprojects/">procvičovací
+tutoriál pro Eclipse IDE</a>.</p>
+
+<h2>Co je J2EE</h2>
+
+<p>Zkratka J2EE (nověji Java <abbr title="Enterprise Edition">EE</abbr>)
+označuje skupinu technologií, která se používá pro vývoj tzv.
+„enterprise aplikací“ (čti <em>entrprajs</em>).</p>
+
+<p>Co je enterprise aplikace není zcela jasně ohraničitelné, ale dá se
+říci, že to je aplikace, ve které se využívají pokročilé postupy jako
+clusterování (běží na více serverech / systémech / databázích …),
+distribuované transakce (transakce napříč clustery), fail-over (při
+výpadku převezme funkci jiná část systému), vzdálené volání,
+a další.</p>
+
+<p>Typickými představiteli enterprise aplikací jsou například rozsáhlé
+podnikové systémy, bankovní aplikace, webové aplikace. Nás bude zajímat
+podmnožina J2EE používaná pro vývoj webových aplikací.</p>
+
+<p>Na tomto místě je v knihách obvykle podrobný teoretický rozbor J2EE
+technologií; Avšak jak jsem předeslal, úvod se snažím psát co
+nejpraktičtěji, proto uvedu jen úplně nejnutnější pojmy a zkratky; zbylé
+haldy si necháme na později a vrhneme se rovnou na software.</p>
+
+<h3>Servlety</h3>
+
+<p>V době rozvoje Javy si její tvůrci a příznivci řekli, že by to mohla
+být šikovná technologie pro tvorbu dynamických webů – koneckonců jde
+jen o generování HTML a dalších kódů.</p>
+
+<p>První přístup byl ten, že se vytvoří Java programy, které budou
+fungovat podobně jako CGI – dostanou na vstup HTTP požadavek a vrátí kód
+stránky. Tak vznikly servlety. Je to krapet složitější – servlet není
+přímo program, ale spíše třída, která má určité metody jako
+<code>doGet(...)</code> a <code>doPost(...)</code>, které se pro každý
+požadavek volají. V parametrech dostanou informace o požadavku, o session,
+a referenci na objekt odpovědi.</p>
+
+<pre
+class="brush: java"><code>public class HelloServlet extends HttpServlet {
+
+  public void doGet (HttpServletRequest pozadavek, HttpServletResponse odpoved)
+    throws ServletException, IOException {
+
+    odpoved.getWriter().println("&lt;html&gt;&lt;body&gt;Hello, world!&lt;/body&gt;&lt;/html&gt;");
+  }
+}</code></pre>
+
+<p>Pak takovouto třídu zabalíte do JAR archivu spolu s konfigurákem
+<code>WEB-INF/web.xml</code>:</p>
+
+<pre
+class="brush: xml"><code>&lt;web-app xmlns="http://java.sun.com/xml/ns/j2ee" version="2.4"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http:/java.sun.com/dtd/web-app_2_3.dtd"&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;test.HelloServlet&lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;hello&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/hello&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre>
+
+<p>Potom už jen archiv „deploynete“ a aplikace jede.</p>
+
+<blockquote>
+	<p>Jak vypadá <em>deploynutí</em> se liší podle serveru. Nejlépe to má
+	udělané JBoss AS / JBoss Web, na kterém JARko prostě nakopírujete do
+	adresáře <code>deploy</code> a hotovo. V Tomcatu je třeba jít do manažera
+	aplikací a v něm <code>.jar</code> nahrát přes formulář.</p>
+</blockquote>
+
+<p>Pochopitelně konfigurace každého servletu a generování HTML stránek
+přimo v Java kódu je dost otravné:</p>
+
+<pre
+class="brush: java"><code>PrintWriter vystup = odpoved.getWriter();
+vystup.write("&lt;h1&gt;Ahoj " + session.getAttribute("name") +"!&lt;/h1&gt;");
+vystup.write("&lt;p&gt;Takhle nějak se generuje stránka ze servletu.&lt;/p&gt;");</code></pre>
+
+<p>Představte si takhle psát celou stránku. Proto se vývojáři poohlédli,
+jak se to řeší v jiných technologiích, například ASP nebo PHP (tehdy
+ještě pravěké verze), a viděli, že daleko lepší přístup je psát HTML
+stránku a do ní tu a tam vložit nějaký kód, kterého je obvykle spíše
+menšina. No a tak vznikla technologie JSP.</p>
+
+<blockquote>
+	<p>Servlety mají dodnes svoji nezastupitelnou roli. Je třeba si uvědomit, že
+	webové aplikace negenerují jen HTML stránky. Na generování binárních
+	výstupů nebo XML dokumentů (např. pro webové služby) se stále používá
+	Servlet API.</p>
+</blockquote>
+
+<h3>JSP – Java Server Pages</h3>
+
+<pre
+class="jsp"><code>&lt;h1&gt;Ahoj &lt;%= session.getAttribute("name") %&gt;!&lt;/h1&gt;</code></pre>
+
+<p>Rovnou při vzniku měla mnohem více možností, než konkureční způsoby
+vkládání kódu do HTML (můj názor). A to především díky zvláštním
+tagům, jejichž interpretaci mají na starosti Java třídy. Takový tag
+vypadá například takto:</p>
+
+<pre
+class="brush: xml"><code>&lt;html:link action="/logout"&gt;Odhlásit&lt;/html:link&gt;</code></pre>
+
+<p>Zrovna tento tag není úplně dobrý příklad, zrovna mi padnul pod ruku.
+***Dát lepší příklad. Lepší by byl třeba tento: <em>(Poznámka pro
+znalé: Tento kód jsem si z hlavy vymyslel, neodpovídá přesně tagům JSTL
+knihovny.)</em></p>
+
+<pre
+class="brush: xml"><code>&lt;cache:cache key="vypis_uzivatelu"&gt;
+  &lt;sql:query sql="SELECT * FROM users ORDER BY name" var="resultUsers" /&gt;
+  &lt;table&gt;
+    &lt;c:foreach from="resultUsers" var="i"&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;c:out value="${resultUsers[i]}"/&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;/c:foreach&gt;
+  &lt;/table&gt;
+&lt;/cache:cache&gt;</code></pre>
+
+<p>Ne, nelekejte se – neřeší se celá aplikační logika pomocí XML
+elementů (také to tak na mě z některých tutoriálů působilo). Elementy,
+které vidíte, jenom představují celkem pohodlné rozhraní ke knihovnám,
+které zajišťují jejich funkčnost. Například existuje knihovna pro cache,
+díky které stačí kešovaný kousek stránky obklíčit elementem
+<code>&lt;cache:cache&gt;</code> (může se jmenovat libovolně, jméno můžete
+sami upravit), a knihovna už sama zajistí buď provedení kódu vevnitř, nebo
+vytažení již uloženého výsledku.</p>
+
+<p>V poznámce výše jsem zmínil knihovnu <strong>JSTL</strong> (JSP Standard
+Tag Library). Můžete se podívat na jeji stránky <a
+href="http://jakarta.apache.org/taglibs/doc/standard-doc/intro.html">http://jakarta.apache.org/…c/intro.html</a>.
+Ale to jsme pořád na nejnižší úrovni možností těchto elementů. Opravdu
+pokročilé knihovny (které už jsou obvykle součástí nějakého frameworku
+a spolupracují s jeho zbylými částmi) obvykle poskytují automatizaci
+vysoké úrovně typu obsluhy, vyplňování a validace formulářů, AJAXu,
+správy šablon, atd.</p>
+
+<p>Další pěknou vlastostí JSP je <strong>jazyk EL</strong> – Expression
+Language, pomocí kterého můžete do stránky stručně začlenit nějakou
+dynamickou hodnotu (teď zrovna nevím, jestli to je zrovna takhle, píšu
+z hlavy):</p>
+
+<p><code>Ahoj ${session.attributes['name']}</code></p>
+
+<p>Možnosti jazyka EL samozřejmě nekončí výpisem nějaké hodnoty.
+Můžete vyjádřit aritmetické operace, různě formátovat, volat statické
+Java funkce, které si sami naprogramujete, a další. (PHPčkářům by to
+mohlo připomínat <em>Smarty</em>.)</p>
+
+<h3>Životní cyklus J2EE aplikace</h3>
+
+<p>Pro lidi, kteří znají jen PHP, je pojem „životní cyklus“ trochu
+novinkou. PHP má totiž životní cyklus úplně nejjednoduší možný:<br>
+Přijde požadavek, apache jej předá PHP, to zjistí, který skript má
+načíst, přeparsovat a vykonat, skriptu předá požadavek, pak se řídí
+instrukcemi ve skriptu, a nakonec skončí. Tento postup může být různě
+optimalizovaný, např. PHP může udržovat přeparsované skripty v paměti,
+použít jedno PHP vlákno vícekrát, a podobně.</p>
+
+<p>Oproti tomu J2EE aplikace je opravdu aplikace v pravém slova smyslu:<br>
+Na serveru se spustí a běží, dokud ji neukončíte. Jednotlivé požadavky
+potom nejsou jejími jednotlivými spuštěními, ale jen voláním metod
+jejích tříd. Z toho plynou leckteré velké výhody.</p>
+
+<p>Jako začátečník spatřuji jednu z největších výhod v tom, že stav
+aplikace nemusím někam ukládat do session či podobně, ale sám
+přetrvává. Pokud na serveru vytvoříte nějaký objekt a uložíte ho kamsi,
+tak tam přetrvá, dokud ho neodstraníte. Viditelný může být pro všechny
+session, pro všechny požadavky. Tuto vlastnost pochopitelně velmi hojně
+využívají téměř všechny frameworky, různé cache nástroje, správci
+zdrojů (např. spojení do databáze) atd. Samozřejmě se nejedná o náhradu
+perzistence; může ji však skvěle doplňovat.</p>
+
+<h2>Servery</h2>
+
+<p>Pokud chcete začít s vývojem webových aplikací s J2EE, přijdete zprvu
+asi do kontaktu s nějakým serverem, který je umí vykonávat. Takových
+serverů je mnoho od různých výrobců. Nazývají se <strong>kontejnery
+servletů</strong> (servlet containers), někdy je na ně nabaleno několik
+dalších „bundled“ technologií, a ty se potom honosí názvem
+<strong>aplikační server</strong>. U obyčejného kontejneru ale o nic
+nepřijdete – víceméně všechnu funkčnost si do něj můžete přidat
+sami, a profesionálové se k tomu u menších projektů dokonce
+přiklánějí raději.</p>
+
+<p>Zde je seznam neznámějších:</p>
+
+<ul>
+	<li><strong>Apache Tomcat</strong> (kontejner) – dost možná
+	nejpoužívanější pro J2EE webové aplikace. Je součástí J2EE modulu pro
+	NetBeans.</li>
+
+	<li><a href="http://www.mortbay.org/jetty/"><strong>Jetty</strong></a>
+	(kontejner) – „lightweight“ (jak rád říkám, lehkovážný :-) –
+	menší nároky na paměť, rychlejší.</li>
+
+	<li><a href="http://www.jboss.org/jbossas/"><strong>JBoss AS</strong></a>
+	(aplikační server) – asi nejrozšířenější aplikační server; vyvíjí
+	ho firma RedHat. Vyznačuje se vysokou modularitou na základě
+	mikrojádra.</li>
+
+	<li><a href="http://www.jboss.com/products/platforms/application"><strong>JBoss
+	EAP</strong></a> (aplikační server) – „ostrá“ verze JBoss AS –
+	důkladně otestovaný AS + framework Seam.</li>
+
+	<li><strong>JBoss Web</strong> (kontejner) – odlehčená verze JBoss AS,
+	určená pro účely, pro které se používá Tomcat. Snoubí se v něm
+	jednoduchost kontejneru a výhody JBossu. Osobně jsem si jej docela
+	oblíbil.</li>
+
+	<li><strong>Sun Java system Application Server</strong> (aplikační
+	server) – neohrabané jméno, proto jej často na webu uvidíte pod zkratkou
+	SJSAS; jinak docela dobrý.</li>
+
+	<li><strong>GlassFish</strong> (aplikační server) – komunitní verze SJSAS.
+	Je součástí J2EE modulu pro NetBeans.</li>
+
+	<li><strong>IBM WebSphere</strong> (aplikační server) –
+	nezkoušel jsem.</li>
+
+	<li><strong>BEA WebLogic</strong> (aplikační server) –
+	nezkoušel jsem.</li>
+
+	<li><a href="http://www.caucho.com/index.xtp"><strong>Caucho Resin</strong></a>
+	(aplikační server) – nezkoušel jsem.</li>
+</ul>
+
+<p>Více najdete na Wikipedii: <a
+href="http://en.wikipedia.org/wiki/Comparison_of_application_servers">Comparison
+of Application Servers</a>.</p>
+
+<p>V tomto úvodu se budu zabývat asi hlavně kontejnerem
+<strong>Tomcat</strong>, jelikož jeho správa je nejjednodušší. Průběžně
+budu upozorňovat na to, co v Tomcatu chybí oproti aplikačním serverům.</p>
+
+<p>Nainstalujte si tedy některý z výše uvedených, doporučuji Apache
+Tomcat. Zapamatujte si uživatelské jméno a heslo pro administraci a port, na
+kterém apache poběží – jejich neznalost je častou příčinou delší
+prodlevy v postupu nováčků. Po instalaci a spuštění se rovnou podívejte
+na úvodní stránku. Dokumentaci zatím neřešte, je pro vás zatím moc
+složitá. Podívejte se na administrační část – odkaz „Tomcat
+Manager“ vpravo nahoře. Zadejte jméno a heslo, které jste si zapamatovali
+při instalaci. Standardně je to admin / adminadmin. U jednotlivých aplikací
+(zatím jich tu moc není) vidíte odkazy „Stop, Start, Reload, Undeploy“.
+Nemačkejte na ně – zrušili byste si možnost správy Tomcatu (bohužel to
+není blbuvzdorné). Trochu rozvedu, k čemu jsou – čímž se dostáváme
+k tématu, jak se J2EE aplikace dostávají na server.</p>
+
+<h3>Deploy = upload aplikace (zjednodušeně řečeno)</h3>
+
+<p>J2EE aplikace se obvykle na server umisťují v jednom souboru s příponou
+<code>.war</code> – Web ARchive. Ten má danou strukturu souborů a
+adresářů – ta je dost důležitá a budete se s ní setkávat často
+(hlavně když něco nepůjde). Například v Tomcat Manageru (ona stránka,
+kterou máte asi stále ještě otevřenou) provedete deploy pomocí uploadu WAR
+souboru na server. Proces ale nezahrnuje jen zkopírování – kontejner
+rovnou aplikaci také rozbalí, prohlédne konfiguraci, podle ní upraví
+prostředí pro aplikaci a svoje prostředí (zejména vytvoří zdroje typu
+připojení do databáze atd.), aplikaci spustí a zavolá její metodu
+<code>init()</code>.</p>
+
+<p>Aby to zas nevypadalo, že s Javou je svět krásný a ideální, tak musím
+uvést, že při tomto kroku bývají největší problémy: Na serveru
+kolidují verze knihoven kvůli hierarchii tzv. <em>class-loaderů</em> – to
+jsou nástroje pro načítání tříd do JVM a na serveru je jich hned
+několik. Když stejnou třídu (dokonce i ze stejného souboru) načte více
+classloaderů, z hlediska JVM jsou to jiné třídy, a pak dostanete třeba <a
+href="http://www.jforum.net/posts/list/4121.page">takovéto výjimky</a>.</p>
+
+<p>Začátečník (jak si dobře pamatuji) s tím může mít velké probémy,
+ale není to zas až tak strašné, pokud nastudujete trochu teorie – např.
+<a href="http://www.sweb.cz/pichlik/archive/2007_02_25_archive.html">dobrý
+článek o classloaderech</a> na Dagblogu, a znáte strukturu classloaderů
+vašeho serveru. Je to už ale trochu pokročilé téma.</p>
+
+<p>Nejčastější chybou je duplikátní výskyt knihoven – jednou ve vaší
+aplikaci, jednou třeba v <code>/lib</code> adresáři serveru. To se často
+děje proto, že se snažíte vyřešit problém nekompatibilních verzí
+tříd. Proto také doporučuji webové aplikace napřed zkoušet na
+kontejnerech, u kterých je toto riziko menší.</p>
+
+<h3>Součásti Tomcatu</h3>
+
+<p>Začátečníky často mate spoustu názvů, se kterými se při práci
+s Tomcatem setkají – bohužel zejména při výpisu chyb, ale částo také
+při konfiguraci. Proto zde uvedu, co představují jednotlivá jména
+součástí Tomcatu. Samotné zmíněné technologie probereme dále. ***Možná
+přesunout dále, až za představení technologií.</p>
+
+<ul>
+	<li>Catalina – v podstatě Javové jádro serveru. Vykonává servlety, tedy
+	samotný Java kód webové aplikace.</li>
+
+	<li>Jasper – ta část, která převádí JSP kód na Java servlety.</li>
+
+	<li>Coyote – stará se o HTTP komunikaci, zpracovává požadavky na
+	volání servletů.</li>
+</ul>
+
+<p>Tolik tedy zatím k serverům, a teď se podíváme po něčem, v čem
+budeme aplikace vyvíjet.</p>
+
+<h2>IDE – prostředí pro vývoj</h2>
+
+<p>Prostředí pro vývoj J2EE aplikací je opět více. Nejznámější jsou
+Eclipse a NetBeans. Začátečníkům rozhodně doporučuji NetBeans – na
+rozdíl od Eclipse obvykle vše funguje „z fleku“.</p>
+
+<p>NetBeans mají přímou podporu Sunu a mají celkem slušnou komunitu. Navíc
+jde o projekt původem od českého kdysi-studenta; časem projekt koupil Sun a
+udělal z něj svoje –hlavní– mainstreamové vývojové prostředí –
+podobně jako má Microsoft svoje Visual Studio.</p>
+
+<p><a href="http://download.netbeans.org/netbeans/6.1/final/">Stáhněte si tedy
+NetBeans</a>, balíček <em>Web &amp; Java EE</em>. V něm je zahrnutý
+i Apache Tomcat. Proč jsem vás tedy nechal stahovat samostatný Tomcat?</p>
+
+<ul>
+	<li>Tomcat zahrnutý v NetBeans se po zavření IDE ukončí.</li>
+
+	<li>U samostatného se lépe spravují knihovny, uživatelé a další
+	nastavení.</li>
+
+	<li>Se samostatným jde z NetBeans pracovat stejně jako s tím
+	vestavěným.</li>
+</ul>
+
+<p>K vývojovému prostředí se ještě dostaneme, nyní k samotným
+technologiím.</p>
+
+<h2>Perzistence – Hibernate, Toplink a spol.</h2>
+
+<p>Jednou z technologií, které jsou na J2EE nejlákavější, je perzistence
+objektů, či objektově-relační mapování. Ta slouží k automatickému
+„rozkládání“ objektů (hlavně) do relační databáze a jejich zpětné
+načítání. Dále je možné provádět nad objekty hromadné akce a dotazy
+pomocí jazyka podobného SQL. Objektům (resp. jejich třídám), se kterými
+v perzistenci pracujeme, se říká <em>entity</em>.</p>
+
+<h3>Hibernate</h3>
+
+<p>Nejznámějším nástrojem pro perzistenci je Hibernate. Ten používá
+jazyk HQL. Pro mapování, tedy k popisu, jak se objekty které třídy
+rozkládají do tabulek v databázi, sloužily dříve XML soubory.</p>
+
+<pre
+class="brush: xml"><code>&lt;hibernate-mapping&gt;
+ &lt;class name="ModelPlane" table="model_plane"&gt;
+   &lt;id name="id" column="id_model" type="java.lang.Long"&gt;
+     &lt;generator class="increment"/&gt;
+   &lt;/id&gt;
+   &lt;property name="name" column="name" type="java.lang.String" /&gt;
+ &lt;/class&gt;
+&lt;/hibernate-mapping&gt;</code></pre>
+
+<p>V poslední době se ale rozmáhá pohodlnější způsob – @anotace.</p>
+
+<pre
+class="brush: xml"><code>@Entity
+public class ModelPlane {
+
+    private Long id;
+    private String name;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id_model")
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+}</code></pre>
+
+<p>Manuál k anotacím najdete <a
+href="http://www.hibernate.org/hib_docs/annotations/reference/en/html_single/">zde</a> –
+ovšem pokud skutečně zrovna začínáte, raději na to vůbec nekoukejte,
+nebo se rychle ztratíte. ***Odstranit? Spíše si přečtěte nadpisy, ať
+chytnete slinu na to vše, co Hibernate umí.</p>
+
+<p>Hibernate lze použít i mimo J2EE – konec konců ukázkové aplikace
+jsou někdy obyčejné konzolové J2EE prográmky.</p>
+
+<p>***Vložit ukázku SQL DML, mapovacího XML a Java kódu – např.
+faktury.</p>
+
+<p>Detailní popis, jak Hibernate funguje a jak se s ním pracuje, vydá na
+mnohasetstránkovou knihu (viz Hibernate in Action). Proto vás jen odkážu na
+<a href="http://www.hibernate.org/">www.hibernate.org</a>, kde najdete velmi
+dobrý tutoriál, ze kterého cca během dne pochopíte, oč jde a jak se to
+programuje.</p>
+
+<h3>JPA – Java Persistence API</h3>
+
+<p>Ani perzistence neunikla tendenci ve světě Javy vše standardizovat a
+vymýšlet společná aplikační rozhraní. Tak vznikl standard JPA, což je
+v podstatě trochu ořezané Hibernare API, ale také přinesl možnost místo
+XML souborů používat @anotace, což jsou (pro ty, co neznají) meta-informace
+zapsané přímo v kódu Java tříd za zavináčem:</p>
+
+<pre
+class="brush: java"><code>@Entity
+@Table(name="users")
+public class User {
+  @Id public int id;
+  @Column( name = "jmeno" ) public String krestniJmeno;
+  ...
+}</code></pre>
+
+<p>Trochu kontraproduktivně to vneslo bordel do názvosloví (vzniklo mnoho
+„skoro-synonym“), ale na to si zvyknete :-)</p>
+
+<h2>Frameworky</h2>
+
+<p>Technologie JSP sama o sobě je pořád dost slabá a pro vývoj velkých
+aplikací nevhodná. Proto se postupem času objevily stovky frameworků,
+z nichž desítky se opravdu často používají. Slouží nejrůznějším
+účelům pro různé vrstvy aplikací. O několika z nich si ve stručnosti
+povíme.</p>
+
+<p>Zpracování požadavku se ve většině frameworků rozděluje na zhruba
+dvě části: Na akci a renderování stránky.</p>
+
+<p><em>Akce</em> je jednoduše provedení činností, které případné
+vyplývají z požadavku (např. vytvoření účtu), a dále příprava dat,
+které se použijí ve stránce.</p>
+
+<p><em>Renderování</em> je prostě vygenerování popisného kódu
+obsahující výsledný dokument – XHTML, WAP, SOAP, ale i binární jako
+PDF dokument pro tisk či PNG obrázek. Při tomto generování se obvykle
+použijí data připravená v akci, a k samoznému generování se často
+používá některý z přehršle šablonovacích systémů.</p>
+
+<h3>Struts</h3>
+
+<p>Největší obliby (podle mého pozorování) došel framework Struts. Ten
+slouží právě zejména k rozdělení a řízení toku aplikace – kdy
+provést jakou akci, jaké jí předat parametry, kam pokračovat, atd…</p>
+
+<p>Má dvě hlavní verze:</p>
+
+<p><em>Verze 1.x.x</em>, která je ve své podstatě celkem jednoduchá a oproti
+verzi 2 toho moc neumí – čímž ale neříkám, že to málo, co umí,
+nezvládá dobře nebo že to není důležité. Zejména se totiž stará
+o aplikační logiku (jakou akci obsluhuje která třída, jaká stránka se
+má kdy zobrazit, atd.). Dále obsahuje celkem rozsáhlou knihovnu tagů (viz
+JSP), které plní různé účely.</p>
+
+<p>Později spojením <em>Struts 1</em> a frameworku <em>WebWorks</em> vznikla
+verze Struts 2, ve které původní funkčnost <em>Struts 1</em> tvoří asi
+20 %.</p>
+
+<h3>Seam Framework</h3>
+
+<p><a href="http://seamframework.org/">Seam framework</a> z dílny JBoss je
+známý především díky své části určené pro ulehčení spolupráce JSF
+a EJB (podle čehož ostatně nese své jméno). Obsahuje však mnohem více
+součástí, a dalo by se říci, že záběrem konkuruje frameworku Spring.</p>
+
+<h3>JSF – Java Server Faces</h3>
+
+<p>Sun ze všech nejvíce propaguje framework JSF. Ten do značné míry
+vychází ze Struts 1, má i podobný záběr funkcionality, ale v lecčems se
+zásadně liší, a pochopitelně s sebou přináší spoustu standardů a
+více XML.</p>
+
+<h3>Spring Framework</h3>
+
+<p>Když jsem se kamaráda – J2EE juniora – poprvé zeptal, k čemu je
+Spring, řekl: „Spring je naprosto bomba.“ A pokračoval tím, jak mu to
+ušetří spoustu psaní kódu.</p>
+
+<p>Dnes, kdy jsem mnoho částí Springu již adoptoval a používám, mu musím
+dát zapravdu, i když on tehdy mluvil z pohledu vývojáře, který projekt
+nekonfiguruje, pouze využívá jeho efektů. Spring je však bomba
+i z pohledu správce projektu (seniora, chcete-li) – konfigurace je velmi
+snadná a jde jak po másle.</p>
+
+<p>A nyní tedy, k čemuže ten spring je. Ve stručnosti se to moc popsat
+nedá, leda výčtem názvů jeho částí:</p>
+
+<ul>
+	<li>Inversion of Control – konfiguraci aplikace velmi snadno „vytáhnete“
+	z kódu do konfiguráků.</li>
+
+	<li>Spring AOP – opakující se „začátky a konce“ (např.
+	otevření/zavření transakce) v metodách přesunete do jednoho místa a do
+	oněch metod jej vloží Spring.</li>
+
+	<li>Resources – mnoho nástrojů pro načítání souborů z filesystému
+	nebo z archivu aplikace.</li>
+
+	<li>Validace, provazování dat</li>
+
+	<li>Testování</li>
+
+	<li>Správa transakcí (může být provázáno s AOP)</li>
+
+	<li>Ulehčení práce s ORM nástroji a iBatisem</li>
+
+	<li>MVC framework pro webové aplikace a pro „portlety“</li>
+
+	<li>Integrace s mnoha zobrazovacími nástroji – FreeMarker, Tiles, XSLT,
+	PDF, Excel</li>
+
+	<li>Podpora vývoje webových služeb</li>
+
+	<li>Práce s mailem (odesílání mailů z Javy)</li>
+
+	<li>Podpora skriptovacích jazyků pro programování servisních objektů</li>
+
+	<li>a další.</li>
+</ul>
+
+<p>Lidem, kteří s J2EE začínají, takový výpis asi moc k ničemu nebude,
+proto vás rovnou odkáži na články</p>
+
+<ul>
+	<li><a href="navod-spring-framework-zacatky.html">Úplné začátky
+	s frameworkem Spring</a></li>
+
+	<li><a href="navod-spring-aop-zacatky.html">Začátky se Spring AOP –
+	návod</a></li>
+
+	<li><a href="navod-spring_freemarker_in_standalone_application.html">FreeMarker
+	templates via Spring in non-web application</a></li>
+</ul>
+
+<h3>Další</h3>
+
+<p>Pokud hledáte něco pro konkrétní účel, je obvykle dobré podívat se na
+projekty, které zastřešují jiné projekty – jako jsou <a
+href="http://jakarta.apache.org/"><strong>Jakarta</strong></a>, zejména
+v levé části v sekci „Ex-Jakarta“ jsou projekty, které se osvědčily
+a přesunuly pod projekt <a href="http://apache.org/">Apache</a> – <a
+href="http://projects.apache.org/indexes/language.html#Java">seznam
+konkrétních projektů pro Javu</a> je opravdu dlouhý. Z těch
+nejznámějších sem patří:</p>
+
+<ul>
+	<li>Jakarta Commons (obecné pomůcky pro kdeco)</li>
+
+	<li>Jakarta Logging (obecný nástroj pro logování, vzniklo podle něj
+	<code>java.util.logging</code>)</li>
+
+	<li>Struts (webový framework, viz výše)</li>
+</ul>
+
+<p>A mimojiné také server <em>Tomcat</em>, buildovací nástroj <em>Ant</em>,
+nástroj pro správu projektů <em>Maven</em>, práce se soubory MS Office
+<em>POI</em>, a další.</p>
+
+<p>Dalším takovým hnizdem projektů je <a
+href="http://www.jboss.org/"><strong>JBoss</strong></a>, nyní spravovaný
+firmou RedHat, kde je <a href="http://www.jboss.org/projects/">projektů opravdu
+hodně</a> – asi 35. Mezi ně patří:</p>
+
+<ul>
+	<li>Hibernate – asi nejpopulárnější pecka – objektově-relační
+	mapování, viz „perzistence“ výše</li>
+
+	<li>JBoss Application Server (Aplikační server, viz výše)</li>
+
+	<li>JBoss AOP (implementace AOP, něco jako Spring AOP – viz výše)</li>
+
+	<li>Seam – framework, který začal jako zjednodušení vývoje v JSF a EJB,
+	ale má namířeno na posty Spring Frameworku</li>
+
+	<li>a další obecné nástroje – cache, vzdálené volání, správa
+	transakcí, webové služby, messaging, a další.</li>
+</ul>
+
+<p>Nenechte se ale zahltit – pokud se zanoříte do všech projektů a budete
+chtít zjistit, co vše umí, bude to čtení na několik dnů. Já doporučuji
+tento postup: Koukněte se na nějaké Java fórum a hledejte témata
+s nadpisem typu „Jaký framework používáte pro XYZ a proč?“
+V takových se obvykle nespustí flamewar, ale naopak věcná diskuze, kde se
+velmi stučně dozvíte shrnutí, k čemu který slouží, respektive k čemu
+jej kdo používá, a často i krátké a výstižné ukázky kódu.</p>
+
+<h2>EJB</h2>
+
+<p>EJB, <em>Enterprise Java Beans</em>
+<!--, je cosi, čemu přesně ještě docela nerozumím, ale -->: v podstatě
+jde opět o snahu standardizovat. Rozděluje „Beany“ (java třídy
+s určitým účelem) na několik kategorií, podle účelu, ke kterému mají
+sloužit – jestli mají provádět nějaké operace, nebo poskytovat nějakou
+službu, nebo jestli mají představovat nějakou entitu, a podobně. S tím
+souvisí pojmy „Stateful“, „stateless“ a další. ***Doplnit</p>
+
+<p>Technologie EJB se týká především aplikačních serverů a enterprise
+aplikací. Má více verzí, které se docela zásadně liší. V současnosti
+je aktuální verze 3.0, která je snad první jednoduše použitelná. Ovšem
+na webu (v době psaní) narazíte povětšinou na materiály o EJB verze 2.0,
+z nichž leckteré to s klidným svědomím ani neuvedou, takže vy se pak
+zcela marně snažíte v aplikačním serveru pracujícím na EJB
+3.0 aplikovat postupy pro EJB 2.0.</p>
+
+<p>Tuto sekci o EJB uvádím hlavně proto, že na zkratku EJB se dá narazit
+hodně často. Studium EJB doporučuji odložit na dobu, kdy budete mít v ruce
+JSP, Struts a Hibernate. ***Dopsat</p>
+
+<h2>Závěr</h2>
+
+<p>Zatím vše. Jelikož se s obrovským světem J2EE stále seznamuji,
+vyhrazuji si právo plácat tu nesmysly, ale snažím se, aby uvedená fakta
+odpovídala pravdě – konec konců, účelem tohoto dokumentu je velmi rychle
+seznámit nováčky s J2EE. Do podrobností zde zacházet nechci, těch je na
+webu velká spousta.</p>
+
+<p>Pokud jste zkušení J2EE harcovníci, uvítám jakékoliv opravy na e-mailu
+<a href="mailto:ondra&#64;dynawest.cz">ondra&#64;<!-- -->dynawest.cz</a>.</p>
+
+<hr>
+
+<p>Napsáno 2007–08, aktualizováno tu a tam, naposledy 2008–10.</p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/java/navod-j2ee_uvod.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

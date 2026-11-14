@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Úplné začátky se Spring framework</h1>
+
+<h2>K čemu je Spring?</h2>
+
+<p>Spring má více částí, takže se dá využívat lecjak.</p>
+
+<ul>
+	<li><strong>Spring Web MVC</strong> – framework pro návrh webových
+	aplikací ve stylu <em>Model, View and Controller</em></li>
+
+	<li><strong>Spring JDBC</strong> – zjednodušení práce s JDBC, něco
+	jako <a href="http://ibatis.apache.org/">iBatis</a></li>
+
+	<li><strong>Spring AOP</strong> – viz článek <a
+	href="navod-spring-aop-zacatky.html">Začátky se Spring
+	AOP – návod</a></li>
+
+	<li><strong>Spring Inversion of Control</strong> (dependency injection,
+	BeanFactory, ApplicationCon­text) – knihovna pro vnější konfiguraci</li>
+
+	<li>a <a href="http://www.springframework.org/about">další</a>…</li>
+</ul>
+
+<p>Mě v tomto článku bude zajímat poslední položka – <em>IoC</em>. Je
+to jen zlomek toho, co Spring dokáže, ale je to také základ skoro všeho, co
+se ve Springu dělá. (Proto tedy název článku „Úplné začátky…“ a
+nikoliv „Spring IoC“.)</p>
+
+<h2>Spring Inversion of Control (IoC)</h2>
+
+<p>Inversion of Control (česky bych řekl „vyvržení střev aplikace“, ale
+jinak pochopitelně „převrácené řízení“) je technika, pomocí které
+především oddělíte konfiguraci od kódu a také oddělíte jednotlivé
+části aplikace navzájem.</p>
+
+<p>Zprvu se vám může zdát, že stačí normální konfigurace přes
+<code>Properties</code> a dělat to níže popisovaným způsobem je
+složitější. A máte pravdu! Ale vtip je v tom, že pokud děláte J2EE
+aplikaci, postupem času začne váš projekt používat <abbr
+title="Například já teď pracuju na celkem jednoduchém projektu, ale už teď používám Hibernate přes JPA, iBatis, FreeMarker a další.">desítky</abbr>
+modulů, z nichž každý má vlastní způsob konfigurace.</p>
+
+<p>Se Spring IoC ale dnes už spolupracuje skoro každý významný projekt, a
+díky tomu je všechny můžete nakonfigurovat jednotným způsobem, což je
+u větších projektů neocenitelné. Spring navíc pro nejběžnější úlohy
+nabízí velmi přímočará řešení s defaultními hodnotami, proto přidat
+nový modul často znamená jen přidat pár řádků do XML konfigurace
+Springu.</p>
+
+<h2>Jak na to</h2>
+
+<p>Hlavní třídou k tomuto je buď <code>ApplicationContext</code>, nebo
+<em>Bean Factory</em> neboli <em>továrna na „bíny“</em>.
+<code>BeanFactory</code> je jednodušší (osekaná) verze
+<code>ApplicationContext</code>u, proto začneme tou.
+<code>ApplicationContext</code> využijete u pokročilejších technik, jako je
+správa transakcí nebo AOP.</p>
+
+<div><img src="images/spring-beans-factory.png" alt=""></div>
+
+<p><em>Obrázek je z <a
+href="http://static.springframework.org/spring/docs/2.5.x/reference/beans.html#beans-basics">dokumentace
+Springu</a>, kde najdete lepší tutoriál než je tento, ale
+v angličtině.</em></p>
+
+<p>Zatímco běžně byste třeba pro databázové spojení měli třídu
+<code>DatabaseManager</code>, z ní udělali jedináčka (singleton), a tuto
+třídu inicializovali a vložili kamsi do hlavního objektu aplikace, se
+Springem přenecháte vytvoření a konfiguraci objektu na Springu a v kódu
+ostatních si o něj vždy jen požádáte.</p>
+
+<p>Co zbývá na vás je implementace příslušné třídy a vytvoření XML
+souboru s metadaty pro jeho konfiguraci.</p>
+
+<p>V podstatě velice jednoduché. Takže nyní ukázka. Předpokládejme
+obecně jakoukoliv aplikaci.</p>
+
+<hr>
+
+<h3>Jak inicializovat spring</h3>
+
+<p>Inicializace probíhá tak, že vytvoříte továrnu na beany a do
+konstruktoru předáte soubor, který se má číst. U newebových aplikací
+můžete XML soubor dát kam chcete a pojmenovat jej jak chcete.</p>
+
+<pre
+class="brush: java"><code>import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.core.io.ClassPathResource;
+
+public void init() {
+
+  XmlBeanFactory bf = new XmlBeanFactory( new ClassPathResource( "properties/SpringBeans.xml" ));
+
+}</code></pre>
+
+<p>U webových aplikací se konfigurační soubory dávají do
+<code>/WEB-INF/</code>, anžto tam se webový klient nikdy nedostane (zaručeno
+specifikací J2EE).</p>
+
+<pre
+class="brush: java"><code>import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.web.context.support.ServletContextResource;
+
+public void init() {
+
+  XmlBeanFactory bf = new XmlBeanFactory(new ServletContextResource(this.getServletContext(), "/WEB-INF/applicationContext.xml"));
+
+}</code></pre>
+
+<p>Soubor <code>applicationContext.xml</code> viz dále.</p>
+
+<hr>
+
+<h3>Nyní jak si budete žádat o připravený objekt (pro ukázku
+třeba DAO):</h3>
+
+<pre
+class="brush: java"><code>userDAO = (UserDAO) bf.getBean("userDAO");</code></pre>
+
+<p><code>userDAO</code> je jméno konkrétního objektu třídy
+<code>UserDAO</code> – viz dále.</p>
+
+<p>Krásné, že? :-)</p>
+
+<p>Samozřejmě je to o něco složitější než to udělat přímo v kódu,
+ale zkuste to a uvidíte, že tomu přijdete na chuť.</p>
+
+<hr>
+
+<h3>Konfigurace</h3>
+
+<p><strong>A teď co je k tomu potřeba:</strong></p>
+
+<p>V konfiguračním souboru <code>/WEB-INF/applicationContext.xml</code>
+řeknete springu, jaké všechny objekty má připravit a jak je nastavit.</p>
+
+<p><em>Poznámka: U newebových aplikací můžete XML soubor dát kam chcete a
+pojmenovat jej jak chcete.</em></p>
+
+<pre
+class="brush: xml"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd"&gt;
+
+&lt;beans&gt;
+
+ &lt;bean id="propertyConfigurer"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"&gt;
+  &lt;property name="locations"&gt;
+   &lt;list&gt;
+    &lt;value&gt;settings.properties&lt;/value&gt;
+   &lt;/list&gt;
+  &lt;/property&gt;
+ &lt;/bean&gt;
+
+ &lt;import resource="spring-config/userDAOs.xml" /&gt;
+
+&lt;/beans&gt;</code></pre>
+
+<p>První element <code>&lt;bean&gt;</code> je přímá definice objektu,
+další definice jsou obsažené v souborech načtených přes element
+<code>&lt;import&gt;</code>.</p>
+
+<p>Atribut <code>id="propertyConfigurer"</code> obsahuje jméno, pod kterým
+Spring o daný objekt budete pozdeji žádat.</p>
+
+<p>Atribut <code>class="..."</code> je jméno třídy, ze které Spring objekt
+vytvoří. Použije k tomu konstruktor bez parametrů. Mohl by použít
+i jiný, ale takto nám to stačí.</p>
+
+<p>Element <code>&lt;property name="locations"&gt;</code> použije Spring
+k nastavení vlastnosti objektu přes setter, tedy přes
+<code>setLocations(...)</code>. Dokáže pracovat s různými typy, zde
+například je to seznam (stringů).</p>
+
+<hr>
+
+<p>Ještě se podíváme na soubor <code>userDAOs.xml</code>.</p>
+
+<p>//Update 2008/09:// Momentálně trochu nedovysvětlené… časem snad
+připíšu.</p>
+
+<pre
+class="brush: xml"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd"&gt;
+
+&lt;beans&gt;
+
+ &lt;bean id="userDAO" class="cz.dynawest.isir.dao.UserDAO"&gt;
+   &lt;property name="..." ref="..."/&gt;
+ &lt;/bean&gt;
+
+ &lt;bean id="udalostDAO" class="cz.dynawest.isir.dao.UdalostDAO"&gt;
+   &lt;property name="..." ref="..."/&gt;
+ &lt;/bean&gt;
+
+&lt;/beans&gt;</code></pre>
+
+<p>A spring je na světě.</p>
+
+<h2>Závěr</h2>
+
+<p>Zatím jste se naučili jen tzv. <em>Inversion of Control</em>.</p>
+
+<p>Popisy dalších částí Spring Frameworku budu postupně přidávat,
+najdete je v sekci Java + J2EE.</p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/java/navod-spring-framework-zacatky.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

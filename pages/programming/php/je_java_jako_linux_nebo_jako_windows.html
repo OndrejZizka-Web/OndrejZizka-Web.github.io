@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Je Java jako Linux nebo jako Windows?</h1>
+<!-- //Článek momentálně upravuji.// -->
+<p><em>Přesunuto <a
+href="/pages/programming/java/je_java_jako_linux_nebo_jako_windows.html">sem</a>.</em></p>
+
+<p>Po napsání předchozího článku <a
+href="vyhody_a_nevyhody_php.html">Výhody a nevýhody PHP</a> se ozval Jakub
+Vrána a chvíli jsme si mailovali nad některými body článku, což se, jak
+to bývá, stočilo na srovnání PHP s technologií, kterou já preferuji –
+tedy s Javou.</p>
+
+<p>V závěru jsme se dostali k tomu, zda je Java nebo PHP podobnější
+Linuxu nebo Windows. Zde je část z mailu:</p>
+
+<blockquote>
+	<p>Jednu věc nechápu a budu rád, když mi jako (předpokládám) fanda Linuxu
+	vysvětlíš:</p>
+
+	<p>Jak je možné, že lidé, kteří preferují Linux před Windows, zároveň
+	preferují PHP před Javou. Protože pokud bychom zobecnili vlastnosti a
+	požadavky na systémy a plaformy, potom právě Java oproti PHP by byla jako
+	Linux oproti Windows – technologicky vyspělejší, vývojově
+	stabilnější, zpětně kompatibilnější, modulárnější,
+	konfigurovatel­nější, víceúčelovější, a druhé ideologicky vykrádá
+	první, přičemž to ani nezvládne dotáhnout do konce a zbyde jenom
+	nedotažený hybrid zatížený historií svého vývoje.</p>
+
+	<p>PHP se mi zdá jako takový rozjetý mnohakilometrový vlak tažený slabou
+	mašinkou, ke kterému stále napojují další a další vagóny – některé
+	velice moderní, přepychové, a pokud jedete po rovince, vše je ok – ale
+	pak přijde kopeček a mašinka se sotva vleče; a pak i v těch
+	nejpřepychovějších vagónech poznáte, že je něco špatně. (Mašinka zde
+	nepředstavuje výkonnost, ale právě ono „jádro“.)</p>
+
+	<p>Co je tedy podle tebe na PHP lepšího? Co tě k němu táhne kromě citové
+	vazby? (Tvoje zásluhy v PHP komunitě zhruba znám a oceňuji, a chápu a
+	znám z vlastní zkušenosti, že z takového rozjetého vlaku se velmi
+	těžko vyskakuje.) Zkoušels někdy proniknout do J2EE? Znáš základní
+	konceptuální rozdíly? Nechci tě nijak shazovat, jen mě zajímá, jestli se
+	dokážeš vžít do mojí situace a pochopit tak, proč PHP tak
+	„haním“.</p>
+
+	<p>Zdraví Ondra Žižka</p>
+</blockquote>
+
+<p>Dovolím si zkopírovat Jakubovo resumé z článku <a
+href="http://php.vrana.cz/je-php-jako-linux-nebo-jako-windows.php">Je PHP jako
+Linux nebo jako Windows?</a>:</p>
+
+<blockquote>
+	<h3>Jakub Vrána:</h3>
+
+	<p><strong>PHP a Linux</strong> – malé jádro, k tomu volitelné
+	jednoúčelové knihovny s jednoduchým rozhraním.</p>
+
+	<p><strong>Java a Windows</strong> – vše v jednom spravované přes
+	komplexní objektové rozhraní.</p>
+
+	<h3>Ondřej Žižka:</h3>
+
+	<p><strong>PHP a Windows</strong> (z pohledu programátora WinAPI): Silně
+	proměnlivá technologie, v lecčems zpětně nekompatibilní, počáteční
+	návrh špatný a směřující k lepšímu po vzoru lepších technologií,
+	mnohé významné featury dodělávané ad hoc a nepřirozeně vmontované do
+	návrhu.</p>
+
+	<p><strong>Java a Linux</strong>: Stabilní technologie stavěná velmi
+	rozvážně podle promyšleného návrhu dlouho laděného a diskutovaného
+	mnoha IT firmami, silná a zaručená zpětná kompatibilita, standardizované
+	API, mnoho různých použití (od embedded zařízení až po clusterované
+	farmy serverů). Nejčastěji používaná rozšíření časem projdou procesem
+	standardizace a začlení se do jádra, resp. JRE.</p>
+</blockquote>
+
+<p>Jak někdo poznamenal v tamějších komentářích, Jakub posuzuje
+z pohledu technického, zatímco já se snažím spíše o ideologické
+srovnání – zkrátka principy, na kterých vývojáři a komunita dané
+technologie (ne)staví.</p>
+
+<p>A to je z dlouhodobého hlediska mnohem důležitější – jistě chcete
+vyvíjet bez obav, že by příští major verze opět přinesla další sadu
+vlastností z jiných jazyků chaoticky splácaných dohromady se
+stávající verzí.</p>
+
+<hr>
+
+<p>Aby byla debata co k čemu, měli bychom tato hesla něčím podpořit,
+případně vyvrátit. Pusťme se do toho :-)</p>
+
+<h2>Malé jádro</h2>
+
+<p>Jak změřit velikost jádra? A co je vůbec jádro? Řekněme, že je to ta
+část technologie, která je nezbytně nutná pro její běh.</p>
+
+<ul>
+	<li>Binárky pro Java Virtual Machine (interpret Javy) nejnovější verze mají
+	cca 6 MB, což zahrnuje mimo jiné nativní knihovny pro zobrazování desktop
+	aplikací, práci se zvukem, fonty atd.</li>
+
+	<li>K Javě patří ještě <code>rt.jar</code>, což je balík, ve kterém
+	jsou knihovny obsažené ve standardní distribuci. Z toho se dá jako jádro
+	počítat maximálně část z nich.</li>
+
+	<li>Jádro PHP, <code>php6ts.dll</code>, má cca. 14 MB (standardní distribuce
+	windows), a tento modul je dále nedělitelný.</li>
+
+	<li>S okolními knihovnami (kromě API pro Apache, ISAPI a NSAPI) má kolem
+	20 MB.</li>
+
+	<li><code>php5ts.dll</code> má cca. 5 MB, a spolu s okolními
+	<code>.dll</code> má asi 10 MB.</li>
+</ul>
+
+<p>Ale velikost dat není nejlepší ukazatel. Vyberme tedy jiné kritérium.
+Nabízí se možnost miniaturizace jádra technologie a složitost syntaxe, a
+Jakubem uvedená „komplexnost jádra“.</p>
+
+<h2>Komplexnost jádra</h2>
+
+<p>Co se týká „ne/komplexnosti“ jádra, tak si nejsem zcela jist, jak
+rozlišit, co v jádru je či není.</p>
+
+<p>Pokud vím, v jádru Javy je jen několik tříd typu Object, String,
+Throwable, dále nativní metody základních systémových tříd, a tím to
+hasne; drtivá většina funkcionality JRE je již implementovaná v Javě a je
+oddělitelná.</p>
+
+<p>V PHP je mnoho knihoven instalovatelných z repozitáře PEAR, a většina
+těch, které jsou ve Windows verzi v phpXts.dll, jsou na linuxu volitelné za
+cenu vlastní kompilace PHP. Nicméně nevolitelnou součástí jádra jsou
+funkce jako <code>money_format()</code>, <code>apache_note()</code> nebo
+<code>highlight_file()</code>, na kterých jistě technologie
+závislá není.</p>
+
+<p>V tomto je tedy Linuxu podobnější Java, který v jádru obsahuje pouze
+to nutné (ať už pro funkčnost systému nebo kvůli výkonu).</p>
+
+<p>Že by Java obsahovala vše v jednom je vyvráceno, a za „all-in-one“
+technologii se dá považovat spíše PHP.</p>
+
+<h3>Windows a „vše v jednom“</h3>
+
+<p>U té architektury Windows bych řekl, že se Jakub
+seknul;<!-- Dovolil bych si polemizovat i o "komplexnosti" jádra Windows --> od
+verzí NT až po XP (Visty neznám) je systém poměrně modulárni a dá se
+očesat skoro až na HAL.</p>
+
+<p>Stejně tak předchozí verze Windows – existuje mnoho různých
+amatérských minidistribucí Windows 98 (bohužel teď je nenajdu).</p>
+
+<p>„spravované přes komplexní objektové rozhraní“ – to nevím, co
+tím Jakub u Windows myslel. Na WinAPI není objektového nic, to je
+čisté C.</p>
+
+<h2>Možnost miniaturizace jádra</h2>
+
+<p>Až teprve v extrémních podmínkách se ukáže, co vše lze z
+„jádra“ vypustit, aby technologie stále byla sama sebou.</p>
+
+<p>Takovými podmínkami jsou například mobilní telefony. Java šlape i na
+telefonech jako jsou několik let staré mobily Nokia. Zde se velikost jádra
+těžko určí, protože implementace je do jisté míry hardwarová.</p>
+
+<p>Naproti tomu nejmenší mě známý výskyt PHP je verze PHP pro servery
+Novell, která je osekaná o leccos, a přesto má hlavní knihovna stále
+několik MB.</p>
+
+<p>Řekl bych, že tím je v tomto bodě jasno – malé jádro a mnoho
+volitelných knihoven jednoznačně pasuje spíše na Javu.</p>
+
+<p>//Update:// O tom, že Java je skutečně univerzální, se můžete
+přesvědčit např. na <a
+href="http://www.knihy.cpress.cz/BookDoc.asp?BookID=160&amp;DocID=626&amp;DownloadSection=12">http://www.knihy.cpress.cz/BookDoc.asp?…</a>,
+kde najdete publikaci pro grafiky, která se věnuje se programování skeneru
+pomocí Javy.</p>
+
+<h2>Složitost syntaxe PHP a Javy</h2>
+
+<p>Syntaxe Java oproti syntaxi PHP:</p>
+
+<ul>
+	<li>Nemá &amp; reference</li>
+
+	<li>Není zde @ na umlčení</li>
+
+	<li>Nenahrazují se proměnné ve stringu</li>
+
+	<li>Nejsou zde věci typu __call, __autoload a další __*</li>
+
+	<li>Nemá # komentáře</li>
+
+	<li>Nemá <code>systémová volání</code></li>
+
+	<li>Nemá podivné konstrukce typu Array($objekt, „VolanáMetoda“)</li>
+
+	<li>Nemá konstrukty, které se tváří jako funkce, ale nejsou funkce</li>
+
+	<li>Nemá operátory and, or, xor, !==, ===</li>
+
+	<li>Nemá konstrukty require, require_once, include_once, declare</li>
+
+	<li>Nemá alternativní zápis kontrolních struktur s dvojtečkou</li>
+
+	<li>Nemá <code>global</code></li>
+
+	<li>Nemá <code>$GLOBALS</code>, <code>$_GET</code>, <code>$_POST</code>,
+	<code>$_COOKIE</code>, <code>$_FILES</code>,
+	<code>$_ENV</code>, <code>$_REQUEST</code></li>
+</ul>
+
+<p>Naopak:</p>
+
+<ul>
+	<li>Má @anotace</li>
+
+	<li>Má generické &lt;typy&gt;</li>
+
+	<li>Má navíc klíčová slova pro různé účely (synchronized, transient,
+	enum, volatile a další)</li>
+</ul>
+
+<p>Java syntaxe je jednodušší než syntaxe PHP.</p>
+
+<h2>Závěr</h2>
+
+<p>Co se tedy týký připodobnění Javy a PHP k Linuxu a Windows, není mnoho
+argumentů, proč PHP připodobňovat k Linuxu a Javu k Windows – spíše
+naopak.</p>
+
+<p>PHP je prostě na ocasu vývoje a s velkými obtížemi adoptuje
+vymoženosti jiných technologií (OOP, Unicode, výjimky, synchronizaci a
+sdílení, …) – stejně jako Windows.</p>
+
+<p>Naproti tomu Java je spolu s C# a .NET na špičce vývoje na poli IT,
+podobně jako Linux na poli OS.</p>
+
+<hr>
+
+<p>Jako tečku cituji člověka, který má PHP opravdu v malíku (a autora
+skvělého Texy!) – Davida Grudla:</p>
+
+<blockquote>
+	<p>Programovat v Javě umí kdekdo. O ASP.NET ani nemluvě. Jen v PHP píši
+	skuteční hrdinové. Renesanční bytosti. Fascinující a neskutečně
+	trpěliví lidé. Trpěliví od slova trpět. Třeba jako já.</p>
+
+	<p style="text-align:right">-- David Grudl, <a
+	href="http://latrine.dgx.cz/php-surprise">http://latrine.dgx.cz/php-surprise</a></p>
+</blockquote>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/php/je_java_jako_linux_nebo_jako_windows.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>

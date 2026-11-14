@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Ondřej Žižka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="My personal web">
+    <meta name="author" content="Ondřej Žižka">
+    <meta name="generator" content="JBake">
+
+
+    <link rel="stylesheet" href="../../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../../css/asciidoctor.css">
+    <link rel="stylesheet" href="../../../../css/doc-body.css">
+    <link rel="stylesheet" href="../../../../css/base.css">
+    <link rel="stylesheet" href="../../../../css/prettify.css">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!--<link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">-->
+    <link rel="shortcut icon" href="../../../../favicon.ico">
+</head>
+<body onload="prettyPrint()">
+    <div id="wrap">
+
+	<!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Ondřej Žižka</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="../../../../index.html">Blog</a></li>
+            <li><a href="../../../../archive.html">Archive</a></li>
+            <li><a href="../../../../tags">Tags</a></li>
+
+            <li><a href="../../../../about.html">About Me</a></li>
+            <li><a href="../../../../feed.xml">RSS feed</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="container">
+
+    <div class="document document-post">
+        <div class="page-header">
+            <h1></h1>
+        </div>
+        <div class="date"><span>2026-11-14</span></div>
+        <div class="doc-body"><h1>Aplikace pro kontrolu výskytů subjektů v insolvenčním rejstříku</h1>
+
+<p><em>Průvodní dopis/dokumentace k testovací konzolové verzi.</em><br>
+<em>Určeno výhradně pro Markétu Vojtíkovou.</em></p>
+
+<h2>1. Účel aplikace</h2>
+
+<p>Aplikace momentálne provádí tyto operace:</p>
+
+<ul>
+	<li>Aktualizace místní kopie archivu událostí webové služby ISIR</li>
+
+	<li>Import seznamu dlužníků z Excel souboru v předem dohodnutém
+	formátu</li>
+
+	<li>Kontrola výskytu dlužníků z tohoto seznamu mezi subjekty vedenými
+	v ISIR</li>
+</ul>
+
+<p>Bližší popis těchto operací následuje níže.</p>
+
+<h2>2. Konzolová verze</h2>
+
+<p>Konzolová verze aplikace znamená, že má textové rozhraní. Při vývoji
+testovací verze jsem se soustředil hlavně na funkčnost; výroba grafického
+(„okenního“) rozhraní by oddálila datum vzniku správně fungující
+aplikace.</p>
+
+<h2>3. Budoucí plány</h2>
+
+<h4>Funkční hledisko (co aplikace dovede)</h4>
+
+<p>Postupně mířím k aplikaci, která bude fungovat podle požadavků
+v mailech, které jsme si dosud vyměnili. Část z nich již funguje, např.
+posílání mailem při nové události ve sledovaném spisu, ignorování
+starých událostí vybraného spisu atd. Po návratu z dovolené tyto
+požadavky stručně shrnu, či spíše přednesu ucelený návrh, jak by
+aplikace mohla fungovat.</p>
+
+<h4>Uživatelské rozhraní</h4>
+
+<p>Současná konzolová verze je jen provizorium pro vás, a zároveň ji lze
+použít pro větší společnosti, které by chtěli pouze rozklad archivu ISIR
+do vlastní databáze.</p>
+
+<p>V zásadě jsou dvě možnosti dalšího vývoje uživatelského rozhraní
+aplikace(které se navzájem nevylučují):</p>
+
+<ul>
+	<li>vytvoření grafické uživatelské rozhraní, to by pravděpodobně
+	žádalo poměrně dlouhý vývoj (cca do ledna 2009);</li>
+
+	<li>vytvoření webového rozhraní, což by znamenalo, že by se aplikace
+	ovládala v prohlížeči; vývoj webové aplikace je rychlejší.</li>
+</ul>
+
+<p>Jak už jsem psal v mailu, ohledně tohoto bych si s vámi rád
+povyprávěl po telefonu – zeptám se vás, zda a proč byste preferovala tu
+kterou možnost, případně vysvětlil rozdíly mezi nimi – obě mají svá
+pro a proti. Shrnu nejdůležitější:</p>
+
+<p><strong>Webová aplikace:</strong> <em>Výhody</em></p>
+
+<ul>
+	<li>Běží neustále, tedy i hlídá neustále, a může spolehlivě poslat
+	mail / SMS při výskytu některého subjektu v ISIR.</li>
+
+	<li>Dostanete se na ni odkudkoliv, kde je připojení k internetu a
+	prohlížeč.</li>
+</ul>
+
+<p><em>Nevýhody</em></p>
+
+<ul>
+	<li>Je nutné odesílat seznam klientů na server.</li>
+</ul>
+
+<p><strong>Program do vlastního počítače:</strong> V podstatě vše naopak,
+než je to u webové verze:</p>
+
+<ul>
+	<li>Nemohu (z principu) zaručit, že program poběží neustále; a když už
+	ho spustíte, je zbytečné posílat maily, protože výsledek budete mít
+	rovnou před sebou.</li>
+
+	<li>Není nutné posílat seznam sledovaných subjektů na web.</li>
+</ul>
+
+<h2>4. Systémové požadavky</h2>
+
+<p>Pro spuštění konzolové a grafické verze aplikace je nutné mít
+nainstalovanou platformu Java verze 1.6.0 a vyšší. (U webové verze tento
+požadavek odpadá.)</p>
+
+<h3>Co je Java?</h3>
+
+<p>Java je programovací jazyk a sada nástrojů, který jsem zvolil pro vývoj
+tohoto programu. Asi Javu znáte ve spojitosti s mobilními telefony. Jednou
+z nevýhod z Javy je, že pro spuštění programů vytvořených pomocí Javy
+je třeba mít nainstalovaný podpůrný program.</p>
+
+<h3>Kontrola, zda je Java již instalovaná</h3>
+
+<p>Pro kontrolu verze Javy nainstalované v počítači vyberte v nabídce
+Start položku <em>Spustit…</em> a zde zadejte:</p>
+
+<pre><code>cmd /K java -version</code></pre>
+
+<p>Pokud se objeví zpráva ve smyslu „java není název souboru ani známého
+příkazu“, Java není pravděpodobně není nainstalovaná. Jinak můžete
+přeskočit následující krok „Instalace Javy“.</p>
+
+<h2>5. Instalace Javy</h2>
+
+<p>Ke stažení na adrese <a
+href="http://www.java.com/en/download/windows_xpi.jsp?locale=en&amp;host=www.java.com:80">http://www.java.com/…dows_xpi.jsp?…</a>
+. Pokud se po stisknutí tlačítka <em>Free Java Download</em> této stránce
+objeví informace o tom, že již máte nejnovější verzi Javy, potom je vše
+vpořádku a krok instalace Javy lze přeskočit.</p>
+
+<p>Po spuštění instalace naskočí postupně několik oken a zastaví se to
+u dotazu na souhlas s licenčními podmínkami: Zde je nutno označit možnost
+„I accept the terms in the license agreement“ a potom pokračovat
+tlačítkem „Next“. Na dalším dialogovém okně je doporučeno zanechat
+„Typical“ a pokračovat opět tlačítkem „Next“. V posledním okně je
+informace o dokončení instalace, kterou potvrdíte stiskem tlačítka
+„Finish“.</p>
+
+<p>Pokud by se při instalaci Javy vyskytl problém, budeme muset vyřešit
+podrobněji. Pomoci by mohl i návod na adrese <a
+href="http://www.kiv.zcu.cz/~netrvalo/vyuka/ppa1-06/cviceni/materialy/instalace-javy/instalace_javy.html">http://www.kiv.zcu.cz/…ce_javy.html</a> –
+ale nevím, nakolik jste technicky zdatná; kdyžtak vám poradím po
+telefonu.</p>
+
+<h2>6. Operace, které je možné provádět s touto verzí</h2>
+
+<h3>a) Aktualizace místní kopie archivu událostí webové služby ISIR</h3>
+
+<p>Aktualizace se provádí spuštěním souboru <code>aktualizace.bat</code>
+(spouští se jako jiné programy – poklepáním). Program vypisuje zprávy
+z dění aktualizace – obvykle je možné je ignorovat. Pokud by se ve
+výpisu objevila chyba, potom je to samozřejmě špatně a tento výpis bude
+předmětem mého dalšího zkoumání.</p>
+
+<p>Tato akce sestává ze dvou – stažení nových událostí z webové
+služby, a jejich „rozšifrování“ do normální databáze.</p>
+
+<h3>b) Import seznamu dlužníků z Excel souboru v předem dohodnutém
+formátu</h3>
+
+<p>Před spuštěním importu umístěte Excelový soubor se subjekty do
+adresáře s aplikací. Soubor pojmenujte jako <code>subjekty.xls</code>. Data
+v souboru musí být podle dohodnutého formátu. Popis formátu
+následuje:</p>
+
+<ul>
+	<li>Jednotlivé listy představují skupiny zákazníků. Ve výpisu
+	vyhledaných dlužníků uvidíte číslo skupiny (listu), na kterém se
+	příslušný sledovaný subjekt nachází.</li>
+
+	<li>Na prvním řádku každého listu jsou nadpisy sloupců. Tento řádek se
+	ignoruje. Údaje subjektů jsou od druhého řádku dále.</li>
+
+	<li>Sloupce s údaji subjektů počínají na prvním sloupci („A“) a jsou
+	v následujícím pořadí:
+		<ol>
+			<li>příjmení/název</li>
+
+			<li>případné křestní jméno</li>
+
+			<li>datum narození ve formátu den.měsíc.rok (např. 31.1.2008)</li>
+
+			<li>IČ</li>
+		</ol>
+	</li>
+</ul>
+
+<p>Při každém importu z Excel souboru se nejprve vymažou všechna stará
+pravidla, poté jsou načtena nová.</p>
+
+<p>Import se provádí spuštěním souboru <code>import.bat</code>.</p>
+
+<h3>c) Kontrola výskytu dlužníků z tohoto seznamu mezi subjekty vedenými
+v ISIR</h3>
+
+<p>Kontrolu provedete spuštěním souboru <code>kontrola.bat</code>.<br>
+V adresáři aplikace vznikne soubor „vypis.txt“.<br>
+Ten otevřete (třeba v Poznámkovém bloku).<br>
+V souboru je výpis subjektů, které se shodují se zadanými pravidly.
+Princip shody popíšu později.</p>
+
+<h4>Formát výpisu:</h4>
+
+<ul>
+	<li>Nejprve se vypíše seznam nalezených subjektů s jejich údaji a
+	s číslem pravidla, kterým byli zachyceni.</li>
+
+	<li>Ke každému nalezenému subjektu se vypíše seznam událostí v jeho
+	spisu, řazeno od nejstarší k nejnovější.</li>
+
+	<li>Následuje seznam všech pravidel v databázi, která se načetla při
+	importu.</li>
+</ul>
+
+<p>Jak jsme si psali, toto je provizorium. Jedná se o první verzi funkční
+natolik, že si troufám vám ji poslat :-) Proto prosím o trochu
+shovívavosti k neohrabanosti tohoto „textového“ ovládání programu; ale
+jinak byste musela čekat ještě na vyvinutí pohodlnějšího uživatelského
+rozhraní.</p>
+
+<h2>Nakonec ještě doporučení:</h2>
+
+<p>Vývoj programu, jak už to bohužel bývá, jde pomaleji, než jsem
+předpokládal. Na druhou stranu jej ovšem nevyvíjím horkou jehlou a
+pečlivě promýšlím, jakým způsobem zajistit, aby vám neunikla jakákoliv
+podstatná informace z ISIR, ale na druhou stranu abyste nebyla zahlcena
+lavinou falešných poplachů.</p>
+
+<p>Přesto doporučuji provádět zatím nadále ruční kontrolu spolu
+s kontrolou programem a sledovat, zda se ve výpisu vyskytuje vše, co byste
+očekávala. Pokud ne, můžeme to řešit rovnou – protože sice později
+program oblečeme do pěkného barevného grafického kabátku, ale jádro
+zůstane stejné. Pochopitelně jej bude možné měnit i později, ale raději
+bych se napřed zaměřil na vysokou spolehlivost a kvalitu dodávaných
+informací, a až poté se vrhnu na uživatelské ovládání. Věřím, že
+i vy jako uživatelka to oceníte.</p>
+
+<hr>
+
+<p>Zdraví<br>
+Ondřej Žižka</p>
+</div>
+
+    </div>
+    <hr />
+    <!-- Rating widget -->
+    <div class="rw-ui-container"></div>
+
+
+        
+
+        <div class="donateButton">
+            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="hosted_button_id" value="J2SY36M3ZW9JL">
+                <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                <img alt="" border="0" src="https://www.paypalobjects.com/cs_CZ/i/scr/pixel.gif" width="1" height="1">
+            </form>
+        </div>
+
+
+        <!-- AddToAny BEGIN -->
+        <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+            <a class="a2a_button_google_bookmarks"></a>
+            <a class="a2a_button_google_classroom"></a>
+            <a class="a2a_button_linkedin"></a>
+            <a class="a2a_button_reddit"></a>
+            <a class="a2a_button_buffer"></a>
+            <a class="a2a_button_trello"></a>
+            <a class="a2a_button_slashdot"></a>
+            <a class="a2a_button_hacker_news"></a>
+            <a class="a2a_button_dzone"></a>
+            <a class="a2a_button_pinterest"></a>
+            <a class="a2a_button_vk"></a>
+            <a class="a2a_button_digg"></a>
+            <a class="a2a_button_copy_link"></a>
+            <a class="a2a_button_pocket"></a>
+        </div>
+        <script>
+            var a2a_config = a2a_config || {};
+            a2a_config.linkname = "Ondřej Žižka";
+            a2a_config.linkurl = "https://www.zizka.ch/";
+            a2a_config.num_services = 18;
+        </script>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>
+        <!-- AddToAny END -->
+
+        <div style="clear: both; height: 1ex;"></div>
+
+        <!-- Facebook comments -->
+            <div class="fb-comments" data-href="pages/programming/isir/isir.html" data-width="900" data-numposts="5"></div>
+
+    </div>
+    <div id="push"></div>
+
+    <div id="pocitadla">
+        <!--
+        <div class="pocitadlo" id="navrcholu">
+            <script src="https://c1.navrcholu.cz/code?site=116753;t=lb14" type="text/javascript"></script><noscript><div><a target="_blank" href="https://navrcholu.cz/"><img src="https://c1.navrcholu.cz/hit?site=116753;t=lb14;ref=;jss=0" width="14" height="14" alt="Statistiky NaVrcholu.cz" style="border:none" /></a></div></noscript>
+        </div><!- - Driv: code?site=79008;t=lb14" -->
+        <div class="pocitadlo" id="toplist">
+            <a target="_blank" href="https://toplist.cz/stat/117144"><script language="JavaScript" type="text/javascript">
+                document.write('<img src="https://toplist.cz/count.asp?id=117144&amp;start=806&amp;logo=2&amp;http='
+                        +escape(document.referrer)+'&amp;wi='+escape(window.screen.width)+'&he='+escape(window.screen.height)
+                        +'&amp;cd='+escape(window.screen.colorDepth)+'" width="36" height="14" border="0" alt="TOPlist statistiky" />');
+            </script><noscript><img src="https://toplist.cz/count.asp?id=117144&amp;start=1&amp;logo=2" border="0" alt="TOPlist statistiky" width="36" height="14"/></noscript></a>
+        </div>
+        <!-- ClustrMaps.com -->
+        <div class="pocitadlo" id="clustrmaps">
+            <a href="https://www4.clustrmaps.com/user/64952149"><img src="https://www4.clustrmaps.com/stats/maps-no_clusters/ondra.zizka.cz--thumb.jpg" alt="0" border="0" width="180" height="117" /></a>
+        </div>
+        <!-- New one.
+        <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=5cbf2b&w=300&t=tt&d=C_pONa0RC5iio9jpL5Q-2a6fhvRnD7yKoCQfQahpDdY&co=ffffff&ct=d1d1d1&cmo=499fff&cmn=ffa137'></script>
+        -->
+    </div>
+
+</div>
+
+<div id="footer">
+    <div class="container">
+        <p class="muted credit">
+            &copy; 2018
+            | Content written in <a href="https://texy.info/en/">Texy!</a>
+            | Baked with <a href="http://jbake.org/">JBake v5.0.0-rc1</a>,
+              <a href="http://freemarker.apache.org/">FreeMarker</a> and
+              <a href="http://getbootstrap.com/">Bootstrap</a>
+        </p>
+    </div>
+</div>
+
+<script src="../../../../js/jquery-1.11.1.min.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/prettify.js"></script>
+
+<!-- Facebook comments -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/cs_CZ/sdk.js#xfbml=1&version=v3.0';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4584951-4"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-4584951-4');
+</script>
+
+<!-- Syntax highlighter -->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shCore.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushBash.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCpp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCSharp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushCss.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDelphi.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushDiff.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushGroovy.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJava.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushJScript.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPhp.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPlain.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushPython.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushRuby.js"></script>
+<!--
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushScala.js"></script>
+-->
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushSql.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushVb.js"></script>
+<script type="text/javascript" src="/syntaxhighlighter3/scripts/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shCore.css"/>
+<link type="text/css" rel="stylesheet" href="/syntaxhighlighter3/styles/shThemeDefault.css"/>
+<script type="text/javascript">
+    SyntaxHighlighter.config.clipboardSwf = '/syntaxhighlighter3/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+</script>
+
+<!-- Rating widget -->
+<script type="text/javascript">(function(d, t, e, m){
+    // Async Rating-Widget initialization.
+    window.RW_Async_Init = function(){
+        RW.init({
+            huid: "410403",
+            uid: "4a1af2230af675ee80c7fba6b48e80c3",
+            source: "website",
+            options: {
+                "advanced": {
+                    "font": {"size": "10px", "type": "droid sans, Helvetica, sans-serif"},
+                    "text": {"rateAwful": "Not useful", "ratePoor": "Nah...", "rateAverage": "So-so", "rateGood": "Interesting", "rateExcellent": "Saved my day!", "rateThis": "Was it useful?"}
+                },
+                "boost": {"rate": 1},
+                "style": "oxygen",
+                "isDummy": false
+            }
+        });
+        RW.render();
+    };
+    // Append Rating-Widget JavaScript library.
+    var rw, s = d.getElementsByTagName(e)[0], id = "rw-js",
+            l = d.location, ck = "Y" + t.getFullYear() +
+            "M" + t.getMonth() + "D" + t.getDate(), p = l.protocol,
+            f = ((l.search.indexOf("DBG=") > -1) ? "" : ".min"),
+            a = ("https:" == p ? "secure." + m + "js/" : "js." + m);
+    if (d.getElementById(id)) return;
+    rw = d.createElement(e);
+    rw.id = id; rw.async = true; rw.type = "text/javascript";
+    rw.src = p + "//" + a + "external" + f + ".js?ck=" + ck;
+    s.parentNode.insertBefore(rw, s);
+}(document, new Date(), "script", "rating-widget.com/"));
+</script>
+
+
+</body>
+</html>
