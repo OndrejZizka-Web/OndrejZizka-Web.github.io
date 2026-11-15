@@ -135,6 +135,10 @@ a { color: #0366d6; }
     But then it appears twice. This deduplicates it.  */
 .document .doc-body .jbakeExtractedTitle { display: none; }
 
+/** Migrated Texy pages now set their body heading as title metadata. */
+.document-post .doc-body > h1:first-of-type,
+.document-list.recent .document.post .doc-body > h1:first-of-type { display: none; }
+
 
 /** Posts separator in index. */
 .document-list hr {

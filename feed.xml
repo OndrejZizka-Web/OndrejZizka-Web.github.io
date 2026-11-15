@@ -6,11 +6,11 @@
         <atom:link href="https://ondrej.zizka.ch/feed.xml" rel="self" type="application/rss+xml"/>
         <description>JBake Bootstrap Template</description>
         <language>en-gb</language>
-        <pubDate>Sun, 15 Nov 2026 04:19:44 +0100</pubDate>
-        <lastBuildDate>Sun, 15 Nov 2026 04:19:44 +0100</lastBuildDate>
+        <pubDate>Sun, 15 Nov 2026 12:14:49 +0100</pubDate>
+        <lastBuildDate>Sun, 15 Nov 2026 12:14:49 +0100</lastBuildDate>
 
         <item>
-            <title></title>
+            <title>Stocks</title>
             <link>https://ondrej.zizka.ch/pages/economy/investing/index.html</link>
             <pubDate>Tue, 23 Oct 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/economy/investing/index.html</guid>
@@ -36,7 +36,7 @@
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Information Sources about Economy and Investing</title>
             <link>https://ondrej.zizka.ch/pages/economy/investing/information-sources.html</link>
             <pubDate>Mon, 22 Oct 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/economy/investing/information-sources.html</guid>
@@ -51,7 +51,7 @@
             </description>
         </item>
         <item>
-            <title></title>
+            <title>MySQL: Error Code: 1005. Can't create table ‚essc.#sql-4cb 35 ‘ (errno: 150)</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/hibernate/Hibernate-MySQL-ErrorCode1005-Cant-create-table-sql-4cb_35-errno-150.html</link>
             <pubDate>Mon, 3 Sep 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/hibernate/Hibernate-MySQL-ErrorCode1005-Cant-create-table-sql-4cb_35-errno-150.html</guid>
@@ -119,7 +119,7 @@ public class MyEntity {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>INS 116~2008.xml</title>
             <link>https://ondrej.zizka.ch/pages/programming/insolvencni_rejstrik-isir_ws/isir_spis.html</link>
             <pubDate>Mon, 3 Sep 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/insolvencni_rejstrik-isir_ws/isir_spis.html</guid>
@@ -971,7 +971,7 @@ color: #990066;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Nedomyšlenost webové služby Insolvenčním rejstříku</title>
             <link>https://ondrej.zizka.ch/pages/programming/insolvencni_rejstrik-isir_ws/nesmysly_v_isir.html</link>
             <pubDate>Mon, 3 Sep 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/insolvencni_rejstrik-isir_ws/nesmysly_v_isir.html</guid>
@@ -1164,7 +1164,7 @@ státních zakázek:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>NetBeans Wicket support wish list</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/netbeans-wicket-support-wishlist.html</link>
             <pubDate>Mon, 3 Sep 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/netbeans-wicket-support-wishlist.html</guid>
@@ -1185,7 +1185,7 @@ státních zakázek:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Pairing the Logitech Mouse Unifying mouse in linux</title>
             <link>https://ondrej.zizka.ch/pages/linux/logitech-mouse-unifying-pairing.html</link>
             <pubDate>Mon, 27 Aug 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/linux/logitech-mouse-unifying-pairing.html</guid>
@@ -1214,7 +1214,7 @@ installation :)&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Hibernate write-only properties</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/hibernate/hibernate-write-only.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/hibernate/hibernate-write-only.html</guid>
@@ -1249,7 +1249,7 @@ saves the data.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JPA 2.0 / Hibernate 3.6: Cannot create TypedQuery for query with more than one return</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/hibernate/jpa-hibernate-cannot-create-typedquery-for-query-with-more-than-one-return.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/hibernate/jpa-hibernate-cannot-create-typedquery-for-query-with-more-than-one-return.html</guid>
@@ -1296,7 +1296,7 @@ href=&quot;https://hibernate.onjira.com/browse/HHH-5348&quot;&gt;HHH-5348&lt;/a&
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JPA and Hibernate mapping with MySQL – common errors and exceptions</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/hibernate-common-errors-and-exceptions.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/hibernate-common-errors-and-exceptions.html</guid>
@@ -1526,7 +1526,7 @@ Caused by: java.sql.SQLException: Field &apos;created&apos; doesn&apos;t have a 
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Hibernate super-quick start in NetBeans</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/hibernate_netbeans_howto_tutorial.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/hibernate_netbeans_howto_tutorial.html</guid>
@@ -1773,7 +1773,7 @@ mapping.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Null-safe bean comparator for commons-beans</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/howto/commons-beans-null-safe-bean-comparator.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/howto/commons-beans-null-safe-bean-comparator.html</guid>
@@ -1872,7 +1872,7 @@ public class NullSafeUglyBeanComparator extends BeanComparator
             </description>
         </item>
         <item>
-            <title></title>
+            <title>How to get a heap dump</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/heapdump-howto.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/heapdump-howto.html</guid>
@@ -1911,7 +1911,7 @@ class=&quot;brush: bash&quot;&gt;&lt;code&gt;java ... -XX:-HeapDumpOnOutOfMemory
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Aplikace pro kontrolu výskytů subjektů v insolvenčním rejstříku</title>
             <link>https://ondrej.zizka.ch/pages/programming/isir/isir.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/isir/isir.html</guid>
@@ -2151,7 +2151,7 @@ Ondřej Žižka&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>HTTP PUT and POST requests with Jersey</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/howto/howto-jersey-http-put-post.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/howto/howto-jersey-http-put-post.html</guid>
@@ -2228,7 +2228,7 @@ archive.as(ZipExporter.class).exportZip(archiveFile, true);&lt;/code&gt;&lt;/pre
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Aplikace pro kontrolu výskytů subjektů v insolvenčním rejstříku</title>
             <link>https://ondrej.zizka.ch/pages/programming/isir/Pohlidame-konzolova_verze.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/isir/Pohlidame-konzolova_verze.html</guid>
@@ -2430,7 +2430,7 @@ Princip shody popíšu později.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Webová služba Insolvenční rejstřík – ISIR WS</title>
             <link>https://ondrej.zizka.ch/pages/programming/insolvencni_rejstrik-isir_ws/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/insolvencni_rejstrik-isir_ws/index.html</guid>
@@ -2744,7 +2744,7 @@ Insolvenční rejtřík ISIR&lt;/a&gt;. Spuštění plánuji na konci
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Ondra Žižka – personal website</title>
             <link>https://ondrej.zizka.ch/pages/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/index.html</guid>
@@ -2857,7 +2857,7 @@ což dává vznik většině obsahu v sekci &quot;Programování / SQL&quot;:pag
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Bitcoin propaganda: „Market value“ is larger than XY</title>
             <link>https://ondrej.zizka.ch/pages/economy/bitcoin/BitcoinPropaganda-MarketValue.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/economy/bitcoin/BitcoinPropaganda-MarketValue.html</guid>
@@ -2949,7 +2949,7 @@ another post: „Bitcoin propaganda: Bitcoin is a storage of value“.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Hibernate and JPA 2.0 – Maven dependencies</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/hibernate/hibernate-jpa-2.0-maven-dependendies.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/hibernate/hibernate-jpa-2.0-maven-dependendies.html</guid>
@@ -3004,7 +3004,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Dojmy z Ubuntu 8 – Hardy Heron</title>
             <link>https://ondrej.zizka.ch/pages/linux/dojmy_z_ubuntu_8.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/linux/dojmy_z_ubuntu_8.html</guid>
@@ -3445,7 +3445,7 @@ komunity.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>My Linux Notes</title>
             <link>https://ondrej.zizka.ch/pages/linux/notes.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/linux/notes.html</guid>
@@ -3626,7 +3626,7 @@ export PATH=$JAVA_HOME/bin:$PATH&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Přátelé a známí</title>
             <link>https://ondrej.zizka.ch/pages/odkazy/pratele.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/odkazy/pratele.html</guid>
@@ -3655,7 +3655,7 @@ samozřejmě hlavně kvůli backlinkům :-)&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Poznámky a postřehy</title>
             <link>https://ondrej.zizka.ch/pages/osobni/poznamky.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/osobni/poznamky.html</guid>
@@ -4330,7 +4330,7 @@ do not change the password – it&apos;s either a fraud or an hoax.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Insolvenční rejstřík – typy akcí webové služby ISIR</title>
             <link>https://ondrej.zizka.ch/pages/programming/insolvencni_rejstrik-isir_ws/isir_typy_akci.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/insolvencni_rejstrik-isir_ws/isir_typy_akci.html</guid>
@@ -5945,7 +5945,7 @@ pohlídá server Pohlídáme.cz.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>FreeMarker Tricks</title>
             <link>https://ondrej.zizka.ch/pages/programming/FreemarkerTips.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/FreemarkerTips.html</guid>
@@ -5975,7 +5975,7 @@ class=&quot;html&quot;&gt;&lt;code&gt;&amp;lt;#assign nextRandom = .now?string[&
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Zastřešující teorie umělé inteligence</title>
             <link>https://ondrej.zizka.ch/pages/programming/artificial_intelligence/covering_ai_theory.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/artificial_intelligence/covering_ai_theory.html</guid>
@@ -6157,7 +6157,7 @@ nikdo není, bylo zhasnuté světlo.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Ondřej Žižka – Diplomová práce – Návod na zprovoznění</title>
             <link>https://ondrej.zizka.ch/pages/diplomka/diplomka-navod_na_zprovozneni.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/diplomka/diplomka-navod_na_zprovozneni.html</guid>
@@ -6518,7 +6518,7 @@ JabberID &lt;code&gt;ondra.zizka@jabber.cz&lt;/code&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Hibernate HHH000104: firstResult/maxResults specified with collection fetch; applying in memory</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/hibernate/firstResult-maxResults-specified-with-collection-fetch.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/hibernate/firstResult-maxResults-specified-with-collection-fetch.html</guid>
@@ -6575,7 +6575,7 @@ class=&quot;brush java&quot;&gt;&lt;code&gt;public Release getRelease( String pr
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Enum with look-up map</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/enum-with-lookup-map.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/enum-with-lookup-map.html</guid>
@@ -6615,7 +6615,7 @@ class=&quot;java [.brush]&quot;&gt;&lt;code&gt;private enum Handlers {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Pohlídáme.cz</title>
             <link>https://ondrej.zizka.ch/pages/programming/isir/pohlidame.cz.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/isir/pohlidame.cz.html</guid>
@@ -6625,7 +6625,7 @@ class=&quot;java [.brush]&quot;&gt;&lt;code&gt;private enum Handlers {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Je Java jako Linux nebo jako Windows?</title>
             <link>https://ondrej.zizka.ch/pages/programming/php/je_java_jako_linux_nebo_jako_windows.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/php/je_java_jako_linux_nebo_jako_windows.html</guid>
@@ -6883,7 +6883,7 @@ skvělého Texy!) – Davida Grudla:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Nevýhody PHP v praktických ukázkách __aneb__ Yet Another „Why PHP Sucks“ Page</title>
             <link>https://ondrej.zizka.ch/pages/programming/php/nevyhody_php_v_praktickych_prikladech.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/php/nevyhody_php_v_praktickych_prikladech.html</guid>
@@ -7351,7 +7351,7 @@ slovo&lt;/a&gt;…&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>PHP Database abstraction library</title>
             <link>https://ondrej.zizka.ch/pages/programming/php/php-database-layer-cdbaccaess.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/php/php-database-layer-cdbaccaess.html</guid>
@@ -8148,7 +8148,7 @@ class cDBA_MySQL_Error extends cDBA_Error{
             </description>
         </item>
         <item>
-            <title></title>
+            <title>PHP Object Persistence</title>
             <link>https://ondrej.zizka.ch/pages/programming/php/php-object-persistence-hibernate-doctrine-orm.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/php/php-object-persistence-hibernate-doctrine-orm.html</guid>
@@ -10317,7 +10317,7 @@ echo &apos;&amp;lt;div style=&quot;color: red&quot;&amp;gt;Error from the past: 
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Výhody a nevýhody PHP</title>
             <link>https://ondrej.zizka.ch/pages/programming/php/vyhody_a_nevyhody_php.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/php/vyhody_a_nevyhody_php.html</guid>
@@ -10880,7 +10880,7 @@ nechci a pro Javu ještě port není.&lt;/em&gt;&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Výsledek nasazení PHP v praxi aneb navrch huj, uvnitř fuj.</title>
             <link>https://ondrej.zizka.ch/pages/programming/php/vysledek_nasazeni_php_aneb_navrch_huj_uvnitr_fuj.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/php/vysledek_nasazeni_php_aneb_navrch_huj_uvnitr_fuj.html</guid>
@@ -11035,7 +11035,7 @@ framework“ – a pak to podle toho vypadá.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Querying and transforming CSV files using SQL.</title>
             <link>https://ondrej.zizka.ch/pages/programming/ruzne/querying-transforming-csv-using-sql.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/ruzne/querying-transforming-csv-using-sql.html</guid>
@@ -11085,7 +11085,7 @@ class=&quot;brush: bash&quot;&gt;&lt;code&gt;&apos;eap-5.1.0-perf-deployers&apos
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Vote my bugs please</title>
             <link>https://ondrej.zizka.ch/pages/programming/ruzne/vote-my-bugs.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/ruzne/vote-my-bugs.html</guid>
@@ -11112,7 +11112,7 @@ NetBeans votes&lt;/a&gt;&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Linux: Bash generic script to switch versions (like alternatives and Gentoo's eselect )</title>
             <link>https://ondrej.zizka.ch/pages/programming/linux-switch-script-alternatives-eselect.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/linux-switch-script-alternatives-eselect.html</guid>
@@ -11382,7 +11382,7 @@ if [ &quot;$0&quot; == &quot;switch.sh&quot; ] ; then exit $RET; fi&lt;/code&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Groovy classloader bug with DOMBuilder</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/groovy-dombuilder-bug.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/groovy-dombuilder-bug.html</guid>
@@ -11431,7 +11431,7 @@ href=&quot;http://jira.codehaus.org/browse/GROOVY-3914&quot;&gt;http://jira.code
             </description>
         </item>
         <item>
-            <title></title>
+            <title>How to create an application distribution package with Maven</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/maven-create-distribution-package.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/maven-create-distribution-package.html</guid>
@@ -11582,7 +11582,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;project&amp;gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Jabber (XMPP) Plugin for Maven</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/jabber-xmpp-maven-plugin.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/jabber-xmpp-maven-plugin.html</guid>
@@ -11643,7 +11643,7 @@ patch here&lt;/a&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Sardine – mavenized version</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/how-to-mavenize-java-project.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/how-to-mavenize-java-project.html</guid>
@@ -11688,7 +11688,7 @@ svn commit -m „Maven repo: Added version XX“&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>CsvCruncher – CSV manipulation through SQL (HSQLDB)</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/apps/CsvCruncher-csv-manipulation-sql.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/apps/CsvCruncher-csv-manipulation-sql.html</guid>
@@ -11765,7 +11765,7 @@ class=&quot;brush: bash&quot;&gt;&lt;code&gt;&apos;eap-5.1.0-perf-deployers&apos
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JUnitDiff – JUnit diff – test results reports comparison</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/apps/JUnitDiff-junit-diff-test-results-report-comparison.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/apps/JUnitDiff-junit-diff-test-results-report-comparison.html</guid>
@@ -11892,7 +11892,7 @@ href=&quot;https://svn.devel.redhat.com/repos/jboss-qa/tools/JUnitDiff&quot;&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven and Log4j: Missing JMX dependencies</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/log4j-missing-jmx-sun-deps.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/log4j-missing-jmx-sun-deps.html</guid>
@@ -11951,7 +11951,7 @@ removed&lt;/a&gt; from there.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>CDI / Weld: UnproxyableResolutionException: WELD-001437 Normal scoped bean String is not proxyable because the type is final or it contains a final method</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/cdi/weld-unproxied.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/cdi/weld-unproxied.html</guid>
@@ -12013,7 +12013,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;?xml version=&quot;1.0&quot;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Converting a number to Excel column character name</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/converting_number_to_excel_column_letters_name.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/converting_number_to_excel_column_letters_name.html</guid>
@@ -12075,7 +12075,7 @@ aspoň tahle česká klíčová slova :-)&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>How to create an EBJ 3 jar</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/ejb/ejb3-howto.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/ejb/ejb3-howto.html</guid>
@@ -12331,7 +12331,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;enterprise-beans&amp;gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Plan to develop artificial Cogitation – what has to be done</title>
             <link>https://ondrej.zizka.ch/pages/programming/artificial_intelligence/developement_plan_of_artificial_cogitation.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/artificial_intelligence/developement_plan_of_artificial_cogitation.html</guid>
@@ -12675,7 +12675,7 @@ is more probable.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven 2 and Ant + Ivy Comparison</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/maven-ant-ivy-comparison.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/maven-ant-ivy-comparison.html</guid>
@@ -12793,7 +12793,7 @@ projects.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Artificial Intelligence</title>
             <link>https://ondrej.zizka.ch/pages/programming/artificial_intelligence/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/artificial_intelligence/index.html</guid>
@@ -12899,7 +12899,7 @@ Theory&lt;/a&gt;&lt;br&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Programming humor</title>
             <link>https://ondrej.zizka.ch/pages/programming/humor.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/humor.html</guid>
@@ -12926,7 +12926,7 @@ nevděčné.“&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Caché ObjectScript – nejhorší jazyk na světě</title>
             <link>https://ondrej.zizka.ch/pages/programming/cache_objectscript_nejhorsi_jazyk_na_svete.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/cache_objectscript_nejhorsi_jazyk_na_svete.html</guid>
@@ -13086,7 +13086,7 @@ používat.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java Runtime Environment or Java Developement Kit not found on 64-bit system</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jdk_jre_64bit_not_found.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jdk_jre_64bit_not_found.html</guid>
@@ -13111,7 +13111,7 @@ During instalation of jEdit, I got this message from the installer:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JBoss AS Java system variables</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/jboss-as-startup-run-sh-java-system-variables.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/jboss-as-startup-run-sh-java-system-variables.html</guid>
@@ -13193,7 +13193,7 @@ os.version=${os.version}&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JBoss EJB 3.0 annotations</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/jboss-ejb3-annotations.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/jboss-ejb3-annotations.html</guid>
@@ -13223,7 +13223,7 @@ os.version=${os.version}&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Could not find class</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/jboss-aop-could-not-find-class.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/jboss-aop-could-not-find-class.html</guid>
@@ -13423,7 +13423,7 @@ Build Successful: 375 ms&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Filesystem Resource Adapter for an Application Server</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/filesystem-resource-adapter.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/filesystem-resource-adapter.html</guid>
@@ -13444,7 +13444,7 @@ href=&quot;download/jboss-jca-api-1.5.0.GA.jar&quot;&gt;jboss-jca-api-1.5.0.GA.j
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Common JBoss AS mistakes and exceptions</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/common-mistakes-and-exceptions.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/common-mistakes-and-exceptions.html</guid>
@@ -13478,7 +13478,7 @@ Caused by: java.lang.SecurityException: class &quot;org.jboss.resource.metadata.
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Clustering with JBoss AS: Simple test</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/clustering-session-replication.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/clustering-session-replication.html</guid>
@@ -13638,7 +13638,7 @@ the other server.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JBoss Operation Network 2.3.0: Tomcat not supported on Windows 2003 and 2008</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/Tomcat-JON-Windows-2003-2008.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/Tomcat-JON-Windows-2003-2008.html</guid>
@@ -14024,7 +14024,7 @@ Caused by: org.rhq.core.pluginapi.inventory.InvalidPluginConfigurationException:
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JAXB – a List with inherited classes</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jaxb-list-with-inherited-classes.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jaxb-list-with-inherited-classes.html</guid>
@@ -14052,7 +14052,7 @@ public List&amp;lt;CellBean&amp;gt; cells;&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JBoss Microcontainer Sample Application – Howto</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss-microcontainer-howto-example-standalone-app.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss-microcontainer-howto-example-standalone-app.html</guid>
@@ -14303,7 +14303,7 @@ loads all &lt;code&gt;jboss-beans.xml&lt;/code&gt; from the classpath.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JSON with JAXB – Jackson</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jaxb-json-jackson-howto.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jaxb-json-jackson-howto.html</guid>
@@ -14387,7 +14387,7 @@ class Car {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JSON with JAXB – Jackson</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jaxb/jaxb-json-jackson-howto.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jaxb/jaxb-json-jackson-howto.html</guid>
@@ -14471,7 +14471,7 @@ class Car {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JAXB example</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jaxb/jaxb-howto-introduction-tutorial.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jaxb/jaxb-howto-introduction-tutorial.html</guid>
@@ -14623,7 +14623,7 @@ ConfigBean config = (ConfigBean) mc.unmarshal(reader);&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JBoss Microcontainer with JBoss AOP – Howto with sample application</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/jboss-aop-howto-example-standalone-app.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/jboss-aop-howto-example-standalone-app.html</guid>
@@ -14951,7 +14951,7 @@ href=&quot;download/JBossAOPsample.zip&quot;&gt;JBossAOPsample­.zip&lt;/a&gt;&l
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Ibasis instantiation exception: Missing default constructor</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/ibatis-instantiation-exception.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/ibatis-instantiation-exception.html</guid>
@@ -14996,7 +14996,7 @@ Caused by: java.lang.InstantiationException: cz.dynawest.isir.beans.Osoba
             </description>
         </item>
         <item>
-            <title></title>
+            <title>The difference between java and javaw</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/java_javaw_difference.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/java_javaw_difference.html</guid>
@@ -15036,7 +15036,7 @@ files just by „double-clicking“ it.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>java.lang.IllegalArgumentException: Unknown AOP tag: bean</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/java.lang.IllegalArgumentException-Unknown-AOP-tag-bean.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/java.lang.IllegalArgumentException-Unknown-AOP-tag-bean.html</guid>
@@ -15339,7 +15339,7 @@ Final Memory: 22M/277M
             </description>
         </item>
         <item>
-            <title></title>
+            <title>What I would change about the Java language</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/java-feature-requests.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/java-feature-requests.html</guid>
@@ -15617,7 +15617,7 @@ href=&quot;http://www.linkedin.com/groupAnswers?viewQuestionAndAnswers=&amp;amp;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Jabber (XMPP) Plugin for Maven</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jabber-xmpp-maven-plugin.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jabber-xmpp-maven-plugin.html</guid>
@@ -15678,7 +15678,7 @@ patch here&lt;/a&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>ImmutableProperties class</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/immutable_properties.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/immutable_properties.html</guid>
@@ -15774,7 +15774,7 @@ public class ImmutableProperties extends java.util.Properties {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JAXB – a List with inherited classes</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jaxb/jaxb-list-with-inherited-classes.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jaxb/jaxb-list-with-inherited-classes.html</guid>
@@ -15802,7 +15802,7 @@ public List&amp;lt;CellBean&amp;gt; cells;&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Dokumentace k Pong AI - umělá inteligence pro hru pong</title>
             <link>https://ondrej.zizka.ch/pages/programming/artificial_intelligence/neural_networks/pongai_doc/package.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/artificial_intelligence/neural_networks/pongai_doc/package.html</guid>
@@ -16001,7 +16001,7 @@ public List&amp;lt;CellBean&amp;gt; cells;&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Je Java jako Linux nebo jako Windows?</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/je_java_jako_linux_nebo_jako_windows.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/je_java_jako_linux_nebo_jako_windows.html</guid>
@@ -16256,7 +16256,7 @@ skvělého Texy!) – Davida Grudla:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>How to stop Jetty</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jetty-how-to-stop.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jetty-how-to-stop.html</guid>
@@ -16274,7 +16274,7 @@ skvělého Texy!) – Davida Grudla:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Další nesmysl v PHP</title>
             <link>https://ondrej.zizka.ch/pages/programming/php/dalsi_nesmysl_v_php.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/php/dalsi_nesmysl_v_php.html</guid>
@@ -16303,7 +16303,7 @@ ukazuje na chaotičnost PHP.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Programování</title>
             <link>https://ondrej.zizka.ch/pages/programming/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/index.html</guid>
@@ -16446,7 +16446,7 @@ href=&quot;http://mtj.wordpress.com/2006/10/18/clearing-linux-filesystem-read-ca
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Business society algorithm</title>
             <link>https://ondrej.zizka.ch/pages/programming/artificial_intelligence/business_society_algorithm.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/artificial_intelligence/business_society_algorithm.html</guid>
@@ -16581,7 +16581,7 @@ systems and apply genetic algorithms on them.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Quartz Java timer intro</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/howto/quartz-howto-intro.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/howto/quartz-howto-intro.html</guid>
@@ -16792,7 +16792,7 @@ EXECUTED 11 times!
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java security – how to work with SSL certificates</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/howto/security-certificates-ssl.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/howto/security-certificates-ssl.html</guid>
@@ -16854,7 +16854,7 @@ CERTIFICATE-----&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JUnitDiff – JUnit test results reports comparison</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/apps/JUnitDiff-junit-test-results-report-comparison.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/apps/JUnitDiff-junit-test-results-report-comparison.html</guid>
@@ -16981,7 +16981,7 @@ href=&quot;https://svn.devel.redhat.com/repos/jboss-qa/tools/JUnitDiff&quot;&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Profiles in Spring Framework Configuration</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/howto-substitutions_in_spring_configuration-tutorial.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/howto-substitutions_in_spring_configuration-tutorial.html</guid>
@@ -17141,7 +17141,7 @@ JavaDoc&lt;/a&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JBoss Microcontainer Sample Application – Howto</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/jboss-microcontainer-howto-example-standalone-app.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/jboss-microcontainer-howto-example-standalone-app.html</guid>
@@ -17392,7 +17392,7 @@ loads all &lt;code&gt;jboss-beans.xml&lt;/code&gt; from the classpath.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Error installing to Create: name=ProfileKey@…[domain=default, server=default, name=farm]</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/jboss-startup-failure.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/jboss-startup-failure.html</guid>
@@ -17715,7 +17715,7 @@ ProfileKey@6600b925[domain=default, server=default, name=production1] is missing
             </description>
         </item>
         <item>
-            <title></title>
+            <title>What to use as a base for an enterprise web application – JBoss or Spring?</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss-vs-spring.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss-vs-spring.html</guid>
@@ -17755,7 +17755,7 @@ Seam, and you&apos;ll see that developing for JBoss is quite comfortable.&lt;/p&
             </description>
         </item>
         <item>
-            <title></title>
+            <title>What to use as a base for an enterprise web application – JBoss or Spring?</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/jboss-vs-spring.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/jboss-vs-spring.html</guid>
@@ -17795,7 +17795,7 @@ Seam, and you&apos;ll see that developing for JBoss is quite comfortable.&lt;/p&
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JBoss WebServices (JBossWS) notes</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/web-services.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/web-services.html</guid>
@@ -17817,7 +17817,7 @@ deployment descriptor for context null appears in the log(…)&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Could not find class</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss-aop-could-not-find-class.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss-aop-could-not-find-class.html</guid>
@@ -18017,7 +18017,7 @@ Build Successful: 375 ms&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JBoss Microcontainer with JBoss AOP – Howto with sample application</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss-aop-howto-example-standalone-app.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss-aop-howto-example-standalone-app.html</guid>
@@ -18345,7 +18345,7 @@ href=&quot;download/JBossAOPsample.zip&quot;&gt;JBossAOPsample­.zip&lt;/a&gt;&l
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Bootstrapping JBoss Embedded server</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/jboss-embedded-bottstrapping.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/jboss-embedded-bottstrapping.html</guid>
@@ -18399,7 +18399,7 @@ href=&quot;http://www.jboss.org/community/wiki/EmbeddedAndJUnit&quot;&gt;http://
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Bootstrapping JBoss Embedded server</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss-embedded-bottstrapping.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss-embedded-bottstrapping.html</guid>
@@ -18453,7 +18453,7 @@ href=&quot;http://www.jboss.org/community/wiki/EmbeddedAndJUnit&quot;&gt;http://
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven 3: How to force artifact resolution update</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/how-to-force-artifact-resolution-update.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/how-to-force-artifact-resolution-update.html</guid>
@@ -18466,7 +18466,7 @@ class=&quot;brush plain&quot;&gt;&lt;code&gt;resolution will not be reattempted 
             </description>
         </item>
         <item>
-            <title></title>
+            <title>How to add existing project's jar to SVN-based Maven repository</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/how-to-add-existing-project-jar-to-maven-repository.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/how-to-add-existing-project-jar-to-maven-repository.html</guid>
@@ -18578,7 +18578,7 @@ svn commit -m &quot;Maven repo: Added version XX&quot;&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>How to read properties file in Spring Framework</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/howto-spring-reading_properties_file.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/howto-spring-reading_properties_file.html</guid>
@@ -18633,7 +18633,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;!-- iBatis --&amp;gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Short code for Antrun Maven plugin</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/ant-run-plugin-short.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/ant-run-plugin-short.html</guid>
@@ -18654,7 +18654,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;build&amp;gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>SVNbot – IRC bot announcing SVN commits, written in Java</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/jboss/svn-commit-irc-bot-java.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/jboss/svn-commit-irc-bot-java.html</guid>
@@ -18690,7 +18690,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;repositories&amp;gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Neural Networks SQL implementation – Stored Procedures</title>
             <link>https://ondrej.zizka.ch/pages/programming/neural_networks_in_sql_stored_procedures/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/neural_networks_in_sql_stored_procedures/index.html</guid>
@@ -19983,7 +19983,7 @@ PBXT PBTX.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>XSLT transformation in Java</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/xslt-commandline-with-xalan.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/xslt-commandline-with-xalan.html</guid>
@@ -20113,7 +20113,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;?xml version=&quot;1.0&quot;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Kontrola rodného čísla (RČ) a identifikačního čísla (IČ)</title>
             <link>https://ondrej.zizka.ch/pages/programming/ruzne/rodne-cislo-identifikacni-cislo-rc-ico-kontrola-validace.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/ruzne/rodne-cislo-identifikacni-cislo-rc-ico-kontrola-validace.html</guid>
@@ -20334,7 +20334,7 @@ class=&quot;brush: js&quot;&gt;&lt;code&gt;function testDIC(x)
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Web Service Client from WSDL using Axis2</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web_service_client_from_wsdl_using_axis2.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web_service_client_from_wsdl_using_axis2.html</guid>
@@ -20413,7 +20413,7 @@ catch( RemoteException ex ) {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Úplné začátky v Javě – kompilace</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/navod-java_zacatky.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/navod-java_zacatky.html</guid>
@@ -20569,7 +20569,7 @@ href=&quot;mailto:ondra&amp;#64;dynawest.cz&quot;&gt;ondra&amp;#64;&lt;!-- --&gt
             </description>
         </item>
         <item>
-            <title></title>
+            <title>How to create a JNPL file (for Java WebStart) with Maven</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/maven-create-jnlp-file.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/maven-create-jnlp-file.html</guid>
@@ -20639,7 +20639,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;project&amp;gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven – minimal reasonable pom.xml</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/maven-minimal-reasonable-pom.xml.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/maven-minimal-reasonable-pom.xml.html</guid>
@@ -20733,7 +20733,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;project xmlns=&quot;http://m
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven: Order of execution of plugins in profiles</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/maven-plugin_in_profiles_execution_order.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/maven-plugin_in_profiles_execution_order.html</guid>
@@ -20890,7 +20890,7 @@ packaging the &lt;code&gt;.jar&lt;/code&gt;?&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Standard Maven pom.xml for standalone application</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/maven-standard-pom.xml-for-standalone-application.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/maven-standard-pom.xml-for-standalone-application.html</guid>
@@ -21065,7 +21065,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;project xmlns=&quot;http://m
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven presentation for Red Hat</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/maven2-presentation-for-redhat.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/maven2-presentation-for-redhat.html</guid>
@@ -21081,7 +21081,7 @@ href=&quot;https://www.jboss.org/community/docs/DOC-13358&quot;&gt;https://www.j
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Mavenhoe – fake Maven repository from .jar's in local directory tree</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/mavenhoe-fake-jar-repository.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/mavenhoe-fake-jar-repository.html</guid>
@@ -21244,7 +21244,7 @@ DEBUG org.jboss.qa.mavenhoe.MavenHoeApp
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Quick and dirty mavenization of an existing project</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/mavenize-quick-and-dirty.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/mavenize-quick-and-dirty.html</guid>
@@ -21419,7 +21419,7 @@ cmd /C mvn install:install-file -Dpackaging=jar -DgeneratePom=true -DgroupId=org
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven: Profile activation and properties</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/profile-activation-and-properties.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/profile-activation-and-properties.html</guid>
@@ -21576,7 +21576,7 @@ class=&quot;brush: plain&quot;&gt;&lt;code&gt;[INFO] Scanning for projects...
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Začátky se Spring AOP – návod</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/navod-spring-aop-zacatky.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/navod-spring-aop-zacatky.html</guid>
@@ -21767,7 +21767,7 @@ manuálu Springu&lt;/a&gt;, zejména oblasti:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>SQL koutek</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/index.cz.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/index.cz.html</guid>
@@ -21811,7 +21811,7 @@ objevit:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven: Order of execution of plugins in profiles</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven-plugin_in_profiles_execution_order.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven-plugin_in_profiles_execution_order.html</guid>
@@ -21967,7 +21967,7 @@ packaging the &lt;code&gt;.jar&lt;/code&gt;?&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven presentation for Red Hat</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven2-presentation-for-redhat.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven2-presentation-for-redhat.html</guid>
@@ -21983,7 +21983,7 @@ href=&quot;https://www.jboss.org/community/docs/DOC-13358&quot;&gt;https://www.j
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket: ClassCastException with CompoundPropertyModel</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-compoundpropertymodel-classcastexception.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-compoundpropertymodel-classcastexception.html</guid>
@@ -22168,7 +22168,7 @@ at org.apache.wicket.protocol.http.WicketFilter.doGet(WicketFilter.java:486)&lt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Quick and dirty mavenization of an existing project</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/mavenize-quick-and-dirty.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/mavenize-quick-and-dirty.html</guid>
@@ -22340,7 +22340,7 @@ cmd /C mvn install:install-file -Dpackaging=jar -DgeneratePom=true -DgroupId=org
             </description>
         </item>
         <item>
-            <title></title>
+            <title>FreeTTS Troubleshooting</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/misc/freetts-line-unavailable-classcastexception-kevinvoicedirectory-error-opening-zipfile.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/misc/freetts-line-unavailable-classcastexception-kevinvoicedirectory-error-opening-zipfile.html</guid>
@@ -22563,7 +22563,7 @@ class=&quot;brush: plain&quot;&gt;&lt;code&gt;Exception in thread &quot;main&quo
             </description>
         </item>
         <item>
-            <title></title>
+            <title>How to get curent class'es .jar location (directory, path)</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/misc/how-to-get-jar-location.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/misc/how-to-get-jar-location.html</guid>
@@ -22591,7 +22591,7 @@ class=&quot;brush: java&quot;&gt;&lt;code&gt;private String getBaseDirectory()
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Trying Jira on JBoss?</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/misc/jira-on-jboss-specification-violation-EJB3-JPA-jta-data-source-persistence-context-propertyset.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/misc/jira-on-jboss-specification-violation-EJB3-JPA-jta-data-source-persistence-context-propertyset.html</guid>
@@ -22808,7 +22808,7 @@ java.lang.ClassCastException: org.apache.xerces.jaxp.SAXParserFactoryImpl cannot
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JNDI: sample jndi.properties file</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/misc/jndi-properties-sample-file.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/misc/jndi-properties-sample-file.html</guid>
@@ -22904,7 +22904,7 @@ org.mortbay.jet­ty.plus.namin­g.Resource.&amp;lt;i­nit&amp;gt;(Resource­.jav
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java Lessons Learned</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/misc/lessons-learned.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/misc/lessons-learned.html</guid>
@@ -22923,7 +22923,7 @@ org.mortbay.jet­ty.plus.namin­g.Resource.&amp;lt;i­nit&amp;gt;(Resource­.jav
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven 2 and Ant + Ivy Comparison</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven-ant-ivy-comparison.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven-ant-ivy-comparison.html</guid>
@@ -23041,7 +23041,7 @@ projects.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Mobicents and FreeTTS</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/misc/mobicents-freetts.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/misc/mobicents-freetts.html</guid>
@@ -23057,7 +23057,7 @@ A plugin? Bundled garbage?&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Úplné začátky se Spring framework</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/navod-spring-framework-zacatky.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/navod-spring-framework-zacatky.html</guid>
@@ -23273,7 +23273,7 @@ najdete je v sekci Java + J2EE.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>How to stop Jetty</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/jetty-how-to-stop.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/jetty-how-to-stop.html</guid>
@@ -23291,7 +23291,7 @@ najdete je v sekci Java + J2EE.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java – výhody a nevýhody</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/vyhody_a_nevyhody_java.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/vyhody_a_nevyhody_java.html</guid>
@@ -23346,7 +23346,7 @@ Java. Nejprve Java SE (J2SE), níže potom Java EE (J2EE).&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Uzávěry v jazyce Java – přes místní vnitřní třídu</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/uzavery_v_jave_mistni_vnitrni_trida.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/uzavery_v_jave_mistni_vnitrni_trida.html</guid>
@@ -23429,7 +23429,7 @@ href=&quot;mailto:ondra&amp;#64;dynawest.cz&quot;&gt;ondra&amp;#64;&lt;!-- --&gt
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java tipy</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/tipy.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/tipy.html</guid>
@@ -23616,7 +23616,7 @@ exists, create.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JTexy! – Texy! Java Implementation project</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/texy_java_implementation.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/texy_java_implementation.html</guid>
@@ -23945,7 +23945,7 @@ zatím jen pro PHP.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Sardine – WebDAV client library for Java</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/sardine-java-webdav-client-library.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/sardine-java-webdav-client-library.html</guid>
@@ -23969,7 +23969,7 @@ publish them in the project&apos;s SVN.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>RHQ: How to set transaction timeout</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/rhq/rhq-how-to-set-transaction-timeout.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/rhq/rhq-how-to-set-transaction-timeout.html</guid>
@@ -24005,7 +24005,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;!-- JBoss Transactions JTA -
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java alternative of PHP's preg_replace_callback</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/php_preg_replace_callback.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/php_preg_replace_callback.html</guid>
@@ -24068,7 +24068,7 @@ public static final String replaceWithCallback(
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Logování v Javě – log4j a java.util.logging</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/navod_logovani_java.util.logging.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/navod_logovani_java.util.logging.html</guid>
@@ -24234,7 +24234,7 @@ Logging Overview&lt;/a&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>GZip servlet filter from the JSP book</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/gzip-servlet-filter.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/gzip-servlet-filter.html</guid>
@@ -24280,7 +24280,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;web-app&amp;gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>FreeMarker templates via Spring in non-web application</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/navod-spring_freemarker_in_standalone_application.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/navod-spring_freemarker_in_standalone_application.html</guid>
@@ -24388,7 +24388,7 @@ class=&quot;freemarker&quot;&gt;&lt;code&gt;/**
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Trying to get CDI/Weld working in embedded Jetty for a Wicket application.</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/jetty-cdi-weld-seam-wicket.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/jetty-cdi-weld-seam-wicket.html</guid>
@@ -24522,7 +24522,7 @@ name is
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Jetty: Serving static files from a directory</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/jetty-serving-static-files-resourcebase.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/jetty-serving-static-files-resourcebase.html</guid>
@@ -24579,7 +24579,7 @@ java.lang.NullPointerException
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Tomcat remote deployment</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/tomcat-remote-deployment.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/tomcat-remote-deployment.html</guid>
@@ -24602,7 +24602,7 @@ http resources [Closed, Major, Emanuel Muckenhuber]&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Import projektu ze SVN do NetBeans projektu (stručný návod)</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/navod-svn_subversion_v_netbeans.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/navod-svn_subversion_v_netbeans.html</guid>
@@ -24737,7 +24737,7 @@ try {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Markup of type ‚html‘ for component ‚…‘ not found.</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/markup-of-type-html-for-component-not-found.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/markup-of-type-html-for-component-not-found.html</guid>
@@ -24794,7 +24794,7 @@ at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket component</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/tmp-paste.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/tmp-paste.html</guid>
@@ -24889,7 +24889,7 @@ new ResourceLink(&quot;reslink&quot;, item.getModelObject().getResource() ))&lt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>What's new in Wicket 1.5</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/whats-new-in-wicket-1.5.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/whats-new-in-wicket-1.5.html</guid>
@@ -24918,7 +24918,7 @@ List&lt;/a&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket exception on shutdown – java.lang.NoClassDefFoundError: org/apache/wicket/util/lang/PropertyResolver</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-NoClassDefFoundError-PropertyResolver.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-NoClassDefFoundError-PropertyResolver.html</guid>
@@ -25036,7 +25036,7 @@ href=&quot;http://www.mail-archive.com/users&amp;#64;wicket.apache.org/msg49863.
             </description>
         </item>
         <item>
-            <title></title>
+            <title>My Wicket Cheat-sheet</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-cheatsheet.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-cheatsheet.html</guid>
@@ -25088,7 +25088,7 @@ class=&quot;brush: java&quot;&gt;&lt;code&gt;label1.add(
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket: The component(s) below failed to render when using wicket:extend</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-component-below-failed-to-render-extend.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-component-below-failed-to-render-extend.html</guid>
@@ -25162,7 +25162,7 @@ at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/index.html</guid>
@@ -25224,7 +25224,7 @@ href=&quot;http://www.developer.com/java/other/article.php/10936_3673576_6/Wicke
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java package javax.crypto does not exist error</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/misc/package-javax.crypto.spec-does-not-exist.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/misc/package-javax.crypto.spec-does-not-exist.html</guid>
@@ -25278,7 +25278,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;!-- Compiler plugin --&amp;g
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Web Services over SSL with JBoss WS</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/misc/web-services-over-ssl-jbossws.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/misc/web-services-over-ssl-jbossws.html</guid>
@@ -25350,7 +25350,7 @@ for(int i=0; i &amp;lt; 5; i++)
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Maven: XSLT transformation of pom.xml</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/maven/xslt-transformation-of-pom-xml-namespaces.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/maven/xslt-transformation-of-pom-xml-namespaces.html</guid>
@@ -25388,7 +25388,7 @@ for other namespaces, if others are ever used.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Nabídka: Levný Java/JSP/J2EE hosting</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/nabidka_levny_j2ee_jsp_hosting.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/nabidka_levny_j2ee_jsp_hosting.html</guid>
@@ -25468,7 +25468,7 @@ mě pověřil zpracováním „úvodního kontaktu“ :-)&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>WinLyrics – WinAmp lyrics plugin</title>
             <link>https://ondrej.zizka.ch/pages/programming/winlyrics/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/winlyrics/index.html</guid>
@@ -25579,7 +25579,7 @@ i web), a už není nijak moc pružný…&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Na linuxu:</title>
             <link>https://ondrej.zizka.ch/pages/programming/winlyrics/vpn.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/winlyrics/vpn.html</guid>
@@ -25621,7 +25621,7 @@ etc/fstab jede neco takovehoto:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>XULRunner tutorial</title>
             <link>https://ondrej.zizka.ch/pages/programming/xul/xulrunner-tutorial.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/xul/xulrunner-tutorial.html</guid>
@@ -25812,7 +25812,7 @@ the benefits of XULRunner.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Nabídka: byt 3+1 v Českých Budějovicích</title>
             <link>https://ondrej.zizka.ch/pages/realitni_kancelar/byty_ceske_budejovice.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/realitni_kancelar/byty_ceske_budejovice.html</guid>
@@ -25925,7 +25925,7 @@ href=&quot;/pages/osobni/kontakty.html&quot;&gt;kontakty&lt;/a&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Ubytování – Jižní Čechy – Třeboňsko</title>
             <link>https://ondrej.zizka.ch/pages/realitni_kancelar/chaty_a_chalupy.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/realitni_kancelar/chaty_a_chalupy.html</guid>
@@ -26022,7 +26022,7 @@ href=&quot;../osobni/kontakty.html&quot;&gt;kontakty&lt;/a&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>canvas element selection buffer</title>
             <link>https://ondrej.zizka.ch/pages/programming/web_javascript_ajax_canvas/canvas_element_selection_buffer.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/web_javascript_ajax_canvas/canvas_element_selection_buffer.html</guid>
@@ -26168,7 +26168,7 @@ canvas (in Czech), where I found the link to Jacob&apos;s work.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Example of Wicket's markup inheritance – wicket:child and wicket:extend</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-extend-child-inheritance-example.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-extend-child-inheritance-example.html</guid>
@@ -26232,7 +26232,7 @@ class=&quot;brush: java&quot;&gt;&lt;code&gt;public class NewsPageContent extend
             </description>
         </item>
         <item>
-            <title></title>
+            <title>SQL corner</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/index.html</guid>
@@ -26295,7 +26295,7 @@ That&apos;s quite a long list, but the most important features are:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Společné obecné vlastnosti PHP, Javy, Linuxu a Windows</title>
             <link>https://ondrej.zizka.ch/pages/programming/spolecne_vlastnosti_php_java_linux_windows.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/spolecne_vlastnosti_php_java_linux_windows.html</guid>
@@ -26381,7 +26381,7 @@ That&apos;s quite a long list, but the most important features are:&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>User Songs Rating</title>
             <link>https://ondrej.zizka.ch/pages/programming/winlyrics/doc/rating.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/winlyrics/doc/rating.html</guid>
@@ -26565,7 +26565,7 @@ DELIMITER ;&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket: How to create a component</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-howto-create-component.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-howto-create-component.html</guid>
@@ -26756,7 +26756,7 @@ new ResourceLink(&quot;reslink&quot;, item.getModelObject().getResource() ))&lt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket: Link with a Label</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-link-with-label.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-link-with-label.html</guid>
@@ -26839,7 +26839,7 @@ errors, but you get the idea.&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket IPageStore implementation with Infinispan (formerly JBoss Cache)</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-pagestore-jbosscache-infinispan-integration.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-pagestore-jbosscache-infinispan-integration.html</guid>
@@ -27149,7 +27149,7 @@ class=&quot;brush: xml&quot;&gt;&lt;code&gt;&amp;lt;dependency&amp;gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket IPageStore implementation with Infinispan (formerly JBoss Cache)</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-pagestore-jbosscache-infinispan-integration1.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-pagestore-jbosscache-infinispan-integration1.html</guid>
@@ -27406,7 +27406,7 @@ public class JBossCachePageStore extends AbstractPageStore implements IPageStore
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket and nice URLs – URL coding strategies</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-path-based-url-coding-strategy.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-path-based-url-coding-strategy.html</guid>
@@ -27530,7 +27530,7 @@ pageParameters.getString(&quot;1&quot;); // &quot;value2&quot;&lt;/code&gt;&lt;/
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Quartz Scheduler in Wicket – an example</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-quartz-scheduler-example.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-quartz-scheduler-example.html</guid>
@@ -27604,7 +27604,7 @@ public class MyJobClass implements Job {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket: How to render a page to a string</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-rendering-page-to-string.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-rendering-page-to-string.html</guid>
@@ -27653,7 +27653,7 @@ class=&quot;brush: java&quot;&gt;&lt;code&gt;public static String renderPage(Cla
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket servlet and filter in an embedded Jetty</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-servlet-filter-jetty-embedded.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-servlet-filter-jetty-embedded.html</guid>
@@ -27712,7 +27712,7 @@ way to add filters is deprecated in Jetty 7&lt;/a&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket and nice URLs – URL coding strategies</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-url-coding-strategy.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-url-coding-strategy.html</guid>
@@ -27836,7 +27836,7 @@ pageParameters.getString(&quot;1&quot;); // &quot;value2&quot;&lt;/code&gt;&lt;/
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java Concurrency, Threads and Synchronization</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/modifier-and-concurent-readers.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/modifier-and-concurent-readers.html</guid>
@@ -28386,7 +28386,7 @@ public class ReadersAndModifierTest {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Přihlašování – login</title>
             <link>https://ondrej.zizka.ch/pages/programming/winlyrics/doc/login.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/winlyrics/doc/login.html</guid>
@@ -28536,7 +28536,7 @@ Returns: &lt;code&gt;&quot;SESSION_ERROR&quot;&lt;/code&gt; on error or
             </description>
         </item>
         <item>
-            <title></title>
+            <title>WebTTD – A Browser-based Transport Tycoon Derivate</title>
             <link>https://ondrej.zizka.ch/pages/programming/web_javascript_ajax_canvas/webttd.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/web_javascript_ajax_canvas/webttd.html</guid>
@@ -28892,7 +28892,7 @@ forums&lt;/a&gt; – link to my request for OpenTTD map export&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>WicketMessage: Markup of type ‚html‘ for component not found</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-html-markup-not-found.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-html-markup-not-found.html</guid>
@@ -28954,7 +28954,7 @@ at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
             </description>
         </item>
         <item>
-            <title></title>
+            <title>JavaScript isometric libraries and „game engines“</title>
             <link>https://ondrej.zizka.ch/pages/programming/web_javascript_ajax_canvas/javascript-isometric-libraries.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/web_javascript_ajax_canvas/javascript-isometric-libraries.html</guid>
@@ -29118,7 +29118,7 @@ Dialog Engine“, whatever that is.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Controversial Java cliches</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/misc/controversal-java-cliches.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/misc/controversal-java-cliches.html</guid>
@@ -29182,7 +29182,7 @@ as a bad practice, without any rationale.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket: How to disable page caching</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-disable-page-caching.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-disable-page-caching.html</guid>
@@ -29219,7 +29219,7 @@ class=&quot;java .brush&quot;&gt;&lt;code&gt;public class MyPage extends WebPage
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Wicket: Favicon</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-favicon.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-favicon.html</guid>
@@ -29309,7 +29309,7 @@ class=&quot;java .brush&quot;&gt;&lt;code&gt;public class FavIconHeaderContribut
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Example of Wicket's markup inheritance – wicket:child and wicket:extend</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/web/wicket/wicket-extend-child-inheritance-include-example.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/web/wicket/wicket-extend-child-inheritance-include-example.html</guid>
@@ -29393,7 +29393,7 @@ class=&quot;brush: java&quot;&gt;&lt;code&gt;public class WicketApplication exte
             </description>
         </item>
         <item>
-            <title></title>
+            <title>MySQL Stored Procedures Library</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/mysql_stored_procedures.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/mysql_stored_procedures.html</guid>
@@ -29971,7 +29971,7 @@ END $$&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>ALTER TABLE … RENAME [OVERWRITE] [TO] to overwrite existing table</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/mysql_wishlist/alter_table_rename_overwrite.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/mysql_wishlist/alter_table_rename_overwrite.html</guid>
@@ -30018,7 +30018,7 @@ future.)&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>MSIE 8.1 drops JavaScript support in favor of VBScript</title>
             <link>https://ondrej.zizka.ch/pages/programming/web_javascript_ajax_canvas/msie-drops-javascript-support.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/web_javascript_ajax_canvas/msie-drops-javascript-support.html</guid>
@@ -30030,7 +30030,7 @@ future.)&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Stored Procedure call stack in INFORMATION_SCHEMA</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/mysql_wishlist/call_stack_in_information_schema.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/mysql_wishlist/call_stack_in_information_schema.html</guid>
@@ -30070,7 +30070,7 @@ class=&quot;brush: sql&quot;&gt;&lt;code&gt;INSERT INTO log
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Feature request discussion: Result sets stored in @variables</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/mysql_wishlist/forum_post.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/mysql_wishlist/forum_post.html</guid>
@@ -30122,7 +30122,7 @@ some better concept?&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Úvod do J2EE</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/navod-j2ee_uvod.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/java/navod-j2ee_uvod.html</guid>
@@ -30782,7 +30782,7 @@ webu velká spousta.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java objects in Stored Procedures (sci-fi)</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/mysql_wishlist/java_objects_in_stored_procedures.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/mysql_wishlist/java_objects_in_stored_procedures.html</guid>
@@ -30816,7 +30816,7 @@ their source some day.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Stored Procedure call stack in INFORMATION_SCHEMA</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/mysql_wishlist/stored_procedure_call_stack_in_information_schema.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/mysql_wishlist/stored_procedure_call_stack_in_information_schema.html</guid>
@@ -30856,7 +30856,7 @@ class=&quot;brush: sql&quot;&gt;&lt;code&gt;INSERT INTO log
             </description>
         </item>
         <item>
-            <title></title>
+            <title>„Ternary boolean logic“ in SQL – making NULL useful</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/sql_ternary_boolean_logic_with_null.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/sql_ternary_boolean_logic_with_null.html</guid>
@@ -30988,7 +30988,7 @@ following principles.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Vyhledávání spojů v jízdních řádech</title>
             <link>https://ondrej.zizka.ch/pages/programming/transport_schedule_search/index.cz.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/transport_schedule_search/index.cz.html</guid>
@@ -31108,7 +31108,7 @@ END $$&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Transport schedule connection search</title>
             <link>https://ondrej.zizka.ch/pages/programming/transport_schedule_search/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/transport_schedule_search/index.html</guid>
@@ -31265,7 +31265,7 @@ END $$&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Vybírám skriptovací jazyk pro systémové skripty</title>
             <link>https://ondrej.zizka.ch/pages/programming/vybiram_jazyk_pro_systemove_skriptovani.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/vybiram_jazyk_pro_systemove_skriptovani.html</guid>
@@ -31353,7 +31353,7 @@ který jazyk ano či ne.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>SQL procedury pro MySQL 5.0</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/mysql_stored_procedures.cz.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/mysql_stored_procedures.cz.html</guid>
@@ -31732,7 +31732,7 @@ END; $$&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>canvas element selection buffer</title>
             <link>https://ondrej.zizka.ch/pages/programming/web_javascript_ajax_canvas/canvas_element_selection_buffer.cz.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/web_javascript_ajax_canvas/canvas_element_selection_buffer.cz.html</guid>
@@ -31819,7 +31819,7 @@ něco takového nenavrhnul či se dokonce nechystá.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Web, JavaScript, AJAX, and Canvas</title>
             <link>https://ondrej.zizka.ch/pages/programming/web_javascript_ajax_canvas/index.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/web_javascript_ajax_canvas/index.html</guid>
@@ -31842,7 +31842,7 @@ href=&quot;canvas_element_selection_buffer.cz.html&quot;&gt;česky&lt;/a&gt;&lt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>MySQL: Result set in a @variable</title>
             <link>https://ondrej.zizka.ch/pages/programming/sql/mysql_wishlist/result_set_in_variable.html</link>
             <pubDate>Tue, 31 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/programming/sql/mysql_wishlist/result_set_in_variable.html</guid>
@@ -32022,7 +32022,7 @@ now go vote for Trump.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Windsurfing Chorvatsko – Bol</title>
             <link>https://ondrej.zizka.ch/pages/osobni/windsurfing-bol.html</link>
             <pubDate>Thu, 26 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">pages/osobni/windsurfing-bol.html</guid>
@@ -32157,7 +32157,7 @@ Until then, the blog below will contain all pages.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>LGeneral – Panzer General</title>
             <link>https://ondrej.zizka.ch/pages/linux/games/lgeneral-panzer-general.html</link>
             <pubDate>Wed, 16 Jan 2013 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/linux/games/lgeneral-panzer-general.html</guid>
@@ -32192,7 +32192,7 @@ sudo apt-get install libsdl1.2-dev&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Windsurfing</title>
             <link>https://ondrej.zizka.ch/pages/osobni/windsurfing.html</link>
             <pubDate>Wed, 16 Jan 2013 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/windsurfing.html</guid>
@@ -32211,7 +32211,7 @@ windsurf.cz&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Installing Trac 12 on Centos 5.5 – requires Python 2.6</title>
             <link>https://ondrej.zizka.ch/pages/linux/centos-trac12-sqlite-svn16-python26.html</link>
             <pubDate>Wed, 16 Jan 2013 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/linux/centos-trac12-sqlite-svn16-python26.html</guid>
@@ -32264,7 +32264,7 @@ class=&quot;plain&quot;&gt;&lt;code&gt;rpm -i subversion-python...rpm --relocate
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Sporty</title>
             <link>https://ondrej.zizka.ch/pages/osobni/sporty.html</link>
             <pubDate>Wed, 16 Jan 2013 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/sporty.html</guid>
@@ -32288,7 +32288,7 @@ class=&quot;plain&quot;&gt;&lt;code&gt;rpm -i subversion-python...rpm --relocate
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Most used passwords</title>
             <link>https://ondrej.zizka.ch/pages/osobni/most-used-passwords.html</link>
             <pubDate>Sun, 16 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/most-used-passwords.html</guid>
@@ -32408,7 +32408,7 @@ class=&quot;brush sql&quot;&gt;&lt;code&gt;mysql&amp;gt; SELECT pass, COUNT(pass
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Comparison of SSD vs. HDD disks</title>
             <link>https://ondrej.zizka.ch/pages/osobni/ssd-vs-hdd-comparison-benchmark-test.html</link>
             <pubDate>Sun, 16 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/ssd-vs-hdd-comparison-benchmark-test.html</guid>
@@ -32624,7 +32624,7 @@ sys     0m2.893s&lt;/code&gt;&lt;/pre&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Mnou oblíbené citáty</title>
             <link>https://ondrej.zizka.ch/pages/osobni/citaty.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/citaty.html</guid>
@@ -33013,7 +33013,7 @@ OU ZA VAS BIDNY ZIVOT MEL UZITEK I NEKDO JINY, BY VAS ASI ZAHUBILO JESTE DRIVE, 
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Poznatky z Pra-Loup</title>
             <link>https://ondrej.zizka.ch/pages/osobni/praloup-poznatky.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/praloup-poznatky.html</guid>
@@ -33058,7 +33058,7 @@ zde&lt;/a&gt;.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Nové bydlení</title>
             <link>https://ondrej.zizka.ch/pages/osobni/bydleni/nove.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/bydleni/nove.html</guid>
@@ -33073,7 +33073,7 @@ href=&quot;http://byty.hyperinzerce.cz/podnajem-spolubydlici/inzerat/1260143-pro
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Facebook Group Generator</title>
             <link>https://ondrej.zizka.ch/pages/osobni/facebook-group-generator.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/facebook-group-generator.html</guid>
@@ -33137,7 +33137,7 @@ class=&quot;js [.brush]&quot;&gt;&lt;code&gt;facebook.createGroup(
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Bydlení Brno</title>
             <link>https://ondrej.zizka.ch/pages/osobni/bydleni/index.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/bydleni/index.html</guid>
@@ -33264,7 +33264,7 @@ ozvat později (od 17:24 23.7.2008 za týden)&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Poznámky a postřehy</title>
             <link>https://ondrej.zizka.ch/pages/osobni/poznamky.ascii.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/poznamky.ascii.html</guid>
@@ -33626,7 +33626,7 @@ do not change the password – it&apos;s either a fraud or an hoax.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Prodávám, sháním</title>
             <link>https://ondrej.zizka.ch/pages/osobni/prodavam_shanim.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/prodavam_shanim.html</guid>
@@ -33713,7 +33713,7 @@ Hewlett-Packard&lt;/a&gt;&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Finclub</title>
             <link>https://ondrej.zizka.ch/pages/osobni/finclub.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/finclub.html</guid>
@@ -33727,7 +33727,7 @@ Hewlett-Packard&lt;/a&gt;&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Vázání kravat</title>
             <link>https://ondrej.zizka.ch/pages/osobni/vazani_kravat.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/vazani_kravat.html</guid>
@@ -33843,7 +33843,7 @@ nesmí se však vázat příliš pevně.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Zabezpečená stránka</title>
             <link>https://ondrej.zizka.ch/pages/401Zabezpeceno.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/401Zabezpeceno.html</guid>
@@ -33859,7 +33859,7 @@ příslušné role.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Nedokončené přihlášení</title>
             <link>https://ondrej.zizka.ch/pages/401Login.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/401Login.html</guid>
@@ -33875,7 +33875,7 @@ uživatelé s odpovídající­mi právy.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Kontakty</title>
             <link>https://ondrej.zizka.ch/pages/osobni/kontakty.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/kontakty.html</guid>
@@ -33956,7 +33956,7 @@ uživatelé s odpovídající­mi právy.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Tento soubor nenĂ aktuĂˇlnĂ!</title>
             <link>https://ondrej.zizka.ch/pages/texy/syntax.cs.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/texy/syntax.cs.html</guid>
@@ -34515,7 +34515,7 @@ Dolores&lt;/q&gt;&lt;/a&gt;&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Texy! is sexxy!</title>
             <link>https://ondrej.zizka.ch/pages/texy/syntax.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/texy/syntax.html</guid>
@@ -34726,7 +34726,7 @@ class=&quot;php&quot;&gt;&lt;code&gt;function reImage($matches) {
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Einsteinova logická hra</title>
             <link>https://ondrej.zizka.ch/pages/osobni/einsteinova_logicka_hra.html</link>
             <pubDate>Thu, 13 Dec 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/osobni/einsteinova_logicka_hra.html</guid>
@@ -34800,7 +34800,7 @@ sudoku… Postupně vám vykrystalizuje řešení.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Hello World</title>
             <link>https://ondrej.zizka.ch/pages/test.html</link>
             <pubDate>Tue, 13 Nov 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/test.html</guid>
@@ -34823,7 +34823,7 @@ alt=&quot;&quot; style=&quot;float:right&quot;&gt;&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Java + Java EE</title>
             <link>https://ondrej.zizka.ch/pages/programming/java/index.html</link>
             <pubDate>Sun, 1 Jan 2012 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/programming/java/index.html</guid>
@@ -35569,7 +35569,7 @@ pětipísmenných zkratek.&lt;/p&gt;
             </description>
         </item>
         <item>
-            <title></title>
+            <title>Zajímavý software (2008)</title>
             <link>https://ondrej.zizka.ch/pages/odkazy/software.html</link>
             <pubDate>Tue, 1 Jan 2008 01:00:00 +0100</pubDate>
             <guid isPermaLink="false">pages/odkazy/software.html</guid>
