@@ -5,23 +5,15 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
+        <loc>https://www.zizka.ch/pages/realitni_kancelar/chaty_a_chalupy.html</loc>
+        <lastmod>2026-11-15</lastmod>
+    </url>
+    <url>
         <loc>https://www.zizka.ch/site/donationThankYou.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
         <loc>https://www.zizka.ch/site/donationCancelled.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/about.html</loc>
-        <lastmod>2018-07-21</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/blog/2018/07-27-PeterThielPumpDumpBitcoinSong.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/blog/2018/07-25-site-work-in-progress.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -34,10 +26,6 @@
     </url>
     <url>
         <loc>https://www.zizka.ch/pages/texy/syntax.cs.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/realitni_kancelar/chaty_a_chalupy.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -229,11 +217,15 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-link-with-label.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-html-markup-not-found.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-howto-create-component.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-favicon.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-link-with-label.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -241,11 +233,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-html-markup-not-found.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-extend-child-inheritance-include-example.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-howto-create-component.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -253,7 +241,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-extend-child-inheritance-example.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-extend-child-inheritance-include-example.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -261,7 +249,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-favicon.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/web/wicket/wicket-extend-child-inheritance-example.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -417,7 +405,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/maven/how-to-mavenize-java-project.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/maven/how-to-force-artifact-resolution-update.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -425,11 +413,11 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/maven/how-to-force-artifact-resolution-update.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/maven/jabber-xmpp-maven-plugin.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/maven/jabber-xmpp-maven-plugin.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/maven/profile-activation-and-properties.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -449,7 +437,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/maven/profile-activation-and-properties.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/maven/how-to-mavenize-java-project.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -489,10 +477,6 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/maven/ant-run-plugin-short.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
         <loc>https://www.zizka.ch/pages/programming/java/jetty-how-to-stop.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
@@ -505,6 +489,14 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
+        <loc>https://www.zizka.ch/pages/programming/java/maven/ant-run-plugin-short.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss/web-services.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
         <loc>https://www.zizka.ch/pages/programming/java/maven-ant-ivy-comparison.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
@@ -513,35 +505,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss/web-services.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss/svn-commit-irc-bot-java.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-vs-spring.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-startup-failure.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-microcontainer-howto-example-standalone-app.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-embedded-bottstrapping.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
         <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-aop-could-not-find-class.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-as-startup-run-sh-java-system-variables.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -553,7 +517,51 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss/svn-commit-irc-bot-java.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-vs-spring.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
         <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-ejb3-annotations.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-microcontainer-howto-example-standalone-app.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-embedded-bottstrapping.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-as-startup-run-sh-java-system-variables.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss/jboss-startup-failure.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jaxb/jaxb-list-with-inherited-classes.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss-embedded-bottstrapping.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss-microcontainer-howto-example-standalone-app.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss-aop-could-not-find-class.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss-aop-howto-example-standalone-app.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -565,7 +573,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jaxb/jaxb-list-with-inherited-classes.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/jboss/Tomcat-JON-Windows-2003-2008.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -577,39 +585,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss/Tomcat-JON-Windows-2003-2008.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss-microcontainer-howto-example-standalone-app.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss-embedded-bottstrapping.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss-aop-howto-example-standalone-app.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jboss-aop-could-not-find-class.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/immutable_properties.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jabber-xmpp-maven-plugin.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/java-feature-requests.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/java.lang.IllegalArgumentException-Unknown-AOP-tag-bean.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/jaxb-json-jackson-howto.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -621,11 +597,31 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/jaxb-json-jackson-howto.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/java_javaw_difference.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/java_javaw_difference.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/java.lang.IllegalArgumentException-Unknown-AOP-tag-bean.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/java-feature-requests.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/jabber-xmpp-maven-plugin.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/immutable_properties.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/ibatis-instantiation-exception.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/howto/security-certificates-ssl.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -637,19 +633,11 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/howto/security-certificates-ssl.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/ibatis-instantiation-exception.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
         <loc>https://www.zizka.ch/pages/programming/java/hibernate/firstResult-maxResults-specified-with-collection-fetch.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/hibernate/hibernate-jpa-2.0-maven-dependendies.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/howto-substitutions_in_spring_configuration-tutorial.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -658,6 +646,10 @@
     </url>
     <url>
         <loc>https://www.zizka.ch/pages/programming/java/hibernate/jpa-hibernate-cannot-create-typedquery-for-query-with-more-than-one-return.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/hibernate/hibernate-jpa-2.0-maven-dependendies.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -673,10 +665,6 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/howto-substitutions_in_spring_configuration-tutorial.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
         <loc>https://www.zizka.ch/pages/programming/java/hibernate/Hibernate-MySQL-ErrorCode1005-Cant-create-table-sql-4cb_35-errno-150.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
@@ -685,7 +673,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/groovy-dombuilder-bug.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/enum-with-lookup-map.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -693,15 +681,11 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
+        <loc>https://www.zizka.ch/pages/programming/java/groovy-dombuilder-bug.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
         <loc>https://www.zizka.ch/pages/programming/java/heapdump-howto.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/enum-with-lookup-map.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/programming/java/converting_number_to_excel_column_letters_name.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -709,11 +693,15 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/programming/java/apps/JUnitDiff-junit-test-results-report-comparison.html</loc>
+        <loc>https://www.zizka.ch/pages/programming/java/converting_number_to_excel_column_letters_name.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
         <loc>https://www.zizka.ch/pages/programming/java/apps/JUnitDiff-junit-diff-test-results-report-comparison.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/programming/java/apps/JUnitDiff-junit-test-results-report-comparison.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -797,7 +785,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/osobni/praloup-poznatky.html</loc>
+        <loc>https://www.zizka.ch/pages/osobni/prodavam_shanim.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -805,15 +793,15 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/osobni/prodavam_shanim.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/osobni/ssd-vs-hdd-comparison-benchmark-test.html</loc>
+        <loc>https://www.zizka.ch/pages/osobni/praloup-poznatky.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
         <loc>https://www.zizka.ch/pages/osobni/vazani_kravat.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/osobni/ssd-vs-hdd-comparison-benchmark-test.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -822,6 +810,10 @@
     </url>
     <url>
         <loc>https://www.zizka.ch/pages/osobni/most-used-passwords.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/osobni/nafukovaci-postele-02.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -834,10 +826,6 @@
     </url>
     <url>
         <loc>https://www.zizka.ch/pages/osobni/poznamky.ascii.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
-        <loc>https://www.zizka.ch/pages/osobni/nafukovaci-postele-02.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -869,7 +857,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/linux/logitech-mouse-unifying-pairing.html</loc>
+        <loc>https://www.zizka.ch/pages/linux/notes.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -877,7 +865,7 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/linux/notes.html</loc>
+        <loc>https://www.zizka.ch/pages/linux/logitech-mouse-unifying-pairing.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -889,19 +877,19 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/index.html</loc>
-        <lastmod>2026-11-14</lastmod>
-    </url>
-    <url>
         <loc>https://www.zizka.ch/pages/linux/centos-trac12-sqlite-svn16-python26.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
-        <loc>https://www.zizka.ch/pages/economy/investing/index.html</loc>
+        <loc>https://www.zizka.ch/pages/index.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
         <loc>https://www.zizka.ch/pages/economy/investing/information-sources.html</loc>
+        <lastmod>2026-11-14</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/pages/economy/investing/index.html</loc>
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
@@ -921,12 +909,24 @@
         <lastmod>2026-11-14</lastmod>
     </url>
     <url>
+        <loc>https://www.zizka.ch/about.html</loc>
+        <lastmod>2018-07-21</lastmod>
+    </url>
+    <url>
         <loc>https://www.zizka.ch/pages/programming/java/index.html</loc>
         <lastmod>2012-01-01</lastmod>
     </url>
     <url>
         <loc>https://www.zizka.ch/pages/odkazy/software.html</loc>
         <lastmod>2008-01-01</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/blog/2018/07-27-PeterThielPumpDumpBitcoinSong.html</loc>
+        <lastmod>2018-07-27</lastmod>
+    </url>
+    <url>
+        <loc>https://www.zizka.ch/blog/2018/07-25-site-work-in-progress.html</loc>
+        <lastmod>2018-07-26</lastmod>
     </url>
 </urlset>
 
