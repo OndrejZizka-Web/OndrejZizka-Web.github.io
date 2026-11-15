@@ -2,16 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>JBake</title>
-        <link>https://www.zizka.ch</link>
-        <atom:link href="https://www.zizka.ch/feed.xml" rel="self" type="application/rss+xml"/>
+        <link>https://ondrej.zizka.ch</link>
+        <atom:link href="https://ondrej.zizka.ch/feed.xml" rel="self" type="application/rss+xml"/>
         <description>JBake Bootstrap Template</description>
         <language>en-gb</language>
-        <pubDate>Sun, 15 Nov 2026 01:00:54 +0100</pubDate>
-        <lastBuildDate>Sun, 15 Nov 2026 01:00:54 +0100</lastBuildDate>
+        <pubDate>Sun, 15 Nov 2026 02:55:11 +0100</pubDate>
+        <lastBuildDate>Sun, 15 Nov 2026 02:55:11 +0100</lastBuildDate>
 
         <item>
             <title>Bitcoin Pump'n'Dump Song by Peter Thiel</title>
-            <link>https://www.zizka.ch/blog/2018/07-27-PeterThielPumpDumpBitcoinSong.html</link>
+            <link>https://ondrej.zizka.ch/blog/2018/07-27-PeterThielPumpDumpBitcoinSong.html</link>
             <pubDate>Fri, 27 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">blog/2018/07-27-PeterThielPumpDumpBitcoinSong.html</guid>
             <description>
@@ -28,7 +28,7 @@ now go vote for Trump.&lt;/p&gt;
         </item>
         <item>
             <title>Work on this site in progress</title>
-            <link>https://www.zizka.ch/blog/2018/07-25-site-work-in-progress.html</link>
+            <link>https://ondrej.zizka.ch/blog/2018/07-25-site-work-in-progress.html</link>
             <pubDate>Thu, 26 Jul 2018 02:00:00 +0200</pubDate>
             <guid isPermaLink="false">blog/2018/07-25-site-work-in-progress.html</guid>
             <description>
